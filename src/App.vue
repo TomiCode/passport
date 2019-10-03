@@ -2,8 +2,7 @@
   <v-app>
     <v-app-bar app>
       <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
+        <span>Passport</span>
       </v-toolbar-title>
     </v-app-bar>
 
