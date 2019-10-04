@@ -17,7 +17,9 @@
       color="primary"
     >Login
     </v-btn>
-
+    <v-btn outlined color="accent" :to="{ name: 'auth_reset' }">
+      Reset password
+    </v-btn>
     <v-alert border="left" type="info" outlined>
       Don't have an account? <router-link :to="{name: 'auth_register'}">Register</router-link> a new one, it's free forever.
     </v-alert>

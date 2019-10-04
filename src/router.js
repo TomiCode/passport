@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import AuthLogin from './views/Auth/Login.vue'
 import AuthRegister from './views/Auth/Register.vue'
-import AuthRestore from './views/Auth/Restore.vue'
+import AuthReset from './views/Auth/Reset.vue'
 
 Vue.use(Router)
 
@@ -22,9 +22,9 @@ export default new Router({
       component: AuthRegister
     },
     {
-      path: '/auth/restore',
-      name: 'auth_restore',
-      component: AuthRestore
+      path: '/auth/reset',
+      name: 'auth_reset',
+      component: AuthReset
     },
     {
       path: '/',
