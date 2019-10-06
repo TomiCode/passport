@@ -9,14 +9,19 @@
       label="Username"
       prepend-inner-icon="far fa-user"
     ></v-text-field>
-    <v-btn>Decrypt</v-btn>
+    <v-select
+      :items="containers"
+      label="Container"
+    ></v-select>
+    <v-btn outlined color="primary">Decrypt</v-btn>
   </v-container>
 </template>
 
 <script>
 export default {
   data: () => ({
-    password: ""
+    password: "",
+    containers: ["Default"]
   })
 }
 </script>

@@ -1,9 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+
 import AuthLogin from './views/Auth/Login.vue'
 import AuthRegister from './views/Auth/Register.vue'
 import AuthReset from './views/Auth/Reset.vue'
+
+import ProfileDecrypt from './views/Profile/Decrypt.vue'
+import ProfileSetup from './views/Profile/Setup.vue'
 
 Vue.use(Router)
 
@@ -25,6 +29,16 @@ export default new Router({
       path: '/auth/reset',
       name: 'auth_reset',
       component: AuthReset
+    },
+    {
+      path: '/profile/decrypt',
+      name: 'profile_decrypt',
+      component: ProfileDecrypt
+    },
+    {
+      path: '/profile/setup',
+      name: 'profile_setup',
+      component: ProfileSetup
     },
     {
       path: '/',

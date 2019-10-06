@@ -33,10 +33,9 @@
         class="mr-4"
         outlined
         color="primary"
-        @click="nothing"
+        :to="{name: 'profile_setup'}"
       >Register</v-btn>
     </v-form>
-
     <v-alert outlined color="teal" border="left" icon="fas fa-question">
       Already have an account? <router-link :to="{ name: 'auth_login' }">Log in</router-link> to your existing one.
     </v-alert>

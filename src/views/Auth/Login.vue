@@ -15,6 +15,7 @@
       class="ma-2"
       outlined
       color="primary"
+      :to="{name: 'profile_decrypt'}"
     >Login
     </v-btn>
     <v-btn outlined color="accent" :to="{ name: 'auth_reset' }">
