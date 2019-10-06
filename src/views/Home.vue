@@ -9,7 +9,7 @@
         @click="nothing"
       >
         <v-list-item-avatar>
-          <v-icon>fas fa-globe</v-icon>
+          <v-icon class="indigo lighten-1 white--text">fas fa-globe</v-icon>
         </v-list-item-avatar>
 
         <v-list-item-content>
@@ -19,12 +19,12 @@
 
         <v-list-item-action>
           <v-btn icon>
-            <v-icon color="grey">fas fa-at</v-icon>
+            <v-icon color="grey" small>fas fa-at</v-icon>
           </v-btn>
         </v-list-item-action>
         <v-list-item-action>
           <v-btn icon>
-            <v-icon color="grey">fas fa-key</v-icon>
+            <v-icon color="grey" small>fas fa-key</v-icon>
           </v-btn>
         </v-list-item-action>
       </v-list-item>
