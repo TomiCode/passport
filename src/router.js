@@ -9,6 +9,10 @@ import AuthReset from './views/Auth/Reset.vue'
 import ProfileDecrypt from './views/Profile/Decrypt.vue'
 import ProfileSetup from './views/Profile/Setup.vue'
 
+import HomeLatest from './views/Home/Latest.vue'
+import HomeSearch from './views/Home/Search.vue'
+import HomeCategory from './views/Home/Category.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -43,7 +47,29 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      children: [
+        {
+          path: 'latest',
+          name: 'home_latest',
+          component: HomeLatest
+        },
+        {
+          path: 'search/:query',
+          name: 'home_search',
+          component: HomeSearch
+        },
+        {
+          path: 'category/:category',
+          name: 'home_category',
+          component: HomeCategory
+        },
+        {
+          path: '*',
+          name: 'home_root',
+          component: HomeCategory
+        }
+      ]
     },
     {
       path: '/about',
