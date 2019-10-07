@@ -6,8 +6,8 @@
     <v-text-field
       type="password"
       v-model="password"
-      label="Username"
-      prepend-inner-icon="far fa-user"
+      label="Container password"
+      prepend-inner-icon="fas fa-server"
     ></v-text-field>
     <v-select
       :items="containers"

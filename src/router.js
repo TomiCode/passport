@@ -12,6 +12,7 @@ import ProfileSetup from './views/Profile/Setup.vue'
 import HomeLatest from './views/Home/Latest.vue'
 import HomeSearch from './views/Home/Search.vue'
 import HomeCategory from './views/Home/Category.vue'
+import HomeManage from './views/Home/Manage.vue'
 
 Vue.use(Router)
 
@@ -53,6 +54,11 @@ export default new Router({
           path: 'latest',
           name: 'home_latest',
           component: HomeLatest
+        },
+        {
+          path: 'manage',
+          name: 'home_manage',
+          component: HomeManage
         },
         {
           path: 'search/:query',
