@@ -13,6 +13,7 @@ import HomeLatest from './views/Home/Latest.vue'
 import HomeSearch from './views/Home/Search.vue'
 import HomeCategory from './views/Home/Category.vue'
 import HomeManage from './views/Home/Manage.vue'
+import HomeProfile from './views/Home/Profile.vue'
 
 Vue.use(Router)
 
@@ -69,6 +70,11 @@ export default new Router({
           path: 'category/:category',
           name: 'home_category',
           component: HomeCategory
+        },
+        {
+          path: 'profile',
+          name: 'home_profile',
+          component: HomeProfile
         },
         {
           path: '*',
