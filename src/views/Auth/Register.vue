@@ -1,24 +1,24 @@
 <template>
   <v-container fluid>
-    <v-form v-model="registrar" ref="registrar">
+    <v-form ref="registrar">
       <v-text-field
         v-model="user.name"
         label="Username"
-        required
+        :rules="[rules.required, rules.name]"
+        counter="16"
       ></v-text-field>
       <v-text-field
         v-model="user.email"
         label="Email address"
-        required
+        :rules="[rules.required, rules.email]"
       ></v-text-field>
       <v-text-field
-      ref="password_input"
-      v-model="user.password"
-      type="password"
-      label="Password"
+        v-model="user.password"
+        type="password"
+        label="Password"
+        :rules="[rules.required]"
       ></v-text-field>
       <v-text-field
-        v-model="user.password_confirmation"
         type="password"
         label="Confirm password"
         :rules="[password_confirmed]"
@@ -33,7 +33,9 @@
         class="mr-4"
         outlined
         color="primary"
-        :to="{name: 'profile_setup'}"
+        @click="register"
+        :disabled="submit.loading"
+        :loading="submit.loading"
       >Register</v-btn>
     </v-form>
     <v-alert outlined color="teal" border="left" icon="fas fa-question">
@@ -43,24 +45,42 @@
 </template>
 
 <script>
+import { post } from "../../modules/requests";
+import { API_AUTH_REGISTER } from "../../modules/api";
+
 export default {
   data: () => ({
-    registrar: true,
     user: {
       name: "",
       email: "",
       password: "",
-      password_confirmation: "",
       rules: false
     },
-    rules: { }
+    rules: {
+      required: (val) => !!val || 'This field is required.',
+      name: (val) => /^[A-Za-z]+$/.test(val) || 'Invalid username.',
+      email: (val) => /^\S+@\S+[\.][0-9a-z]+$/.test(val) || 'Invalid email address.'
+    },
+    submit: {
+      loading: false,
+    }
   }),
   methods: {
     password_confirmed(val) {
-      return val == this.user.password || 'Invalid password'
+      return val == this.user.password || 'Passwords don\'t match.'
     },
-    nothing() {
-      console.log('yep')
+    register() {
+      if (this.$refs.registrar.validate() === false)
+        return
+      this.submit.loading = true
+      console.log(process.env.VUE_APP_BACKEND)
+      post(API_AUTH_REGISTER, this.user)
+        .then(resp => {
+
+        })
+        .catch(reason => {
+          this.submit.loading = false
+        })
     }
   }
 }
