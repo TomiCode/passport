@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import Auth from './views/Auth.vue'
 
 import AuthLogin from './views/Auth/Login.vue'
 import AuthRegister from './views/Auth/Register.vue'
@@ -23,6 +24,13 @@ const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    {
+      path: '/auth/',
+      component: Auth,
+      children: [
+
+      ]
+    },
     {
       path: '/auth/login',
       name: 'auth_login',

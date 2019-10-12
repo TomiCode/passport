@@ -1,5 +1,6 @@
 <template>
   <v-col>
+    <p>Home/Category.vue</p>
     <v-navigation-drawer
       v-model="drawer"
       temporary
@@ -79,7 +80,7 @@
         </v-list-item-action>
       </v-list-item>
     </v-list>
-      <v-btn
+    <v-btn
       bottom
       color="pink"
       dark

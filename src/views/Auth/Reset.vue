@@ -1,5 +1,6 @@
 <template>
   <v-container fluid>
+    <p>reset</p>
     <v-alert outlined type="info" border="left">
       Please enter the email address that is assosiated with your account.
       We'll send You an email containing instructions to reset the password.

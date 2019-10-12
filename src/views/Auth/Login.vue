@@ -1,5 +1,6 @@
 <template>
   <v-container fluid>
+    <p>LOGIN</p>
     <v-text-field
       v-model="auth.email"
       label="Email address"

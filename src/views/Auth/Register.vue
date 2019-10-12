@@ -1,5 +1,6 @@
 <template>
   <v-container fluid>
+    <p>register</p>
     <v-form ref="registrar">
       <v-text-field
         v-model="user.username"
