@@ -14,6 +14,7 @@ import HomeSearch from './views/Home/Search.vue'
 import HomeCategory from './views/Home/Category.vue'
 import HomeManage from './views/Home/Manage.vue'
 import HomeProfile from './views/Home/Profile.vue'
+
 import store from './store'
 
 Vue.use(Router)
@@ -48,7 +49,7 @@ const router = new Router({
       component: ProfileSetup
     },
     {
-      path: '/',
+      path: '/home/',
       component: Home,
       meta: {
         login: true
@@ -80,14 +81,14 @@ const router = new Router({
           component: HomeProfile
         },
         {
-          path: '*',
-          name: 'home',
+          path: '/',
+          name: 'home_index',
           component: HomeCategory
         }
       ]
     },
     {
-      path: '/about',
+      path: '/',
       name: 'about',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route

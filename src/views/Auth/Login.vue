@@ -47,7 +47,7 @@ export default {
       post(API_AUTH_LOGIN, this.auth)
         .then(resp => {
           this.$store.commit('account_login', resp)
-          this.$router.push({ name: 'home' })
+          this.$router.push({ name: 'home_index' })
         })
         .catch(reason => {
 
