@@ -1,12 +1,12 @@
 <template>
   <v-container fluid>
     <v-text-field
-      v-model="username"
-      label="Username"
+      v-model="auth.email"
+      label="Email address"
       prepend-inner-icon="far fa-user"
     ></v-text-field>
     <v-text-field
-      v-model="password"
+      v-model="auth.password"
       type="password"
       label="Password"
       prepend-inner-icon="fas fa-lock"
@@ -15,7 +15,8 @@
       class="ma-2"
       outlined
       color="primary"
-      :to="{name: 'profile_decrypt'}"
+      @click="login"
+      :loading="loading"
     >Login
     </v-btn>
     <v-btn outlined color="accent" :to="{ name: 'auth_reset' }">
@@ -28,10 +29,31 @@
 </template>
 
 <script>
+import { post } from "@/modules/requests";
+import { API_AUTH_LOGIN } from "@/modules/api";
+
 export default {
   data: () => ({
-    username: "",
-    password: ""
-  })
+    auth: {
+      email: "",
+      password: ""
+    },
+    loading: false
+  }),
+  methods: {
+    login() {
+      console.log("login click")
+      this.loading = true
+      post(API_AUTH_LOGIN, this.auth)
+        .then(resp => {
+          this.$store.commit('account_login', resp)
+          this.$router.push({ name: 'home' })
+        })
+        .catch(reason => {
+
+        })
+        .finally(() => this.loading = false)
+    }
+  }
 }
 </script>

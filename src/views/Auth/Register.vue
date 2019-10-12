@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-form ref="registrar">
       <v-text-field
-        v-model="user.name"
+        v-model="user.username"
         label="Username"
         :rules="[rules.required, rules.name]"
         counter="16"
@@ -34,8 +34,7 @@
         outlined
         color="primary"
         @click="register"
-        :disabled="submit.loading"
-        :loading="submit.loading"
+        :loading="loading"
       >Register</v-btn>
     </v-form>
     <v-alert outlined color="teal" border="left" icon="fas fa-question">
@@ -51,7 +50,7 @@ import { API_AUTH_REGISTER } from "../../modules/api";
 export default {
   data: () => ({
     user: {
-      name: "",
+      username: "",
       email: "",
       password: "",
       rules: false
@@ -61,9 +60,7 @@ export default {
       name: (val) => /^[A-Za-z]+$/.test(val) || 'Invalid username.',
       email: (val) => /^\S+@\S+[\.][0-9a-z]+$/.test(val) || 'Invalid email address.'
     },
-    submit: {
-      loading: false,
-    }
+    loading: false
   }),
   methods: {
     password_confirmed(val) {
@@ -72,15 +69,13 @@ export default {
     register() {
       if (this.$refs.registrar.validate() === false)
         return
-      this.submit.loading = true
-      console.log(process.env.VUE_APP_BACKEND)
+      this.loading = true
       post(API_AUTH_REGISTER, this.user)
         .then(resp => {
-
         })
         .catch(reason => {
-          this.submit.loading = false
         })
+        .finally(() => this.loading = false)
     }
   }
 }

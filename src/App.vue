@@ -51,6 +51,7 @@
         close-on-click
         close-on-content-click
         offset-y
+        v-if="$store.getters.logged_in"
       >
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on" class="mr-1">
@@ -76,7 +77,7 @@
             <v-list-item-title>Preferences</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item @click="nothing">
+          <v-list-item @click="logout">
             <v-list-item-icon>
               <v-icon small>fas fa-sign-out-alt</v-icon>
             </v-list-item-icon>
@@ -93,6 +94,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: 'App',
   data: () => ({
@@ -107,6 +109,10 @@ export default {
   }),
   methods: {
     nothing() {
+    },
+    logout() {
+      this.$store.dispatch('logout')
+        .then(() => this.$router.push({ name: 'auth_login' }))
     }
   }
 };

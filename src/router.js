@@ -14,10 +14,11 @@ import HomeSearch from './views/Home/Search.vue'
 import HomeCategory from './views/Home/Category.vue'
 import HomeManage from './views/Home/Manage.vue'
 import HomeProfile from './views/Home/Profile.vue'
+import store from './store'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -48,8 +49,10 @@ export default new Router({
     },
     {
       path: '/',
-      name: 'home',
       component: Home,
+      meta: {
+        login: true
+      },
       children: [
         {
           path: 'latest',
@@ -78,7 +81,7 @@ export default new Router({
         },
         {
           path: '*',
-          name: 'home_root',
+          name: 'home',
           component: HomeCategory
         }
       ]
@@ -93,3 +96,18 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(route => route.meta.login)) {
+    if (store.getters.logged_in) {
+      next()
+      return
+    }
+    next({ name: 'auth_login' })
+  }
+  else {
+    next()
+  }
+})
+
+export default router
