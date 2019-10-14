@@ -28,23 +28,22 @@ const router = new Router({
       path: '/auth/',
       component: Auth,
       children: [
-
+        {
+          path: '/auth/login',
+          name: 'auth_login',
+          component: AuthLogin,
+        },
+        {
+          path: '/auth/register',
+          name: 'auth_register',
+          component: AuthRegister
+        },
+        {
+          path: '/auth/reset',
+          name: 'auth_reset',
+          component: AuthReset
+        }
       ]
-    },
-    {
-      path: '/auth/login',
-      name: 'auth_login',
-      component: AuthLogin,
-    },
-    {
-      path: '/auth/register',
-      name: 'auth_register',
-      component: AuthRegister
-    },
-    {
-      path: '/auth/reset',
-      name: 'auth_reset',
-      component: AuthReset
     },
     {
       path: '/profile/decrypt',
