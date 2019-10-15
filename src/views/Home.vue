@@ -3,7 +3,7 @@
     <create-container></create-container>
     <p>Home.vue</p>
     <v-fade-transition>
-      <router-view v-if="!dialog"></router-view>
+      <router-view></router-view>
     </v-fade-transition>
   </v-container>
 </template>
@@ -14,7 +14,6 @@ import Decrypt from '@/components/Decrypt.vue'
 
 export default {
   data: () => ({
-    dialog: false
   }),
   components: {
     CreateContainer,

@@ -9,20 +9,21 @@ export const request = {
   handlers: {
     credentials: (auth) => auth ? { 'Vinca-Authentication' : auth } : { }
   },
-  do(url, { data, content, method,  }) {
+  do(url, { data, type, method,  }) {
     return new Promise((resolve, reject) => {
+      console.log(data)
       fetch(url, {
         method: method || 'POST',
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
         headers: {
-          'Content-Type': content || 'application/json',
+          'Content-Type': type || 'application/json',
           ...this.handlers.credentials()
         },
         redirect: 'error',
         referrer: 'no-referrer',
-        data: data ? JSON.stringify(data) : null
+        body: data ? JSON.stringify(data) : null
       })
         .then(resp => resp.json())
         .then(resp => {
