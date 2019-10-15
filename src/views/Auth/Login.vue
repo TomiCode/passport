@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { post } from "@/modules/requests";
+import { request } from "@/modules/requests";
 import { API_AUTH_LOGIN } from "@/modules/api";
 
 export default {
@@ -43,15 +43,11 @@ export default {
   }),
   methods: {
     login() {
-      console.log("login click")
       this.loading = true
-      post(API_AUTH_LOGIN, this.auth)
+      request.do(API_AUTH_LOGIN, { data: this.auth })
         .then(resp => {
           this.$store.commit('account_login', resp)
           this.$router.push({ name: 'home_index' })
-        })
-        .catch(reason => {
-
         })
         .finally(() => this.loading = false)
     }

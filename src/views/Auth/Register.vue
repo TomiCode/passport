@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { post } from "../../modules/requests";
+import { request } from "../../modules/requests";
 import { API_AUTH_REGISTER } from "../../modules/api";
 
 export default {
@@ -71,11 +71,8 @@ export default {
       if (this.$refs.registrar.validate() === false)
         return
       this.loading = true
-      post(API_AUTH_REGISTER, this.user)
-        .then(resp => {
-        })
-        .catch(reason => {
-        })
+      request.do(API_AUTH_REGISTER, { data: this.user })
+        .then(resp => { })
         .finally(() => this.loading = false)
     }
   }
