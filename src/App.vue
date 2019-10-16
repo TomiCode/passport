@@ -114,6 +114,8 @@ export default {
       this.$store.dispatch('logout')
         .then(() => this.$router.push({ name: 'auth_login' }))
     }
+  },
+  created() {
   }
 };
 </script>

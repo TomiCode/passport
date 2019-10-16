@@ -5,6 +5,7 @@
       v-model="drawer"
       temporary
       absolute
+      floating
       dark
       right
       width="300"
@@ -19,7 +20,19 @@
 
           <v-list-item>
             <v-list-item-content>
-              <v-text-field label="Address email" value="aaaa@aaa.com"></v-text-field>
+              <v-text-field label="Description"></v-text-field>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-content>
+              <v-text-field label="Website" value="https://login.example.com"></v-text-field>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-content>
+              <v-text-field label="Login" value="aaaa@aaa.com"></v-text-field>
             </v-list-item-content>
           </v-list-item>
 
@@ -37,11 +50,12 @@
           <v-list-item>
             <v-list-item-content>
               <v-textarea
-          auto-grow
-          rows="1"
-          no-resize
-          name="input-7-4"
-          label="Notes"></v-textarea>
+                auto-grow
+                rows="1"
+                no-resize
+                name="input-7-4"
+                label="Notes"
+              ></v-textarea>
             </v-list-item-content>
           </v-list-item>
 
@@ -52,7 +66,7 @@
           </v-list-item>
       </v-list>
     </v-navigation-drawer>
-  <v-list two-line subheader>
+  <v-list subheader>
       <v-subheader inset>Last used entries</v-subheader>
       <v-list-item
         v-for="item in elements"
@@ -97,7 +111,7 @@
 export default {
   data: () => ({
     elements: [
-      { id: "218739821793871", name: "Tesstt 01", username: "i.am.random@wtf.com", },
+      { id: "218739821793871", name: "Tesstt 01", username: null, },
       { id: "218739821733871", name: "Some shitty online forum", username: "super.not.my.account@gmail.com", },
       { id: "218739821113871", name: "Shady shit torrent", username: "justine.creepy@whatthecompany.com", },
       { id: "218739821793871", name: "Creepy porn site", username: "jd.otterfuck@gmail.com", },
