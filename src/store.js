@@ -2,7 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import { request } from "@/modules/requests";
-import { API_CONTAINER } from "@/modules/api";
+import { API_CONTAINER, API_CONTAINER_CREATE } from "@/modules/api";
+
+import { generateKey } from "openpgp";
 
 Vue.use(Vuex)
 
@@ -56,6 +58,27 @@ export default new Vuex.Store({
             resolve(resp.valid)
           })
           .catch(reason => reject(reason))
+      })
+    },
+    create_container({ commit, state }, password) {
+      return new Promise((resolve, reject) => {
+        generateKey({
+          userIds: [{ name: state.user.name, email: state.user.email }],
+          rsaBits: 4096,
+          passphrase: password
+        })
+          .then(key => {
+            request.do(API_CONTAINER_CREATE, {
+              data: {
+                encrypted: btoa(key.privateKeyArmored),
+                certificate: btoa(key.publicKeyArmored)
+            }})
+              .then(resp => {
+                commit('container_fetch', resp)
+                resolve()
+              })
+          })
+          .catch((reason) => reject(reason))
       })
     }
   },

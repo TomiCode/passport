@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="640">
+  <v-dialog persistent v-model="dialog" max-width="640">
     <v-card>
       <v-card-title>Decryption key</v-card-title>
       <v-divider></v-divider>
@@ -10,6 +10,7 @@
         </v-alert>
         <v-text-field
           prepend-icon="fas fa-user-lock"
+          v-model="password"
           type="password"
           label="Contaner password"
         ></v-text-field>
@@ -22,9 +23,10 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-btn
-          color="blue darken-1"
           text
-          @click="dialog = false"
+          color="blue darken-1"
+          :loading="loading"
+          @click="create_container"
         >
           Accept &amp; Continue
           <v-icon right dark>fas fa-angle-right</v-icon>
@@ -38,9 +40,18 @@
 export default {
   data: () => ({
     dialog: false,
+    loading: false,
+    password: ""
   }),
   mounted() {
     this.dialog = true
+  },
+  methods: {
+    create_container() {
+      this.loading = true
+      this.$store.dispatch('create_container', this.password)
+        .finally(() => this.dialog = false)
+    }
   }
 }
 </script>
