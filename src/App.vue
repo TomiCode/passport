@@ -95,6 +95,8 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { request } from "@/modules/requests";
+
 export default {
   name: 'App',
   data: () => ({
@@ -116,6 +118,7 @@ export default {
     }
   },
   created() {
+    request.config.authToken = () => this.$store.getters.auth_token
   }
 };
 </script>
