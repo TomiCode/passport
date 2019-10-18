@@ -78,6 +78,9 @@
         </v-list-item-avatar>
 
         <v-list-item-content>
+          <v-overlay absolute :value="true" opacity="0.05">
+      <v-progress-circular color="indigo" indeterminate size="24"></v-progress-circular>
+    </v-overlay>
           <v-list-item-title v-text="item.name"></v-list-item-title>
           <v-list-item-subtitle v-text="item.username"></v-list-item-subtitle>
         </v-list-item-content>

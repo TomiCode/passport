@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 import { request } from "@/modules/requests";
 import { API_CONTAINER, API_CONTAINER_CREATE } from "@/modules/api";
 
-import { generateKey } from "openpgp";
+import { generateKey, key } from "openpgp";
 
 Vue.use(Vuex)
 
@@ -13,10 +13,10 @@ export default new Vuex.Store({
     auth: {
       token: localStorage.getItem('vinca:session') || null,
     },
-    keystore: {
+    crypto: {
       certificate: null,
       private: null,
-      decrypted: false
+      open_private: null
     },
     user: {
       name: "",
@@ -37,8 +37,11 @@ export default new Vuex.Store({
       state.auth.token = null
     },
     container_fetch (state, container) {
-      state.keystore.certificate = container.certificate
-      state.keystore.private = container.encrypted
+      state.crypto.certificate = atob(container.certificate)
+      state.crypto.private = atob(container.encrypted)
+    },
+    container_decrypt (state, keyobj) {
+      state.crypto.open_private = keyobj
     }
   },
   actions: {
@@ -80,11 +83,24 @@ export default new Vuex.Store({
           })
           .catch((reason) => reject(reason))
       })
+    },
+    container_decrypt({ commit, state }, password) {
+      return new Promise(async (resolve, reject) => {
+        var privkey = (await key.readArmored(state.crypto.private)).keys[0]
+        if (await privkey.decrypt(password) == false) {
+          console.log("invalid password")
+          reject()
+          return
+        }
+        commit('container_decrypt', privkey)
+        resolve()
+      })
     }
   },
   getters: {
     logged_in: state => !!state.auth.token,
     auth_token: state => state.auth.token,
-    container_valid: state => !!state.keystore.private && !!state.keystore.certificate
+    container_valid: state => !!state.crypto.private && !!state.crypto.certificate,
+    container_decrypted: state => !!state.crypto.open_private
   }
 })

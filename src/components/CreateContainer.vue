@@ -1,10 +1,10 @@
 <template>
-  <v-dialog persistent v-model="dialog" max-width="640">
+  <v-dialog persistent v-model="dialog" max-width="680">
     <v-card>
-      <v-card-title>Decryption key</v-card-title>
+      <v-card-title>Setup container</v-card-title>
       <v-divider></v-divider>
       <v-card-text>
-        <v-alert text prominent type="info" class="mt-2">
+        <v-alert text prominent type="info" class="mt-4">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           Cras tempus felis interdum, sollicitudin enim in, convallis augue.
         </v-alert>
@@ -24,7 +24,7 @@
       <v-card-actions>
         <v-btn
           text
-          color="blue darken-1"
+          color="indigo"
           :loading="loading"
           @click="create_container"
         >

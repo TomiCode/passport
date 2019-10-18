@@ -12,6 +12,7 @@
           prepend-icon="fas fa-user-lock"
           type="password"
           label="Contaner password"
+          v-model="password"
         ></v-text-field>
       </v-card-text>
       <v-divider></v-divider>
@@ -20,7 +21,7 @@
         <v-btn
           color="blue darken-1"
           text
-          @click="dialog = false"
+          @click="decrypt"
         >
           Decrypt
           <v-icon right dark>fas fa-angle-right</v-icon>
@@ -31,9 +32,26 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data: () => ({
-    dialog: false
-  })
+    dialog: false,
+    password: ""
+  }),
+  mounted () {
+    this.dialog = true
+  },
+  methods: {
+    decrypt() {
+      this.$store.dispatch('container_decrypt', this.password)
+        .then(() => {
+          this.dialog = false
+        })
+        .catch(() => {
+          console.log("error catch")
+        })
+    }
+  }
 }
 </script>
