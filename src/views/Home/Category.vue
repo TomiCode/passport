@@ -1,77 +1,14 @@
 <template>
   <v-col>
     <p>Home/Category.vue</p>
-    <v-navigation-drawer
-      v-model="drawer"
-      temporary
-      absolute
-      floating
-      dark
-      right
-      width="300"
-      color="indigo"
-    >
-      <v-list dense>
-          <v-list-item>
-            <v-list-item-content>
-              <v-text-field label="Title" value="Aaaaaa"></v-text-field>
-            </v-list-item-content>
-          </v-list-item>
+    <entry-details :store="detail"></entry-details>
 
-          <v-list-item>
-            <v-list-item-content>
-              <v-text-field label="Description"></v-text-field>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-text-field label="Website" value="https://login.example.com"></v-text-field>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-text-field label="Login" value="aaaa@aaa.com"></v-text-field>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-text-field
-                type="password"
-                label="Password"
-                value="aaaa@aaa.com"
-                append-icon="fas fa-eye"
-              ></v-text-field>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-textarea
-                auto-grow
-                rows="1"
-                no-resize
-                name="input-7-4"
-                label="Notes"
-              ></v-textarea>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-btn outlined small>Update</v-btn>
-            </v-list-item-content>
-          </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-  <v-list subheader>
+    <v-list subheader>
       <v-subheader inset>Last used entries</v-subheader>
       <v-list-item
         v-for="item in elements"
         :key="item.id"
-        @click="drawer = !drawer"
+        @click="showDetails(item)"
       >
         <v-list-item-avatar>
           <v-icon class="indigo lighten-1 white--text">fas fa-globe</v-icon>
@@ -103,21 +40,34 @@
 
 <script>
 import CreateEntry from '@/components/CreateEntry.vue'
+import EntryDetails from '@/components/EntryDetails.vue'
 
 export default {
   components: {
-    CreateEntry
+    CreateEntry, EntryDetails
   },
   data: () => ({
     elements: [
-      { id: "218739821793871", name: "Tesstt 01", username: null, },
+      { id: "118739821793871", name: "Tesstt 01", username: null, },
       { id: "218739821733871", name: "Some shitty online forum", username: "super.not.my.account@gmail.com", },
-      { id: "218739821113871", name: "Shady shit torrent", username: "justine.creepy@whatthecompany.com", },
-      { id: "218739821793871", name: "Creepy porn site", username: "jd.otterfuck@gmail.com", },
-      { id: "218732321794471", name: "Lorem ipsum account", username: "yes@no.com", },
+      { id: "318739821113871", name: "Shady shit torrent", username: "justine.creepy@whatthecompany.com", },
+      { id: "418739821793871", name: "Creepy porn site", username: "jd.otterfuck@gmail.com", },
+      { id: "518732321794471", name: "Lorem ipsum account", username: "yes@no.com", },
     ],
     drawer: false,
     dialog: false,
-  })
+    detail: null
+  }),
+  methods: {
+    showDetails(store) {
+      if (this.detail == store) {
+        console.log("override detail object to trigger watcher")
+        this.detail = Object.assign({}, store)
+      }
+      else {
+        this.detail = store
+      }
+    }
+  }
 }
 </script>
