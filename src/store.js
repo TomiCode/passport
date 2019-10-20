@@ -22,7 +22,8 @@ export default new Vuex.Store({
       name: "",
       email: "",
       avatar: ""
-    }
+    },
+    stores: [ ]
   },
   mutations: {
     account_login (state, login) {

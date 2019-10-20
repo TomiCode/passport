@@ -97,21 +97,17 @@
         </v-list-item-action>
       </v-list-item>
     </v-list>
-    <v-btn
-      bottom
-      color="pink"
-      dark
-      fab
-      fixed
-      right
-    >
-      <v-icon>fas fa-plus</v-icon>
-    </v-btn>
+    <create-entry></create-entry>
   </v-col>
 </template>
 
 <script>
+import CreateEntry from '@/components/CreateEntry.vue'
+
 export default {
+  components: {
+    CreateEntry
+  },
   data: () => ({
     elements: [
       { id: "218739821793871", name: "Tesstt 01", username: null, },
@@ -121,6 +117,7 @@ export default {
       { id: "218732321794471", name: "Lorem ipsum account", username: "yes@no.com", },
     ],
     drawer: false,
+    dialog: false,
   })
 }
 </script>
