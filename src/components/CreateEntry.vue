@@ -44,14 +44,33 @@
             label="Login"
           ></v-text-field>
 
-          <v-text-field
-            v-model="encrypted.password"
-            label="Password"
-            prepend-icon="fas fa-magic"
-            hint="You can use the password generator on the left side."
-            @click:prepend="true"
+          <v-menu
+            v-model="menu"
+            :close-on-content-click="false"
+            max-width="460"
+            absolute
           >
-          </v-text-field>
+            <template v-slot:activator="{ on }">
+              <v-text-field
+                  v-model="encrypted.password"
+                  label="Password"
+                  prepend-icon="fas fa-magic"
+                  hint="You can use the password generator on the left side."
+                  v-on:click:prepend="on['click']"
+                >
+                </v-text-field>
+            </template>
+
+            <v-card>
+              <v-list>
+                <v-list-item>
+                  <v-text-field
+                    label="Password"
+                  ></v-text-field>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-menu>
 
           <v-textarea
             v-model="encrypted.notes"
@@ -68,13 +87,23 @@
       <v-card-actions>
         <v-btn text @click="dialog = false">Cancel</v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="indigo" text>Submit</v-btn>
+        <v-btn
+          color="indigo"
+          text
+          @click="create"
+          :loading="loading"
+        >Submit</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
+import { request } from "@/modules/requests"
+import { API_STORE_CREATE } from "@/modules/api"
+
+import { key, encrypt, message } from "openpgp";
+
 export default {
   data: () => ({
     valid: false,
@@ -88,8 +117,38 @@ export default {
       login: "",
       password: "",
       notes: ""
-    }
+    },
+    loading: false,
   }),
+  methods: {
+    async create() {
+      this.loading = true
 
+      let options = {
+        message: message.fromText(JSON.stringify(this.encrypted)),
+        publicKeys: (await key.readArmored(this.$store.state.crypto.certificate)).keys[0],
+        privateKeys: [ this.$store.state.crypto.open_private ]
+      }
+      encrypt(options).then(ci => {
+        request.do(API_STORE_CREATE, {
+        data: {
+          name: this.store.name,
+          container: 1,
+          category: 0,
+          icon: "fas fa-user",
+          color: 0,
+          content: btoa(ci.data),
+        }
+      })
+        .then(resp => {
+          console.log(resp)
+        })
+        .finally(() => {
+          this.loading = false
+        })
+      })
+
+    }
+  }
 }
 </script>

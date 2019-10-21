@@ -9,3 +9,5 @@ export const API_CONTAINER_CREATE = apiroute("api/v1/home/container/create")
 export const API_CATEGORIES = apiroute("api/v1/home/categories")
 export const API_CATEGORY = apiroute("api/v1/home/category")
 export const API_CATEGORY_CREATE = apiroute("api/v1/home/category/create")
+
+export const API_STORE_CREATE = apiroute("api/v1/home/store/create")
