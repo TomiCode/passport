@@ -1,4 +1,6 @@
 <template>
+  <v-row>
+  <password-generator :value="generator"></password-generator>
   <v-dialog v-model="dialog" max-width="640">
     <template v-slot:activator="{ on }">
       <v-btn
@@ -44,33 +46,14 @@
             label="Login"
           ></v-text-field>
 
-          <v-menu
-            v-model="menu"
-            :close-on-content-click="false"
-            max-width="460"
-            absolute
-          >
-            <template v-slot:activator="{ on }">
-              <v-text-field
-                  v-model="encrypted.password"
-                  label="Password"
-                  prepend-icon="fas fa-magic"
-                  hint="You can use the password generator on the left side."
-                  v-on:click:prepend="on['click']"
-                >
-                </v-text-field>
-            </template>
-
-            <v-card>
-              <v-list>
-                <v-list-item>
-                  <v-text-field
-                    label="Password"
-                  ></v-text-field>
-                </v-list-item>
-              </v-list>
-            </v-card>
-          </v-menu>
+          <v-text-field
+              v-model="encrypted.password"
+              label="Password"
+              prepend-icon="fas fa-magic"
+              hint="You can use the password generator on the left side."
+              @click:prepend="generator = !generator"
+            >
+            </v-text-field>
 
           <v-textarea
             v-model="encrypted.notes"
@@ -96,18 +79,24 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+  </v-row>
 </template>
 
 <script>
+import PasswordGenerator from '@/components/PasswordGenerator.vue'
+
 import { request } from "@/modules/requests"
 import { API_STORE_CREATE } from "@/modules/api"
-
 import { key, encrypt, message } from "openpgp";
 
 export default {
+  components: {
+    PasswordGenerator
+  },
   data: () => ({
     valid: false,
     dialog: false,
+    generator: false,
     store: {
       name: "",
       description: ""
