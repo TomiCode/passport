@@ -1,6 +1,5 @@
 <template>
   <v-row>
-  <password-generator :value="generator"></password-generator>
   <v-dialog v-model="dialog" max-width="640">
     <template v-slot:activator="{ on }">
       <v-btn
@@ -46,14 +45,19 @@
             label="Login"
           ></v-text-field>
 
-          <v-text-field
-              v-model="encrypted.password"
-              label="Password"
-              prepend-icon="fas fa-magic"
-              hint="You can use the password generator on the left side."
-              @click:prepend="generator = !generator"
-            >
-            </v-text-field>
+          <password-generator>
+            <template v-slot:activator="{ handler }">
+              <p>{{ props }}</p>
+              <v-text-field
+                v-model="encrypted.password"
+                label="Password"
+                prepend-icon="fas fa-magic"
+                hint="You can also use the password generator on the left side."
+                @click:prepend.stop="handler.show"
+              >
+              </v-text-field>
+            </template>
+          </password-generator>
 
           <v-textarea
             v-model="encrypted.notes"
