@@ -45,16 +45,18 @@
             label="Login"
           ></v-text-field>
 
-          <password-generator>
+          <password-generator @accepted="encrypted.password = $event">
             <template v-slot:activator="{ handler }">
-              <p>{{ props }}</p>
               <v-text-field
                 v-model="encrypted.password"
                 label="Password"
-                prepend-icon="fas fa-magic"
                 hint="You can also use the password generator on the left side."
-                @click:prepend.stop="handler.show"
               >
+                <template slot="prepend">
+                  <v-btn color="indigo" icon @click="handler.show">
+                    <v-icon>far fa-lightbulb</v-icon>
+                  </v-btn>
+                </template>
               </v-text-field>
             </template>
           </password-generator>
