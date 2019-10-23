@@ -10,11 +10,10 @@
             v-model="password"
             label="Password"
             counter
-
           >
             <template slot="append-outer">
               <v-btn
-                color="indigo"
+                color="primary"
                 icon
                 @click="new_password"
               >
@@ -35,17 +34,17 @@
             <v-subheader>Password options</v-subheader>
             <v-btn-toggle
               v-model="options"
-              color="indigo"
+              tile borderless
+              color="primary"
               dense
-              group
               multiple
               mandatory
               @change="new_password"
             >
               <v-btn value="uppercase">A-Z</v-btn>
-              <v-btn class="text-lowercase" value="lowercase">a-z</v-btn>
+              <v-btn class="mx-1 text-lowercase" value="lowercase">a-z</v-btn>
               <v-btn value="numbers">0-9</v-btn>
-              <v-btn value="special">#?!</v-btn>
+              <v-btn class="ml-1" value="special">#?!</v-btn>
             </v-btn-toggle>
           </v-row>
         </v-card-text>
@@ -54,7 +53,7 @@
           <v-btn text @click="dialog = false">Cancel</v-btn>
           <v-spacer></v-spacer>
           <v-btn
-            color="indigo"
+            color="primary"
             text
             @click="accept"
           >Accept</v-btn>

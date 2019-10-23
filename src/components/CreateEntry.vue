@@ -1,11 +1,13 @@
 <template>
   <v-row>
+    <customize-entity></customize-entity>
   <v-dialog v-model="dialog" max-width="640">
     <template v-slot:activator="{ on }">
       <v-btn
+        style="z-index: 100;"
         v-on="on"
-        bottom
         color="pink"
+        bottom
         dark
         fab
         fixed
@@ -16,7 +18,7 @@
     </template>
     <v-card>
       <v-card-title>Create new entry</v-card-title>
-      <v-divider></v-divider>
+      <v-divider class="mb-4"></v-divider>
       <v-card-text>
         <v-form
           ref="form"
@@ -26,7 +28,13 @@
             v-model="store.name"
             label="Title"
             :counter="32"
-          ></v-text-field>
+          >
+            <template slot="prepend">
+              <v-btn class="indigo lighten-1 white--text" icon>
+                <v-icon small>fas fa-key</v-icon>
+              </v-btn>
+            </template>
+          </v-text-field>
 
           <v-text-field
             v-model="store.description"
@@ -53,7 +61,7 @@
                 hint="You can also use the password generator on the left side."
               >
                 <template slot="prepend">
-                  <v-btn color="indigo" icon @click="handler.show">
+                  <v-btn color="primary lighten-1" icon @click="handler.show">
                     <v-icon>far fa-lightbulb</v-icon>
                   </v-btn>
                 </template>
@@ -77,7 +85,7 @@
         <v-btn text @click="dialog = false">Cancel</v-btn>
         <v-spacer></v-spacer>
         <v-btn
-          color="indigo"
+          color="primary"
           text
           @click="create"
           :loading="loading"
@@ -90,6 +98,7 @@
 
 <script>
 import PasswordGenerator from '@/components/PasswordGenerator.vue'
+import CustomizeEntity from '@/components/CustomizeEntity.vue'
 
 import { request } from "@/modules/requests"
 import { API_STORE_CREATE } from "@/modules/api"
@@ -97,7 +106,7 @@ import { key, encrypt, message } from "openpgp";
 
 export default {
   components: {
-    PasswordGenerator
+    PasswordGenerator, CustomizeEntity
   },
   data: () => ({
     valid: false,
@@ -121,10 +130,12 @@ export default {
 
       let options = {
         message: message.fromText(JSON.stringify(this.encrypted)),
-        publicKeys: (await key.readArmored(this.$store.state.crypto.certificate)).keys[0],
-        privateKeys: [ this.$store.state.crypto.open_private ]
+        publicKeys: (await key.readArmored(this.$store.state.crypto.certificate)).keys,
+        armor: false
       }
       encrypt(options).then(ci => {
+        console.log(ci)
+        console.log(ci.message.packets.write())
         request.do(API_STORE_CREATE, {
         data: {
           name: this.store.name,
@@ -132,7 +143,7 @@ export default {
           category: 0,
           icon: "fas fa-user",
           color: 0,
-          content: btoa(ci.data),
+          content: btoa(String.fromCharCode.apply(null, ci.message.packets.write())),
         }
       })
         .then(resp => {

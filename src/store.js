@@ -69,7 +69,8 @@ export default new Vuex.Store({
         generateKey({
           userIds: [{ name: state.user.name, email: state.user.email }],
           rsaBits: 4096,
-          passphrase: password
+          passphrase: password,
+          armor: false
         })
           .then(key => {
             request.do(API_CONTAINER_CREATE, {
