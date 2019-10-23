@@ -23,4 +23,18 @@ export const colors = [
 export const icons = [
   { name: "Address book", value: "fas fa-address-book" },
   { name: "At", value: "fas fa-at" },
+  { name: "Comments", value: "fas fa-comments" },
+  { name: "Database", value: "fas fa-database" },
+  { name: "Desktop", value: "fas fa-desktop" },
+  { name: "Envelope", value: "fas fa-envelope" },
+  { name: "Laptop", value: "fas fa-laptop" },
+  { name: "Key", value: "fas fa-key" },
+  { name: "Mobile", value: "fas fa-mobile" },
+  { name: "SD Card", value: "fas fa-sd-card" },
+  { name: "Server", value: "fas fa-server" },
+  { name: "WiFi", value: "fas fa-wifi" },
+  { name: "Credit card", value: "fas fa-credit-card" },
+  { name: "Money bill", value: "fas fa-money-bill" },
+  { name: "Piggy bank", value: "fas fa-piggy-bank" },
+  { name: "Wallet", value: "fas fa-wallet" },
 ]

@@ -1,6 +1,4 @@
 <template>
-  <v-row>
-    <customize-entity></customize-entity>
   <v-dialog v-model="dialog" max-width="640">
     <template v-slot:activator="{ on }">
       <v-btn
@@ -24,17 +22,26 @@
           ref="form"
           v-model="valid"
         >
-          <v-text-field
-            v-model="store.name"
-            label="Title"
-            :counter="32"
-          >
-            <template slot="prepend">
-              <v-btn class="indigo lighten-1 white--text" icon>
-                <v-icon small>fas fa-key</v-icon>
-              </v-btn>
+          <customize-entity v-model="store.appearance">
+            <template v-slot:activator="{ handler }">
+              <v-text-field
+                v-model="store.name"
+                label="Title"
+                :counter="32"
+              >
+                <template slot="prepend">
+                  <v-btn
+                    :class="store.appearance.color"
+                    class="white--text"
+                    icon
+                    @click="handler.show"
+                  >
+                    <v-icon small v-text="store.appearance.icon"></v-icon>
+                  </v-btn>
+                </template>
+              </v-text-field>
             </template>
-          </v-text-field>
+          </customize-entity>
 
           <v-text-field
             v-model="store.description"
@@ -93,7 +100,6 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-  </v-row>
 </template>
 
 <script>
@@ -114,6 +120,10 @@ export default {
     generator: false,
     store: {
       name: "",
+      appearance: {
+        icon: "fas fa-key",
+        color: "indigo darken-1"
+      },
       description: ""
     },
     encrypted: {

@@ -10,7 +10,7 @@
             v-model="selected.color"
             label="Icon color"
             item-text="name"
-            :items="colors"
+            :items="entity.colors"
           >
             <template v-slot:item="{ item }">
                 <v-icon small class="mr-4" :color="item.value">fas fa-circle</v-icon>
@@ -28,7 +28,7 @@
             v-model="selected.icon"
             label="Icon type"
             item-text="name"
-            :items="icons"
+            :items="entity.icons"
             :prepend-icon="selected.icon"
           >
             <template v-slot:item="{ item }">
@@ -39,12 +39,20 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn text @click="dialog = false">Cancel</v-btn>
+          <v-btn
+            text
+            @click="dialog = false"
+          >Cancel</v-btn>
           <v-spacer></v-spacer>
-          <v-btn text color="primary">Accept</v-btn>
+          <v-btn
+            text
+            color="primary"
+            @click="accept"
+          >Accept</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <slot name="activator" :handler="handler"></slot>
   </div>
 </template>
 
@@ -55,15 +63,36 @@ export default {
   data: () => ({
     selected: {
       color: "",
-      icon: "fas fa-address-book"
+      icon: ""
     },
-    colors: colors,
-    icons: icons,
+    entity: {
+      colors, icons
+    },
+    handler: { show: () => { } },
     dialog: false,
   }),
-  mounted() {
+  created() {
     console.log("hello sweetheart.")
-    this.dialog = true
+    this.handler.show = this.show
+  },
+  methods: {
+    show() {
+      this.selected = {
+        color: this.value.color,
+        icon: this.value.icon
+      }
+      this.dialog = true
+    },
+    accept() {
+      this.dialog = false
+      this.$emit('input', {
+        color: this.selected.color,
+        icon: this.selected.icon
+      })
+    }
+  },
+  props: {
+    value: Object
   }
 }
 </script>
