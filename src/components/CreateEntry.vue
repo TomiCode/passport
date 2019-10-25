@@ -49,6 +49,14 @@
             :counter="64"
           ></v-text-field>
 
+          <v-autocomplete
+            v-model="store.category"
+            label="Category"
+            clear-icon="far fa-times-circle"
+            clearable
+            :items="category_test"
+          ></v-autocomplete>
+
           <v-text-field
             v-model="encrypted.address"
             label="Website / Address"
@@ -124,7 +132,8 @@ export default {
         icon: "fas fa-key",
         color: "indigo darken-1"
       },
-      description: ""
+      description: "",
+      category: 0
     },
     encrypted: {
       address: "",
@@ -133,6 +142,11 @@ export default {
       notes: ""
     },
     loading: false,
+    category_test: [
+      { text: "Test 1", value: 1 },
+      { text: "Some category", value: 2 },
+      { text: "Test 3", value: 3 },
+    ]
   }),
   methods: {
     async create() {
