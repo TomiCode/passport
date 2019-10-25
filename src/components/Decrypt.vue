@@ -1,5 +1,9 @@
 <template>
-  <v-dialog v-model="dialog" max-width="640">
+  <v-dialog
+    v-model="dialog"
+    max-width="640"
+    persistent
+  >
     <v-card>
       <v-card-title>Decryption key</v-card-title>
       <v-divider></v-divider>

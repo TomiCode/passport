@@ -18,7 +18,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item @click="nothing" class="mt-4">
+        <v-list-item :to="{ name: 'home_manage' }" class="mt-4">
           <v-list-item-action>
             <v-icon>fas fa-cog</v-icon>
           </v-list-item-action>
@@ -41,6 +41,7 @@
         label="Search"
         class="hidden-sm-and-down"
         color="indigo darken-1"
+        clear-icon="far fa-times-circle"
         clearable
       ></v-text-field>
 
