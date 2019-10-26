@@ -17,10 +17,11 @@ export const colors = [
   { name: "Deep orange", value: "deep-orange darken-1" },
   { name: "Brown", value: "brown darken-1" },
   { name: "Blue-Grey", value: "blue-grey darken-1" },
-  { name: "Grey", value: "grey darken-1" },
+  { name: "Grey", value: "grey darken-1" }
 ]
 
 export const icons = [
+  { name: "Key", value: "fas fa-key" },
   { name: "Address book", value: "fas fa-address-book" },
   { name: "At", value: "fas fa-at" },
   { name: "Comments", value: "fas fa-comments" },
@@ -28,13 +29,20 @@ export const icons = [
   { name: "Desktop", value: "fas fa-desktop" },
   { name: "Envelope", value: "fas fa-envelope" },
   { name: "Laptop", value: "fas fa-laptop" },
-  { name: "Key", value: "fas fa-key" },
+  { name: "Wallet", value: "fas fa-wallet" },
   { name: "Mobile", value: "fas fa-mobile" },
   { name: "SD Card", value: "fas fa-sd-card" },
   { name: "Server", value: "fas fa-server" },
   { name: "WiFi", value: "fas fa-wifi" },
   { name: "Credit card", value: "fas fa-credit-card" },
   { name: "Money bill", value: "fas fa-money-bill" },
-  { name: "Piggy bank", value: "fas fa-piggy-bank" },
-  { name: "Wallet", value: "fas fa-wallet" },
+  { name: "Piggy bank", value: "fas fa-piggy-bank" }
 ]
+
+export function colorId(value) {
+  return colors.findIndex(color => value == color.value)
+}
+
+export function iconId(value) {
+  return icons.findIndex(icon => value == icon.value)
+}

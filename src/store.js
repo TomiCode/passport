@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import { request } from "@/modules/requests";
-import { API_CONTAINER, API_CONTAINER_CREATE } from "@/modules/api";
+import { API_CONTAINER, API_CONTAINER_CREATE, API_CATEGORY_CREATE } from "@/modules/api";
 
 import { generateKey, key } from "openpgp";
 
@@ -16,14 +16,20 @@ export default new Vuex.Store({
     crypto: {
       certificate: null,
       private: null,
-      open_private: null
+      open_private: null,
+      container: 0
     },
     user: {
       name: "",
       email: "",
-      avatar: ""
+      avatar: "",
+      preferences: {
+        darkmode: false,
+        lastused: true
+      }
     },
-    stores: [ ]
+    stores: [ ],
+    categories: [ ]
   },
   mutations: {
     account_login (state, login) {
@@ -40,9 +46,13 @@ export default new Vuex.Store({
     container_fetch (state, container) {
       state.crypto.certificate = atob(container.certificate)
       state.crypto.private = atob(container.encrypted)
+      state.crypto.container = container.id
     },
     container_decrypt (state, keyobj) {
       state.crypto.open_private = keyobj
+    },
+    categories_update (state, categories) {
+      state.categories = categories
     }
   },
   actions: {
@@ -96,6 +106,16 @@ export default new Vuex.Store({
         }
         commit('container_decrypt', privkey)
         resolve()
+      })
+    },
+    category_create({ commit }, category) {
+      return new Promise((resolve, reject) => {
+        request.do(API_CATEGORY_CREATE, { data: category })
+          .then(response => {
+            commit('categories_update', response.categories)
+            resolve()
+          })
+          .catch(() => reject())
       })
     }
   },

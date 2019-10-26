@@ -1,7 +1,11 @@
 <template>
   <v-col>
     <p>Home/Category.vue</p>
-    <entry-details :store="detail"></entry-details>
+    <entry-details
+
+      :store="detail"
+      @closed="details_closed"
+    ></entry-details>
 
     <v-list subheader>
       <v-subheader inset>Last used entries</v-subheader>
@@ -15,7 +19,7 @@
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-overlay absolute :value="true" opacity="0.05">
+          <v-overlay absolute :value="false" opacity="0.05">
       <v-progress-circular color="indigo" indeterminate size="24"></v-progress-circular>
     </v-overlay>
           <v-list-item-title v-text="item.name"></v-list-item-title>
@@ -67,6 +71,9 @@ export default {
       else {
         this.detail = store
       }
+    },
+    details_closed() {
+      this.detail = null
     }
   }
 }

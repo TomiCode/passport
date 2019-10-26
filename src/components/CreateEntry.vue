@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" max-width="640">
     <template v-slot:activator="{ on }">
       <v-btn
-        style="z-index: 100;"
+        style="z-index: 5;"
         v-on="on"
         color="pink"
         bottom

@@ -2,14 +2,23 @@
   <v-navigation-drawer
     v-model="drawer"
     temporary
-    absolute
     floating
-    dark
+    fixed
     right
     width="300"
-    color="indigo"
+    @transitionend="transitionend"
   >
-    <v-list dense>
+    <v-list dense v-if="visible">
+      <v-list-item>
+        <v-list-item-avatar>
+          <v-icon class="indigo lighten-1 white--text">fas fa-globe</v-icon>
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-list-item-title>Test</v-list-item-title>
+          <v-list-item-subtitle>Test test</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider></v-divider>
       <v-list-item>
         <v-list-item-content>
           <v-text-field
@@ -78,7 +87,8 @@
 <script>
 export default {
   data: () => ({
-    drawer: false
+    drawer: false,
+    visible: false
   }),
   created() {
     console.log("Hello my dear.")
@@ -90,8 +100,20 @@ export default {
     store (value) {
       console.log("watcher object value:", value)
       // Load encrypted container from server and decrypt it.
-      if (value !== null && !this.drawer) {
-        this.drawer = true
+      if (value !== null) {
+        if (!this.visible) {
+          this.visible = true
+        }
+        if (!this.drawer) {
+          this.drawer = true
+        }
+      }
+    }
+  },
+  methods: {
+    transitionend (obj) {
+      if (!this.drawer) {
+        this.visible = false
       }
     }
   }
