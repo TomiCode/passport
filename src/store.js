@@ -68,6 +68,7 @@ export default new Vuex.Store({
           .then(resp => {
             if (resp.valid === true) {
               commit('container_fetch', resp)
+              commit('categories_update', resp.categories)
             }
             resolve(resp.valid)
           })

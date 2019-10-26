@@ -8,17 +8,41 @@
       color="indigo"
     >
       <v-list>
-        <v-list-item v-for="group in groups" :key="group.title" @click="nothing">
+        <v-list-item>
           <v-list-item-action>
-            <v-icon v-text="group.icon"></v-icon>
+            <v-icon>fas fa-home</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="group.name"></v-list-item-title>
-            <v-list-item-subtitle v-text="group.description"></v-list-item-subtitle>
+            <v-list-item-title>General</v-list-item-title>
+            <v-list-item-subtitle>Home sweet home</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'home_manage' }" class="mt-4">
+        <v-list-item>
+          <v-list-item-action>
+            <v-icon>fas fa-history</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Last entries</v-list-item-title>
+            <v-list-item-subtitle>Your last used entries</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider class="my-1"></v-divider>
+        <v-list-item
+          v-for="category in categories"
+          :key="category.id"
+          :to="{ name: 'home_category', params: { category: category.id }}"
+        >
+          <v-list-item-action>
+            <v-icon v-text="mapIcon(category.icon)"></v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="category.name"></v-list-item-title>
+            <v-list-item-subtitle v-text="category.description"></v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider class="my-4"></v-divider>
+        <v-list-item :to="{ name: 'home_manage' }">
           <v-list-item-action>
             <v-icon>fas fa-cog</v-icon>
           </v-list-item-action>
@@ -70,7 +94,7 @@
             </v-list-item-content>
           </v-list-item>
           <v-divider></v-divider>
-          <v-list-item @click="nothing">
+          <v-list-item>
             <v-list-item-icon>
               <v-icon small>fas fa-cog</v-icon>
             </v-list-item-icon>
@@ -95,31 +119,28 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { request } from "@/modules/requests";
+import { icons } from "@/modules/entity";
 
 export default {
   name: 'App',
   data: () => ({
     drawer: false,
     account: false,
-    groups: [
-      { name: 'Last used', icon: 'fas fa-history', description: null },
-      { name: 'General', icon: 'fas fa-passport', description: 'Main password store' },
-      { name: 'Social media', icon: 'fas fa-share-alt', description: 'Some custom description' },
-      { name: 'Sysadmin', icon: 'fas fa-server', description: 'Work related passwords' },
-    ]
   }),
+  created () {
+    request.config.authToken = () => this.$store.getters.auth_token
+  },
   methods: {
-    nothing() {
-    },
-    logout() {
+    logout () {
       this.$store.dispatch('logout')
         .then(() => this.$router.push({ name: 'auth_login' }))
-    }
+    },
+    mapIcon: id => icons[id].value || 'fas fa-key'
   },
-  created() {
-    request.config.authToken = () => this.$store.getters.auth_token
-  }
+  computed: mapState({
+    categories: state => state.categories
+  })
 };
 </script>
