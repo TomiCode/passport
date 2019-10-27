@@ -1,15 +1,18 @@
 <template>
   <div class="category-manage">
     <create-category></create-category>
-    <v-list dense>
+    <v-list>
       <v-subheader inset>User defined categories</v-subheader>
-      <v-list-item @click.stop="nothing">
-        <v-list-item-avatar>
-            <v-icon class="orange lighten-1 white--text">fas fa-folder</v-icon>
-          </v-list-item-avatar>
+      <v-list-item v-for="category in categories" :key="category.id">
+        <v-list-item-icon>
+            <v-icon
+              color="primary lighten-1"
+              v-text="icon(category.icon)"
+            ></v-icon>
+          </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title>Aaaaaa</v-list-item-title>
-            <v-list-item-subtitle>Description</v-list-item-subtitle>
+            <v-list-item-title v-text="category.name"></v-list-item-title>
+            <v-list-item-subtitle v-text="category.description"></v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
             <v-btn icon>
@@ -23,18 +26,21 @@
 
 <script>
 import CreateCategory from '@/components/CreateCategory.vue'
+import { mapState } from "vuex";
+import { icons } from "@/modules/entity";
 
 export default {
   components: {
     CreateCategory
   },
   data: () => ({
-
+    icons: icons
   }),
   methods: {
-    nothing() {
-
-    }
-  }
+    icon: id => icons[id].value || 'fas fa-folder'
+  },
+  computed: mapState({
+    categories: state => state.categories
+  })
 }
 </script>
