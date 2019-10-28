@@ -42,7 +42,7 @@
             :prepend-icon="category.icon.value"
           >
             <template v-slot:item="{ item }">
-              <v-icon class="pr-3" v-text="item.value"></v-icon>
+              <v-icon class="pr-3 fa-fw" v-text="item.value"></v-icon>
               {{ item.name }}
             </template>
           </v-select>

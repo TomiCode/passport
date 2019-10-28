@@ -7,6 +7,7 @@
         <v-list-item-icon>
             <v-icon
               color="primary lighten-1"
+              class="fa-fw"
               v-text="icon(category.icon)"
             ></v-icon>
           </v-list-item-icon>

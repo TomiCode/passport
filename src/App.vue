@@ -10,7 +10,7 @@
       <v-list >
         <v-list-item>
           <v-list-item-icon>
-            <v-icon dense>fas fa-home</v-icon>
+            <v-icon>fas fa-home fa-fw</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>General</v-list-item-title>
@@ -20,7 +20,7 @@
 
         <v-list-item>
           <v-list-item-icon>
-            <v-icon dense>fas fa-history</v-icon>
+            <v-icon>fas fa-history fa-fw</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>Last entries</v-list-item-title>
@@ -88,8 +88,8 @@
             <v-icon>far fa-user-circle</v-icon>
           </v-btn>
         </template>
-        <v-card>
-        <v-list dark dense color="primary">
+
+        <v-list dark color="primary">
           <v-list-item>
             <v-list-item-avatar>
               <v-img src="https://avatars1.githubusercontent.com/u/1648325?s=460"></v-img>
@@ -100,10 +100,9 @@
             </v-list-item-content>
           </v-list-item>
           <v-divider></v-divider>
-
           <v-list-item>
             <v-list-item-icon class="my-auto mr-3">
-              <v-icon small>fas fa-cog</v-icon>
+              <v-icon small>fas fa-cog fa-fw</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
             <v-list-item-title>Preferences</v-list-item-title>
@@ -112,7 +111,7 @@
 
           <v-list-item @click="logout">
             <v-list-item-icon class="my-auto mr-3">
-              <v-icon small>fas fa-sign-out-alt</v-icon>
+              <v-icon small>fas fa-sign-out-alt fa-fw</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
             <v-list-item-title>Logout</v-list-item-title>
@@ -120,7 +119,7 @@
           </v-list-item>
 
         </v-list>
-        </v-card>
+
       </v-menu>
     </v-app-bar>
 
@@ -149,7 +148,7 @@ export default {
       this.$store.dispatch('logout')
         .then(() => this.$router.push({ name: 'auth_login' }))
     },
-    mapIcon: id => icons[id].value || 'fas fa-key'
+    mapIcon: id => (icons[id].value || 'fas fa-key') + ' fa-fw'
   },
   computed: mapState({
     categories: state => state.categories,
@@ -157,3 +156,9 @@ export default {
   })
 };
 </script>
+
+<style lang="scss">
+.v-icon.v-icon {
+  font-size: 1.33em;
+}
+</style>

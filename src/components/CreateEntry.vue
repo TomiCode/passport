@@ -47,6 +47,7 @@
             v-model="store.description"
             label="Description"
             :counter="64"
+            hint="aaaaa"
           ></v-text-field>
 
           <v-autocomplete
