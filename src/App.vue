@@ -10,7 +10,7 @@
       <v-list >
         <v-list-item>
           <v-list-item-icon>
-            <v-icon>fas fa-home fa-fw</v-icon>
+            <v-icon>mdi-home</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>General</v-list-item-title>
@@ -20,7 +20,7 @@
 
         <v-list-item>
           <v-list-item-icon>
-            <v-icon>fas fa-history fa-fw</v-icon>
+            <v-icon>mdi-history</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>Last entries</v-list-item-title>
@@ -48,7 +48,7 @@
         <v-divider class="my-2"></v-divider>
         <v-list-item :to="{ name: 'home_manage' }">
           <v-list-item-icon>
-            <v-icon>fas fa-cog</v-icon>
+            <v-icon>mdi-circle-edit-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-title>Manage Categories</v-list-item-title>
         </v-list-item>
@@ -66,7 +66,7 @@
         flat
         solo-inverted
         hide-details
-        prepend-inner-icon="fas fa-search"
+        prepend-inner-icon="mdi-magnify"
         label="Search"
         class="hidden-sm-and-down"
         color="indigo darken-1"
@@ -85,7 +85,7 @@
       >
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on" class="mr-1">
-            <v-icon>far fa-user-circle</v-icon>
+            <v-icon>mdi-account-circle-outline</v-icon>
           </v-btn>
         </template>
 
@@ -102,7 +102,7 @@
           <v-divider></v-divider>
           <v-list-item>
             <v-list-item-icon class="my-auto mr-3">
-              <v-icon small>fas fa-cog fa-fw</v-icon>
+              <v-icon>mdi-settings</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
             <v-list-item-title>Preferences</v-list-item-title>
@@ -111,7 +111,7 @@
 
           <v-list-item @click="logout">
             <v-list-item-icon class="my-auto mr-3">
-              <v-icon small>fas fa-sign-out-alt fa-fw</v-icon>
+              <v-icon >mdi-logout-variant</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
             <v-list-item-title>Logout</v-list-item-title>
@@ -156,9 +156,3 @@ export default {
   })
 };
 </script>
-
-<style lang="scss">
-.v-icon.v-icon {
-  font-size: 1.33em;
-}
-</style>

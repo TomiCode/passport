@@ -11,7 +11,7 @@
         fixed
         right
       >
-        <v-icon>fas fa-plus</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
     <v-card>
@@ -36,7 +36,7 @@
                     icon
                     @click="handler.show"
                   >
-                    <v-icon small v-text="store.appearance.icon"></v-icon>
+                    <v-icon v-text="store.appearance.icon"></v-icon>
                   </v-btn>
                 </template>
               </v-text-field>
@@ -78,7 +78,7 @@
               >
                 <template slot="prepend">
                   <v-btn color="primary lighten-1" icon @click="handler.show">
-                    <v-icon>far fa-lightbulb</v-icon>
+                    <v-icon>mdi-cards-variant</v-icon>
                   </v-btn>
                 </template>
               </v-text-field>

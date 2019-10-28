@@ -17,7 +17,7 @@
                 icon
                 @click="new_password"
               >
-                <v-icon small>fas fa-redo-alt</v-icon>
+                <v-icon>mdi-refresh</v-icon>
               </v-btn>
             </template>
           </v-text-field>

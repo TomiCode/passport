@@ -13,7 +13,7 @@
           Cras tempus felis interdum, sollicitudin enim in, convallis augue.
         </v-alert>
         <v-text-field
-          prepend-icon="fas fa-user-lock"
+          prepend-icon="mdi-account-lock"
           type="password"
           label="Contaner password"
           v-model="password"

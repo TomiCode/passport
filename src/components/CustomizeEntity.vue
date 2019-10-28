@@ -13,7 +13,7 @@
             :items="entity.colors"
           >
             <template v-slot:item="{ item }">
-                <v-icon small class="mr-4" :color="item.value">fas fa-circle</v-icon>
+                <v-icon class="mr-4" :color="item.value">mdi-circle</v-icon>
                 {{ item.name }}
             </template>
             <template v-slot:prepend-inner>
@@ -21,7 +21,7 @@
                 small
                 class="pt-1 pr-1"
                 :color="selected.color"
-              >fas fa-circle</v-icon>
+              >mdi-circle</v-icon>
             </template>
           </v-select>
           <v-select
@@ -32,7 +32,7 @@
             :prepend-icon="selected.icon"
           >
             <template v-slot:item="{ item }">
-              <v-icon class="pr-3 fa-fw" v-text="item.value"></v-icon>
+              <v-icon class="pr-3" v-text="item.value"></v-icon>
               {{ item.name }}
             </template>
           </v-select>

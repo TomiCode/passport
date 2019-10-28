@@ -21,22 +21,22 @@ export const colors = [
 ]
 
 export const icons = [
-  { name: "Key", value: "fas fa-key" },
-  { name: "Address book", value: "fas fa-address-book" },
-  { name: "At", value: "fas fa-at" },
-  { name: "Comments", value: "fas fa-comments" },
-  { name: "Database", value: "fas fa-database" },
-  { name: "Desktop", value: "fas fa-desktop" },
-  { name: "Envelope", value: "fas fa-envelope" },
-  { name: "Laptop", value: "fas fa-laptop" },
-  { name: "Wallet", value: "fas fa-wallet" },
-  { name: "Mobile", value: "fas fa-mobile" },
-  { name: "SD Card", value: "fas fa-sd-card" },
-  { name: "Server", value: "fas fa-server" },
-  { name: "WiFi", value: "fas fa-wifi" },
-  { name: "Credit card", value: "fas fa-credit-card" },
-  { name: "Money bill", value: "fas fa-money-bill" },
-  { name: "Piggy bank", value: "fas fa-piggy-bank" }
+  { name: "Key", value: "mdi-key-variant" },
+  { name: "Access point", value: "mdi-access-point" },
+  { name: "Account", value: "mdi-account" },
+  { name: "Account card", value: "mdi-account-card-details" },
+  { name: "Account network", value: "mdi-account-network" },
+  { name: "Airplane", value: "mdi-airplane" },
+  { name: "Alien", value: "mdi-alien" },
+  { name: "Android", value: "mdi-android" },
+  { name: "Antenna", value: "mdi-antenna" },
+  { name: "Api", value: "mdi-api" },
+  { name: "Apps", value: "mdi-apps-box" },
+  { name: "Archive", value: "mdi-archive" },
+  { name: "Balloon", value: "mdi-balloon" },
+  { name: "Bank", value: "mdi-bank" },
+  { name: "Basket", value: "mdi-basket" },
+  { name: "Bike", value: "mdi-bike" }
 ]
 
 export function colorId(value) {
