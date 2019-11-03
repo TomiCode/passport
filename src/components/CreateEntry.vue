@@ -55,7 +55,9 @@
             label="Category"
             clear-icon="far fa-times-circle"
             clearable
-            :items="category_test"
+            item-value="id"
+            item-text="name"
+            :items="categories"
           ></v-autocomplete>
 
           <v-text-field
@@ -115,6 +117,8 @@
 import PasswordGenerator from '@/components/PasswordGenerator.vue'
 import CustomizeEntity from '@/components/CustomizeEntity.vue'
 
+import { mapState } from "vuex";
+
 import { request } from "@/modules/requests"
 import { API_STORE_CREATE } from "@/modules/api"
 import { key, encrypt, message } from "openpgp";
@@ -142,12 +146,7 @@ export default {
       password: "",
       notes: ""
     },
-    loading: false,
-    category_test: [
-      { text: "Test 1", value: 1 },
-      { text: "Some category", value: 2 },
-      { text: "Test 3", value: 3 },
-    ]
+    loading: false
   }),
   methods: {
     async create() {
@@ -178,8 +177,10 @@ export default {
           this.loading = false
         })
       })
-
     }
-  }
+  },
+  computed: mapState({
+    categories: state => state.categories
+  })
 }
 </script>

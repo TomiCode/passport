@@ -122,7 +122,17 @@
 
       </v-menu>
     </v-app-bar>
-
+    <v-snackbar
+      top right
+      color="warning"
+      v-model="message.snackbar"
+      :timeout="5000"
+    >
+      {{ message.text }}
+      <v-btn text @click="message.snackbar = false">
+        Close
+      </v-btn>
+    </v-snackbar>
     <v-content>
       <router-view/>
     </v-content>
@@ -139,16 +149,32 @@ export default {
   data: () => ({
     drawer: false,
     account: false,
+    message: {
+      text: "",
+      snackbar: false
+    }
   }),
   created () {
     request.config.authToken = () => this.$store.getters.auth_token
+    request.config.onAuthErrorHandlers = [
+      () => {
+        // this.$store.commit('account_forget')
+        this.$router.push({ name: 'auth_login' }).then(() =>
+          this.notice("Your session expired. Please login to your account.")
+        )
+      }
+    ]
   },
   methods: {
     logout () {
       this.$store.dispatch('logout')
         .then(() => this.$router.push({ name: 'auth_login' }))
     },
-    mapIcon: id => (icons[id].value || 'fas fa-key') + ' fa-fw'
+    notice (msg) {
+      this.message.text = msg
+      this.message.snackbar = true
+    },
+    mapIcon: id => (icons[id].value || 'fas fa-key') + ' fa-fw',
   },
   computed: mapState({
     categories: state => state.categories,

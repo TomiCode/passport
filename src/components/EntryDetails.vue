@@ -8,77 +8,64 @@
     width="300"
     @transitionend="transitionend"
   >
-    <v-list dense v-if="visible">
+    <v-list v-if="visible">
       <v-list-item>
         <v-list-item-avatar>
-          <v-icon class="indigo lighten-1 white--text">fas fa-globe</v-icon>
+          <v-icon class="indigo lighten-1 white--text">mdi-earth</v-icon>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title>Test</v-list-item-title>
           <v-list-item-subtitle>Test test</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
-      <v-divider></v-divider>
+      <v-divider class="mb-4"></v-divider>
+
       <v-list-item>
-        <v-list-item-content>
-          <v-text-field
-            label="Title"
-          ></v-text-field>
-        </v-list-item-content>
+        <v-text-field
+          label="Title"
+        ></v-text-field>
       </v-list-item>
 
       <v-list-item>
-        <v-list-item-content>
-          <v-text-field
-            label="Description"
-          ></v-text-field>
-        </v-list-item-content>
+        <v-text-field
+          label="Description"
+        ></v-text-field>
       </v-list-item>
 
       <v-list-item>
-        <v-list-item-content>
-          <v-text-field
-            label="Website"
-            value="https://login.example.com"
-          ></v-text-field>
-        </v-list-item-content>
+        <v-text-field
+          label="Website"
+          value="https://login.example.com"
+        ></v-text-field>
       </v-list-item>
 
       <v-list-item>
-        <v-list-item-content>
           <v-text-field
             label="Login"
             value="aaaa@aaa.com"
           ></v-text-field>
-        </v-list-item-content>
       </v-list-item>
 
       <v-list-item>
-        <v-list-item-content>
-          <v-text-field
-            type="password"
-            label="Password"
-            value="aaaa@aaa.com"
-            append-icon="fas fa-eye"
-          ></v-text-field>
-        </v-list-item-content>
+        <v-text-field
+          type="password"
+          label="Password"
+          value="aaaa@aaa.com"
+          append-icon="mdi-eye"
+        ></v-text-field>
       </v-list-item>
 
       <v-list-item>
-        <v-list-item-content>
-          <v-textarea
-            label="Notes"
-            rows="1"
-            auto-grow
-            no-resize
-          ></v-textarea>
-        </v-list-item-content>
+        <v-textarea
+          label="Notes"
+          rows="1"
+          auto-grow
+          no-resize
+        ></v-textarea>
       </v-list-item>
 
       <v-list-item>
-        <v-list-item-content>
-          <v-btn outlined small>Update</v-btn>
-        </v-list-item-content>
+        <v-btn text>Update</v-btn>
       </v-list-item>
     </v-list>
   </v-navigation-drawer>

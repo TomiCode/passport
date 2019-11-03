@@ -4,13 +4,13 @@
     <v-text-field
       v-model="auth.email"
       label="Email address"
-      prepend-inner-icon="far fa-user"
+      prepend-inner-icon="mdi-account"
     ></v-text-field>
     <v-text-field
       v-model="auth.password"
       type="password"
       label="Password"
-      prepend-inner-icon="fas fa-lock"
+      prepend-inner-icon="mdi-lock"
     ></v-text-field>
     <v-btn
       class="ma-2"

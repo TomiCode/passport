@@ -1,4 +1,5 @@
 export const API_AUTH_ERR = "user_no_auth"
+export const API_INVALID_SESSION = "user_session_invalid"
 
 export const request = {
   config: {
@@ -12,7 +13,7 @@ export const request = {
   do(url, { data, type, method } = {}) {
     return new Promise((resolve, reject) => {
       fetch(url, {
-        method: method || 'POST',
+        method: method || (data ? 'POST' : 'GET'),
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
@@ -26,7 +27,7 @@ export const request = {
       })
         .then(resp => resp.json())
         .then(resp => {
-          if (resp.status == API_AUTH_ERR) {
+          if (resp.status == API_INVALID_SESSION) {
             this.config.onAuthErrorHandlers.forEach(handler => handler())
             return
           }

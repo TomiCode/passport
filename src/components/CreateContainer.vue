@@ -9,13 +9,13 @@
           Cras tempus felis interdum, sollicitudin enim in, convallis augue.
         </v-alert>
         <v-text-field
-          prepend-icon="fas fa-user-lock"
+          prepend-icon="mdi-database-lock"
           v-model="password"
           type="password"
           label="Contaner password"
         ></v-text-field>
         <v-text-field
-          prepend-icon="fas fa-lock"
+          prepend-icon="mdi-lock-question"
           type="password"
           label="Password confirmation"
         ></v-text-field>
