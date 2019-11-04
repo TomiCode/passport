@@ -11,3 +11,4 @@ export const API_CATEGORY = apiroute("api/v1/home/category")
 export const API_CATEGORY_CREATE = apiroute("api/v1/home/category/create")
 
 export const API_STORE_CREATE = apiroute("api/v1/home/store/create")
+export const API_STORES = apiroute("api/v1/home/stores")
