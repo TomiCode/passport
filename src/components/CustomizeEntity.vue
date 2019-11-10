@@ -13,8 +13,8 @@
             :items="entity.colors"
           >
             <template v-slot:item="{ item }">
-                <v-icon class="mr-4" :color="item.value">mdi-circle</v-icon>
-                {{ item.name }}
+              <v-icon class="mr-4" :color="item.value">mdi-circle</v-icon>
+              {{ item.name }}
             </template>
             <template v-slot:prepend-inner>
               <v-icon
@@ -66,7 +66,8 @@ export default {
       icon: ""
     },
     entity: {
-      colors, icons
+      colors: colors.colors,
+      icons: icons.icons
     },
     handler: { show: () => { } },
     dialog: false,

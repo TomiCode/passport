@@ -76,13 +76,13 @@ export default {
     category: {
       name: "",
       description: "",
-      icon: icons[0]
+      icon: icons.icons[0]
     },
     validation: {
       name: (val) => /^[\w ]{3,16}$/u.test(val) || 'Invalid category name!',
       description: (val) => /^[\w ]{0,32}$/u.test(val) || 'Invalid category description!'
     },
-    icons: icons,
+    icons: icons.icons,
   }),
   methods: {
     create() {

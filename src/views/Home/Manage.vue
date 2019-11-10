@@ -5,21 +5,17 @@
       <v-subheader inset>User defined categories</v-subheader>
       <v-list-item v-for="category in categories" :key="category.id">
         <v-list-item-icon>
-            <v-icon
-              color="primary lighten-1"
-              class="fa-fw"
-              v-text="icon(category.icon)"
-            ></v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title v-text="category.name"></v-list-item-title>
-            <v-list-item-subtitle v-text="category.description"></v-list-item-subtitle>
-          </v-list-item-content>
-          <v-list-item-action>
-            <v-btn icon>
-              <v-icon small color="red darken-1">fas fa-trash</v-icon>
-            </v-btn>
-          </v-list-item-action>
+          <v-icon v-text="icon(category.icon)"></v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title v-text="category.name"></v-list-item-title>
+          <v-list-item-subtitle v-text="category.description"></v-list-item-subtitle>
+        </v-list-item-content>
+        <v-list-item-action>
+          <v-btn icon>
+            <v-icon color="red darken-1">mdi-trash-can-outline</v-icon>
+          </v-btn>
+        </v-list-item-action>
       </v-list-item>
     </v-list>
   </div>
@@ -34,11 +30,8 @@ export default {
   components: {
     CreateCategory
   },
-  data: () => ({
-    icons: icons
-  }),
   methods: {
-    icon: id => icons[id].value || 'fas fa-folder'
+    icon: id => icons.map(id)
   },
   computed: mapState({
     categories: state => state.categories

@@ -1,60 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-      clipped
-      dark
-      color="indigo"
-    >
-      <v-list >
-        <v-list-item>
-          <v-list-item-icon>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>General</v-list-item-title>
-            <v-list-item-subtitle>Home sweet home</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item>
-          <v-list-item-icon>
-            <v-icon>mdi-history</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>Last entries</v-list-item-title>
-            <v-list-item-subtitle>Your last used entries</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-
-        <div class="user-categories" v-if="hasCategories">
-          <v-divider class="my-2"></v-divider>
-          <v-list-item
-            v-for="category in categories"
-            :key="category.id"
-            :to="{ name: 'home_category', params: { category: category.id }}"
-          >
-            <v-list-item-icon>
-              <v-icon v-text="mapIcon(category.icon)"></v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title v-text="category.name"></v-list-item-title>
-              <v-list-item-subtitle v-text="category.description"></v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </div>
-
-        <v-divider class="my-2"></v-divider>
-        <v-list-item :to="{ name: 'home_manage' }">
-          <v-list-item-icon>
-            <v-icon>mdi-circle-edit-outline</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>Manage Categories</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-
+    <category-navigation :visible="drawer"></category-navigation>
     <v-app-bar app color="indigo darken-3" dark clipped-left>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="ml-1"></v-app-bar-nav-icon>
 
@@ -140,9 +86,10 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 import { request } from "@/modules/requests";
-import { icons } from "@/modules/entity";
+
+import CategoryNavigation from '@/components/CategoryNavigation.vue'
 
 export default {
   name: 'App',
@@ -154,6 +101,9 @@ export default {
       snackbar: false
     }
   }),
+  components: {
+    CategoryNavigation
+  },
   created () {
     request.config.authToken = () => this.$store.getters.auth_token
     request.config.onAuthErrorHandlers = [
@@ -173,12 +123,7 @@ export default {
     notice (msg) {
       this.message.text = msg
       this.message.snackbar = true
-    },
-    mapIcon: id => (icons[id].value || 'fas fa-key') + ' fa-fw',
-  },
-  computed: mapState({
-    categories: state => state.categories,
-    hasCategories: state => !!state.categories.length
-  })
+    }
+  }
 };
 </script>
