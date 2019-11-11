@@ -4,7 +4,8 @@
     dark
     clipped
     color="primary"
-    v-model="navigation"
+    :value="value"
+    @input="$emit('input', $event)"
   >
     <v-list>
       <v-list-item
@@ -54,30 +55,21 @@ import { icons } from "@/modules/ui";
 
 export default {
   data: () => ({
-    navigation: false,
     base: [
       { icon: "mdi-home", title: "General", description: "", to: {} },
       { icon: "mdi-history", title: "Last used", description: "", to: {} }
     ]
   }),
-  created () {
-    this.navigation = this.visible
-  },
   methods: {
     icon: id => icons.map(id)
   },
   props: {
-    visible: Boolean
+    value: Boolean
   },
   computed: mapState({
     lastused: state => state.user.preferences.lastused,
     categories: state => state.categories,
     hasCategories: state => !!state.categories.length
-  }),
-  watch: {
-    visible (value) {
-      this.navigation = value
-    }
-  }
+  })
 }
 </script>

@@ -58,6 +58,8 @@ export const icons = {
   }
 }
 
+export const UI_USER_LOGOUT = "ui_user_logout"
+
 export const alert = {
   config: {
     handler: val => { }
@@ -74,6 +76,10 @@ export const alert = {
     [API_AUTH_ERR]: {
       message: "Invalid username and/or password. Check your data.",
       color: "error"
+    },
+    [UI_USER_LOGOUT]: {
+      message: "Logout successful. Have a nice day.",
+      color: "info"
     }
   },
   show(message, color) {

@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <alerts></alerts>
-    <category-navigation :visible="drawer"></category-navigation>
+    <category-navigation v-model="drawer"></category-navigation>
     <v-app-bar app color="indigo darken-3" dark clipped-left>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="ml-1"></v-app-bar-nav-icon>
 
@@ -64,9 +64,7 @@
             <v-list-item-title>Logout</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-
         </v-list>
-
       </v-menu>
     </v-app-bar>
     <v-content>
@@ -80,19 +78,14 @@ import CategoryNavigation from '@/components/CategoryNavigation'
 import Alerts from '@/components/Alerts'
 
 import { request, API_INVALID_SESSION } from "@/modules/api";
-import { alert } from "@/modules/ui";
+import { alert, UI_USER_LOGOUT } from "@/modules/ui";
 import { mapActions } from 'vuex';
 
 export default {
   name: 'App',
   data: () => ({
     drawer: false,
-    account: false,
-    message: {
-      text: "",
-      snackbar: false
-    },
-    alerts: [ ]
+    account: false
   }),
   components: {
     CategoryNavigation, Alerts
@@ -101,19 +94,18 @@ export default {
     request.config.authToken = () => this.$store.getters.auth_token
     request.config.errorHandlers[API_INVALID_SESSION] = () => {
       this.$router.push({ name: 'auth_login' }).then(() =>
-        this.notice("Your session expired. Please login to your account.")
+        alert.status(API_INVALID_SESSION)
       )
     }
   },
   methods: {
     logout () {
       this.$store.dispatch('logout')
-        .then(() => this.$router.push({ name: 'auth_login' }))
+        .then(() => {
+          this.$router.push({ name: 'auth_login' })
+            .then(() => alert.status(UI_USER_LOGOUT))
+        })
     },
-    notice (msg) {
-      this.message.text = msg
-      this.message.snackbar = true
-    }
   }
 };
 </script>
