@@ -30,7 +30,13 @@
 </template>
 
 <script>
-import { request, API_AUTH_LOGIN } from "@/modules/api";
+import {
+  request,
+  API_AUTH_LOGIN,
+  API_AUTH_ERR
+} from "@/modules/api";
+
+import { alert, UI_LOGIN_SUCCESS } from "@/modules/ui";
 
 export default {
   data: () => ({
@@ -47,6 +53,11 @@ export default {
         .then(resp => {
           this.$store.commit('account_login', resp)
           this.$router.push({ name: 'home_index' })
+        })
+        .catch(resp => {
+          if (resp.status !== undefined) {
+            alert.status(resp.status)
+          }
         })
         .finally(() => this.loading = false)
     }

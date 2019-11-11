@@ -1,3 +1,9 @@
+import {
+  API_AUTH_ERR,
+  API_INVALID_SESSION,
+  API_FATAL_ERR
+} from "@/modules/api";
+
 export const colors = {
   colors: [
     { name: "Red", value: "red darken-1" },
@@ -49,5 +55,33 @@ export const icons = {
   },
   num(value) {
     return this.icons.findIndex(i => value == i.value)
+  }
+}
+
+export const alert = {
+  config: {
+    handler: val => { }
+  },
+  tables: {
+    [API_FATAL_ERR]: {
+      message: "Network error occurred, please try again.",
+      color: "error"
+    },
+    [API_INVALID_SESSION]: {
+      message: "Your session expired, please log in to continue.",
+      color: "warning"
+    },
+    [API_AUTH_ERR]: {
+      message: "Invalid username and/or password. Check your data.",
+      color: "error"
+    }
+  },
+  show(message, color) {
+    this.config.handler({ message, color })
+  },
+  status(status) {
+    if (this.tables[status] !== undefined) {
+      this.config.handler(this.tables[status])
+    }
   }
 }

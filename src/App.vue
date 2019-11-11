@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <alerts></alerts>
     <category-navigation :visible="drawer"></category-navigation>
     <v-app-bar app color="indigo darken-3" dark clipped-left>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="ml-1"></v-app-bar-nav-icon>
@@ -68,17 +69,6 @@
 
       </v-menu>
     </v-app-bar>
-    <v-snackbar
-      top right
-      color="warning"
-      v-model="message.snackbar"
-      :timeout="5000"
-    >
-      {{ message.text }}
-      <v-btn text @click="message.snackbar = false">
-        Close
-      </v-btn>
-    </v-snackbar>
     <v-content>
       <router-view/>
     </v-content>
@@ -86,9 +76,11 @@
 </template>
 
 <script>
-import CategoryNavigation from '@/components/CategoryNavigation.vue'
+import CategoryNavigation from '@/components/CategoryNavigation'
+import Alerts from '@/components/Alerts'
 
-import { request } from "@/modules/api";
+import { request, API_INVALID_SESSION } from "@/modules/api";
+import { alert } from "@/modules/ui";
 import { mapActions } from 'vuex';
 
 export default {
@@ -99,21 +91,19 @@ export default {
     message: {
       text: "",
       snackbar: false
-    }
+    },
+    alerts: [ ]
   }),
   components: {
-    CategoryNavigation
+    CategoryNavigation, Alerts
   },
   created () {
     request.config.authToken = () => this.$store.getters.auth_token
-    request.config.onAuthErrorHandlers = [
-      () => {
-        // this.$store.commit('account_forget')
-        this.$router.push({ name: 'auth_login' }).then(() =>
-          this.notice("Your session expired. Please login to your account.")
-        )
-      }
-    ]
+    request.config.errorHandlers[API_INVALID_SESSION] = () => {
+      this.$router.push({ name: 'auth_login' }).then(() =>
+        this.notice("Your session expired. Please login to your account.")
+      )
+    }
   },
   methods: {
     logout () {

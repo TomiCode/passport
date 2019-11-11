@@ -10,14 +10,16 @@ export const API_STORE_CREATE = "api/v1/home/store/create"
 export const API_STORES = "api/v1/home/stores"
 
 // Error constants
-export const API_AUTH_ERR = "user_no_auth"
+export const API_SUCCESS = "success"
+export const API_AUTH_ERR = "user_login_invalid"
 export const API_INVALID_SESSION = "user_session_invalid"
+
+export const API_FATAL_ERR = "fetch_err"
 
 // Request handler
 export const request = {
   config: {
-    onErrorHandlers: [ ],
-    onAuthErrorHandlers: [ ],
+    errorHandlers: { },
     authToken: () => null,
     absoluteUri: uri => process.env.VUE_APP_BACKEND + uri
   },
@@ -41,16 +43,22 @@ export const request = {
       })
         .then(resp => resp.json())
         .then(resp => {
-          if (resp.status == API_INVALID_SESSION) {
-            this.config.onAuthErrorHandlers.forEach(handler => handler())
+          if (resp.status !== undefined && resp.status !== API_SUCCESS) {
+            if (this.config.errorHandlers[resp.status] !== undefined) {
+              this.config.errorHandlers[resp.status](resp)
+            }
+            console.log("API error occurred, response:", resp)
+            reject(resp)
             return
           }
           resolve(resp)
         })
         .catch(reason => {
-          console.log("error at internal fetch", reason)
-          this.config.onErrorHandlers.forEach(handler => handler(reason))
-          reject(reason)
+          if (this.config.errorHandlers[API_FATAL_ERR] !== undefined) {
+            this.config.errorHandlers[API_FATAL_ERR](reason)
+          }
+          console.log("Fatal fetch error:", reason)
+          reject()
         })
     })
   }
