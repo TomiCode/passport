@@ -47,7 +47,7 @@
             </v-list-item-content>
           </v-list-item>
           <v-divider></v-divider>
-          <v-list-item>
+          <v-list-item :to="{ name: 'home_profile' }">
             <v-list-item-icon class="my-auto mr-3">
               <v-icon>mdi-settings</v-icon>
             </v-list-item-icon>

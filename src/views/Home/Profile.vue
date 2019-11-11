@@ -4,20 +4,23 @@
       readonly
       v-model="username"
       label="Username"
-      prepend-icon="far fa-user"
+      prepend-icon="mdi-account"
     ></v-text-field>
     <v-text-field
       readonly
       v-model="email"
       label="Address email"
-      prepend-icon="far fa-envelope"
+      prepend-icon="mdi-email-edit"
     ></v-text-field>
     <v-file-input
       accept="image/png, image/jpeg, image/bmp"
-      prepend-icon="fas fa-camera"
+      prepend-icon="mdi-face-recognition"
       label="Profile picture"
     ></v-file-input>
-    <v-switch v-model="latest" color="indigo" label="Allow to show your last used paswords"></v-switch>
+
+    <v-switch v-model="latest" color="primary" label="Allow to colect and show your last used entries"></v-switch>
+    <v-switch v-model="dark" color="primary" label="Enable application dark mode"></v-switch>
+
     <v-btn outlined color="indigo">Save changes</v-btn>
     <v-divider class="mt-4"></v-divider>
     <v-subheader>Change passwords</v-subheader>
@@ -34,6 +37,12 @@ export default {
     new_password: "",
     password_confirmation: "",
     latest: true,
-  })
+    dark: false
+  }),
+  watch: {
+    dark(value) {
+      this.$vuetify.theme.dark = value
+    }
+  }
 }
 </script>

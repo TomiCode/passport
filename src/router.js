@@ -10,7 +10,7 @@ import AuthReset from './views/Auth/Reset.vue'
 import ProfileDecrypt from './views/Profile/Decrypt.vue'
 import ProfileSetup from './views/Profile/Setup.vue'
 
-import HomeLatest from './views/Home/Latest.vue'
+import HomeIndex from './views/Home/Home.vue'
 import HomeSearch from './views/Home/Search.vue'
 import HomeCategory from './views/Home/Category.vue'
 import HomeManage from './views/Home/Manage.vue'
@@ -28,80 +28,87 @@ const router = new Router({
     {
       path: '/auth/',
       component: Auth,
+      meta: {
+        title: "Authorization"
+      },
       children: [
         {
-          path: '/auth/login',
+          path: 'login',
           name: 'auth_login',
           component: AuthLogin,
+          meta: {
+            title: "Login"
+          }
         },
         {
-          path: '/auth/register',
+          path: 'register',
           name: 'auth_register',
-          component: AuthRegister
+          component: AuthRegister,
+          meta: {
+            title: "Register"
+          }
         },
         {
-          path: '/auth/reset',
+          path: 'reset',
           name: 'auth_reset',
-          component: AuthReset
+          component: AuthReset,
+          meta: {
+            title: "Password reset"
+          }
         }
       ]
-    },
-    {
-      path: '/profile/decrypt',
-      name: 'profile_decrypt',
-      component: ProfileDecrypt
-    },
-    {
-      path: '/profile/setup',
-      name: 'profile_setup',
-      component: ProfileSetup
     },
     {
       path: '/home/',
       component: Home,
       meta: {
-        login: true
+        login: true,
+        title: "Home"
       },
       children: [
         {
-          path: 'latest',
-          name: 'home_latest',
-          component: HomeLatest
+          path: '/',
+          name: 'home_index',
+          component: HomeIndex,
+          meta: {
+            title: "General"
+          }
         },
         {
           path: 'manage',
           name: 'home_manage',
-          component: HomeManage
+          component: HomeManage,
+          meta: {
+            title: "Settings"
+          }
         },
         {
           path: 'search/:query',
           name: 'home_search',
-          component: HomeSearch
+          component: HomeSearch,
+          meta: {
+            title: "Search"
+          }
         },
         {
           path: 'category/:category',
           name: 'home_category',
-          component: HomeCategory
+          component: HomeCategory,
+          meta: {
+            title: "Category"
+          }
         },
         {
           path: 'profile',
           name: 'home_profile',
-          component: HomeProfile
-        },
-        {
-          path: '/',
-          name: 'home_index',
-          component: HomeCategory
+          component: HomeProfile,
         }
       ]
     },
     {
       path: '/',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      name: 'about_index',
+      component: () => import('./views/About.vue')
     }
   ]
 })

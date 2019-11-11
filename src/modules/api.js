@@ -58,7 +58,7 @@ export const request = {
             this.config.errorHandlers[API_FATAL_ERR](reason)
           }
           console.log("Fatal fetch error:", reason)
-          reject()
+          reject({ status: API_FATAL_ERR })
         })
     })
   }

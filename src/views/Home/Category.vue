@@ -1,14 +1,11 @@
 <template>
   <v-col>
-    <p>Home/Category.vue</p>
     <entry-details
-
       :store="detail"
       @closed="details_closed"
     ></entry-details>
 
-    <v-list subheader>
-      <v-subheader inset>Last used entries</v-subheader>
+    <v-list>
       <v-list-item
         v-for="item in stores"
         :key="item.id"
@@ -39,19 +36,20 @@
       </v-list-item>
     </v-list>
     <create-entry></create-entry>
-    <v-btn text color="pink" @click="load">Test</v-btn>
+    <!-- <v-btn text color="pink" @click="load">Test</v-btn> -->
   </v-col>
 </template>
 
 <script>
-import CreateEntry from '@/components/CreateEntry.vue'
-import EntryDetails from '@/components/EntryDetails.vue'
+import Entity from '@/components/Entity'
+import CreateEntry from '@/components/CreateEntry'
+import EntryDetails from '@/components/EntryDetails'
 
 import { request, API_STORES } from "@/modules/api";
 
 export default {
   components: {
-    CreateEntry, EntryDetails
+    CreateEntry, EntryDetails, Entity
   },
   data: () => ({
     stores: [ ],

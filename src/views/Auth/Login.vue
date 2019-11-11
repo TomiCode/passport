@@ -1,6 +1,5 @@
 <template>
   <v-container fluid>
-    <p>LOGIN</p>
     <v-text-field
       v-model="auth.email"
       label="Email address"
@@ -30,13 +29,8 @@
 </template>
 
 <script>
-import {
-  request,
-  API_AUTH_LOGIN,
-  API_AUTH_ERR
-} from "@/modules/api";
-
 import { alert, UI_LOGIN_SUCCESS } from "@/modules/ui";
+import { request, API_AUTH_LOGIN, API_AUTH_ERR } from "@/modules/api";
 
 export default {
   data: () => ({

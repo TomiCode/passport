@@ -1,6 +1,5 @@
 <template>
   <v-container fluid>
-    <p>register</p>
     <v-form ref="registrar">
       <v-text-field
         v-model="user.username"
@@ -38,7 +37,13 @@
         :loading="loading"
       >Register</v-btn>
     </v-form>
-    <v-alert outlined color="teal" border="left" icon="fas fa-question">
+    <v-alert
+      outlined
+      color="teal"
+      border="left"
+      icon="mdi-help-circle-outline"
+      class="mt-4"
+    >
       Already have an account? <router-link :to="{ name: 'auth_login' }">Log in</router-link> to your existing one.
     </v-alert>
   </v-container>
