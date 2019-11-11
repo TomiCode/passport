@@ -23,8 +23,9 @@
 
 <script>
 import CreateCategory from '@/components/CreateCategory.vue'
+
+import { icons } from "@/modules/ui";
 import { mapState } from "vuex";
-import { icons } from "@/modules/entity";
 
 export default {
   components: {

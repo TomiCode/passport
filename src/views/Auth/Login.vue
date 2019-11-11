@@ -30,8 +30,7 @@
 </template>
 
 <script>
-import { request } from "@/modules/requests";
-import { API_AUTH_LOGIN } from "@/modules/api";
+import { request, API_AUTH_LOGIN } from "@/modules/api";
 
 export default {
   data: () => ({

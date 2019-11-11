@@ -86,10 +86,10 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { request } from "@/modules/requests";
-
 import CategoryNavigation from '@/components/CategoryNavigation.vue'
+
+import { request } from "@/modules/api";
+import { mapActions } from 'vuex';
 
 export default {
   name: 'App',

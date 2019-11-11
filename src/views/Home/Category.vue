@@ -47,8 +47,7 @@
 import CreateEntry from '@/components/CreateEntry.vue'
 import EntryDetails from '@/components/EntryDetails.vue'
 
-import { request } from "@/modules/requests";
-import { API_STORES } from "@/modules/api";
+import { request, API_STORES } from "@/modules/api";
 
 export default {
   components: {

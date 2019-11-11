@@ -64,9 +64,8 @@
 </template>
 
 <script>
-import { icons, iconId } from "@/modules/entity";
-import { request } from "@/modules/requests";
-import { API_CATEGORY_CREATE } from "@/modules/api";
+import { request, API_CATEGORY_CREATE } from "@/modules/api";
+import { icons } from "@/modules/ui";
 
 export default {
   data: () => ({
@@ -92,7 +91,7 @@ export default {
       this.$store.dispatch('category_create', {
         name: this.category.name,
         description: this.category.description,
-        icon: iconId(this.category.icon.value)
+        icon: icons.num(this.category.icon.value)
       })
         .then(() => this.dialog = false)
         .finally(() => this.loading = false)

@@ -53,7 +53,6 @@
           <v-autocomplete
             v-model="store.category"
             label="Category"
-            clear-icon="far fa-times-circle"
             clearable
             item-value="id"
             item-text="name"
@@ -117,11 +116,9 @@
 import PasswordGenerator from '@/components/PasswordGenerator.vue'
 import CustomizeEntity from '@/components/CustomizeEntity.vue'
 
-import { mapState } from "vuex";
-
-import { request } from "@/modules/requests"
-import { API_STORE_CREATE } from "@/modules/api"
+import { request, API_STORE_CREATE } from "@/modules/api";
 import { key, encrypt, message } from "openpgp";
+import { mapState } from "vuex";
 
 export default {
   components: {

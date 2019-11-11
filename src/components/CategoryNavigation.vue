@@ -29,7 +29,7 @@
           :to="{ name: 'home_category', params: { category: category.id }}"
         >
           <v-list-item-icon>
-            <v-icon v-text="mapIcon(category.icon)"></v-icon>
+            <v-icon v-text="icon(category.icon)"></v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title v-text="category.name"></v-list-item-title>
@@ -50,7 +50,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { icons } from "@/modules/entity";
+import { icons } from "@/modules/ui";
 
 export default {
   data: () => ({
@@ -64,7 +64,7 @@ export default {
     this.navigation = this.visible
   },
   methods: {
-    mapIcon: id => icons.map(id)
+    icon: id => icons.map(id)
   },
   props: {
     visible: Boolean

@@ -45,8 +45,7 @@
 </template>
 
 <script>
-import { request } from "../../modules/requests";
-import { API_AUTH_REGISTER } from "../../modules/api";
+import { request, API_AUTH_REGISTER } from "../../modules/api";
 
 export default {
   data: () => ({

@@ -19,8 +19,12 @@ export const colors = {
     { name: "Brown", value: "brown darken-1" },
     { name: "Blue-Grey", value: "blue-grey darken-1" },
     { name: "Grey", value: "grey darken-1" }
-  ]
+  ],
+  num(value) {
+    return this.colors.findIndex(c => c.value == value)
+  }
 }
+
 export const icons = {
   icons: [
     { name: "Key", value: "mdi-key-variant" },
@@ -42,13 +46,8 @@ export const icons = {
   ],
   map(id) {
     return this.icons[id].value || 'mdi-key-variant'
+  },
+  num(value) {
+    return this.icons.findIndex(i => value == i.value)
   }
-}
-
-export function colorId(value) {
-  return colors.findIndex(color => value == color.value)
-}
-
-export function iconId(value) {
-  return icons.findIndex(icon => value == icon.value)
 }

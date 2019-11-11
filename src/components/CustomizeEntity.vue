@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { colors, icons } from "@/modules/entity";
+import { colors, icons } from "@/modules/ui";
 
 export default {
   data: () => ({

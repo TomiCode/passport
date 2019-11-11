@@ -1,9 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { request } from "@/modules/requests";
-import { API_CONTAINER, API_CONTAINER_CREATE, API_CATEGORY_CREATE } from "@/modules/api";
-
+import { request, API_CONTAINER, API_CONTAINER_CREATE, API_CATEGORY_CREATE } from "@/modules/api";
 import { generateKey, key } from "openpgp";
 
 Vue.use(Vuex)
