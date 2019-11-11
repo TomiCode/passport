@@ -59,35 +59,43 @@ export const icons = {
 }
 
 export const UI_USER_LOGOUT = "ui_user_logout"
+export const UI_REQUIRE_AUTH = "ui_require_auth"
 
 export const alert = {
   config: {
-    handler: val => { }
+    handler: null,
+    preload: [ ]
   },
   tables: {
     [API_FATAL_ERR]: {
       message: "Network error occurred, please try again.",
-      color: "error"
+      type: "error"
     },
     [API_INVALID_SESSION]: {
       message: "Your session expired, please log in to continue.",
-      color: "warning"
+      type: "warning"
     },
     [API_AUTH_ERR]: {
       message: "Invalid username and/or password. Check your data.",
-      color: "error"
+      type: "error"
     },
     [UI_USER_LOGOUT]: {
       message: "Logout successful. Have a nice day.",
-      color: "info"
+      type: "info"
+    },
+    [UI_REQUIRE_AUTH]: {
+      message: "You need to authenticate to continue.",
+      type: "error"
     }
-  },
-  show(message, color) {
-    this.config.handler({ message, color })
   },
   status(status) {
     if (this.tables[status] !== undefined) {
-      this.config.handler(this.tables[status])
+      if (this.config.handler !== null) {
+        this.config.handler(this.tables[status])
+      }
+      else {
+        this.config.preload.push(this.tables[status])
+      }
     }
   }
 }

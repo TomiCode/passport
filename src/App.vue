@@ -67,6 +67,7 @@
         </v-list>
       </v-menu>
     </v-app-bar>
+
     <v-content>
       <router-view/>
     </v-content>

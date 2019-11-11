@@ -17,6 +17,7 @@ import HomeManage from './views/Home/Manage.vue'
 import HomeProfile from './views/Home/Profile.vue'
 
 import store from './store'
+import { alert, UI_REQUIRE_AUTH } from '@/modules/ui';
 
 Vue.use(Router)
 
@@ -111,6 +112,7 @@ router.beforeEach((to, from, next) => {
       next()
       return
     }
+    alert.status(UI_REQUIRE_AUTH)
     next({ name: 'auth_login' })
   }
   else {
