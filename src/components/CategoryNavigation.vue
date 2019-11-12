@@ -3,7 +3,7 @@
     app
     dark
     clipped
-    color="primary"
+    color="accent"
     :value="value"
     @input="$emit('input', $event)"
   >

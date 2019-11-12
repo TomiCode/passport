@@ -2,7 +2,7 @@
   <v-app>
     <alerts></alerts>
     <category-navigation v-model="drawer"></category-navigation>
-    <v-app-bar app color="indigo darken-3" dark clipped-left>
+    <v-app-bar app color="accent" dark clipped-left>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="ml-1"></v-app-bar-nav-icon>
 
       <v-toolbar-title style="width: 300px" class="headline text-uppercase ml-0 pl-4">

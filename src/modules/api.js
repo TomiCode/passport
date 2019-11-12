@@ -13,6 +13,7 @@ export const API_STORES = "api/v1/home/stores"
 export const API_SUCCESS = "success"
 export const API_AUTH_ERR = "user_login_invalid"
 export const API_INVALID_SESSION = "user_session_invalid"
+export const API_NO_CONTAINER = "user_no_container"
 
 export const API_FATAL_ERR = "fetch_err"
 

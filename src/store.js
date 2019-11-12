@@ -1,8 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { request, API_CONTAINER, API_CONTAINER_CREATE, API_CATEGORY_CREATE } from "@/modules/api";
 import { generateKey, key } from "openpgp";
+import {
+  request,
+  API_CONTAINER,
+  API_CONTAINER_CREATE,
+  API_CATEGORY_CREATE,
+  API_NO_CONTAINER
+} from "@/modules/api";
 
 Vue.use(Vuex)
 
@@ -10,6 +16,12 @@ export default new Vuex.Store({
   state: {
     auth: {
       token: localStorage.getItem('vinca:session') || null,
+      container: null
+    },
+    openpgp: {
+      server: false,
+      public: null,
+      private: null,
     },
     crypto: {
       certificate: null,
@@ -30,6 +42,17 @@ export default new Vuex.Store({
     categories: [ ]
   },
   mutations: {
+    keystore_setup: (state, { certificate, key }) => {
+      state.openpgp.public = certificate
+      state.openpgp.private = key
+    },
+    local_private_update: (state, key) => {
+      state.openpgp.private = key
+    },
+    local_categories_update: (state, categories) => {
+      state.categories = categories
+    },
+
     account_login (state, login) {
       localStorage.setItem('vinca:session', login.uuid)
       state.auth.token = login.uuid
@@ -54,6 +77,30 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    api_load_container: ({ commit, dispatch }) => new Promise((resolve, reject) => {
+      request.do(API_CONTAINER)
+        .then(res => {
+          dispatch('prepare_keystore', {
+            certificate: atob(res.certificate), encrypted: atob(res.encrypted)
+          })
+          commit('local_categories_update', { categories: res.categories })
+          resolve(res)
+        })
+        .catch(err => reject(err.status))
+    }),
+    prepare_keystore: ({ commit }, { certificate, encrypted }) => {
+      Promise.all([ key.readArmored(certificate), key.readArmored(encrypted) ])
+        .then(([ certificate, key ]) => {
+          commit('keystore_setup', { certificate, key })
+        })
+        .catch(err => {
+          console.error("Error while public certificate read:", err)
+        })
+    },
+    local_decrypt_private: ({ commit, state }, { password }) => new Promise((resolve, reject) => {
+
+    }),
+
     logout({ commit }) {
       return new Promise((resolve, reject) => {
         commit('account_forget')
