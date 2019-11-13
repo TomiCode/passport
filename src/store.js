@@ -89,16 +89,25 @@ export default new Vuex.Store({
         .catch(err => reject(err.status))
     }),
     prepare_keystore: ({ commit }, { certificate, encrypted }) => {
-      Promise.all([ key.readArmored(certificate), key.readArmored(encrypted) ])
-        .then(([ certificate, key ]) => {
-          commit('keystore_setup', { certificate, key })
+      key.readArmored(certificate)
+        .then(certificate => {
+          commit('keystore_setup', { certificate, key: encrypted })
         })
         .catch(err => {
           console.error("Error while public certificate read:", err)
         })
     },
     local_decrypt_private: ({ commit, state }, { password }) => new Promise((resolve, reject) => {
-
+      key.readArmored(state.openpgp.private)
+        .then(({ keys }) => {
+          keys[0].decrypt(password)
+            .then(res => {
+              commit('local_private_update', keys[0])
+              resolve(res)
+            })
+            .catch(reason => reject(reason))
+        })
+        .catch(reason => reject(reason))
     }),
 
     logout({ commit }) {

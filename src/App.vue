@@ -98,6 +98,9 @@ export default {
         alert.status(API_INVALID_SESSION)
       )
     }
+    if (this.$store.state.auth.token !== null) {
+      this.$store.dispatch('fetch_container')
+    }
   },
   methods: {
     logout () {
