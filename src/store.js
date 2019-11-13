@@ -175,6 +175,9 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    private_decrypted: state => state.openpgp.private instanceof key.Key,
+    private_loaded: state => !!state.openpgp.private,
+
     logged_in: state => !!state.auth.token,
     auth_token: state => state.auth.token,
     container_valid: state => !!state.crypto.private && !!state.crypto.certificate,

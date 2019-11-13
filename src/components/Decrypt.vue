@@ -1,8 +1,8 @@
 <template>
   <v-dialog
-    v-model="dialog"
     max-width="640"
     persistent
+    :value="visible"
   >
     <v-card>
       <v-card-title>Decryption key</v-card-title>
@@ -28,7 +28,7 @@
           @click="decrypt"
         >
           Decrypt
-          <v-icon right dark>fas fa-angle-right</v-icon>
+          <v-icon right dark>mdi-lock-open</v-icon>
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -36,26 +36,22 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   data: () => ({
     dialog: false,
     password: ""
   }),
-  mounted () {
-    this.dialog = true
-  },
   methods: {
     decrypt() {
-      this.$store.dispatch('container_decrypt', this.password)
-        .then(() => {
-          this.dialog = false
-        })
-        .catch(() => {
-          console.log("error catch")
-        })
     }
+  },
+  computed: {
+    visible() {
+      return this.private_loaded && !this.private_decrypted
+    },
+    ...mapGetters([ 'private_loaded', 'private_decrypted' ]),
   }
 }
 </script>

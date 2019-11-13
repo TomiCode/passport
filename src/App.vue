@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <alerts></alerts>
+    <decrypt></decrypt>
     <category-navigation v-model="drawer"></category-navigation>
     <v-app-bar app color="accent" dark clipped-left>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="ml-1"></v-app-bar-nav-icon>
@@ -76,10 +77,12 @@
 
 <script>
 import CategoryNavigation from '@/components/CategoryNavigation'
+import CreateContainer from '@/components/CreateContainer.vue'
+import Decrypt from '@/components/Decrypt.vue'
 import Alerts from '@/components/Alerts'
 
-import { request, API_INVALID_SESSION } from "@/modules/api";
-import { alert, UI_USER_LOGOUT } from "@/modules/ui";
+import { request, API_INVALID_SESSION } from '@/modules/api';
+import { alert, UI_USER_LOGOUT } from '@/modules/ui';
 import { mapActions } from 'vuex';
 
 export default {
@@ -89,7 +92,7 @@ export default {
     account: false
   }),
   components: {
-    CategoryNavigation, Alerts
+    CategoryNavigation, Alerts, Decrypt
   },
   created () {
     request.config.authToken = () => this.$store.getters.auth_token
@@ -99,7 +102,7 @@ export default {
       )
     }
     if (this.$store.state.auth.token !== null) {
-      this.$store.dispatch('fetch_container')
+      this.$store.dispatch('api_load_container')
     }
   },
   methods: {

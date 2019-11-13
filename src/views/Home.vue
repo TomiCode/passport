@@ -1,9 +1,5 @@
 <template>
   <v-container fluid>
-    <template v-if="decryption_modals">
-      <decrypt v-if="container_valid"></decrypt>
-      <create-container v-else></create-container>
-    </template>
     <v-breadcrumbs :items="path_items"></v-breadcrumbs>
     <router-view></router-view>
   </v-container>
@@ -36,10 +32,6 @@ export default {
       return segments
     },
     ...mapGetters([ 'container_valid' ]),
-  },
-  created() {
-    this.$store.dispatch('fetch_container')
-      .finally(() => this.decryption_modals = true)
   }
 }
 </script>
