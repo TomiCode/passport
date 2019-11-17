@@ -83,7 +83,7 @@ import Alerts from '@/components/Alerts'
 
 import { request, API_INVALID_SESSION } from '@/modules/api';
 import { alert, UI_USER_LOGOUT } from '@/modules/ui';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'App',
@@ -97,9 +97,10 @@ export default {
   created () {
     request.config.authToken = () => this.$store.getters.auth_token
     request.config.errorHandlers[API_INVALID_SESSION] = () => {
-      this.$router.push({ name: 'auth_login' }).then(() =>
+      this.$router.push({ name: 'auth_login' }).then(() => {
         alert.status(API_INVALID_SESSION)
-      )
+        this.$store.commit('account_forget')
+      })
     }
     if (this.$store.state.auth.token !== null) {
       this.$store.dispatch('api_load_container')

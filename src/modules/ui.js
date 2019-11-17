@@ -26,9 +26,7 @@ export const colors = {
     { name: "Blue-Grey", value: "blue-grey darken-1" },
     { name: "Grey", value: "grey darken-1" }
   ],
-  num(value) {
-    return this.colors.findIndex(c => c.value == value)
-  }
+  num: value => colors.colors.findIndex(c => c.value == value)
 }
 
 export const icons = {
@@ -50,16 +48,13 @@ export const icons = {
     { name: "Basket", value: "mdi-basket" },
     { name: "Bike", value: "mdi-bike" }
   ],
-  map(id) {
-    return this.icons[id].value || 'mdi-key-variant'
-  },
-  num(value) {
-    return this.icons.findIndex(i => value == i.value)
-  }
+  map: id => icons.icons[id].value || 'mdi-key-variant',
+  num: value => icons.icons.findIndex(i => value == i.value)
 }
 
 export const UI_USER_LOGOUT = "ui_user_logout"
 export const UI_REQUIRE_AUTH = "ui_require_auth"
+export const UI_INVALID_DECRYPT = "ui_invalid_decrypt_pass"
 
 export const alert = {
   config: {
@@ -85,6 +80,10 @@ export const alert = {
     },
     [UI_REQUIRE_AUTH]: {
       message: "You need to authenticate to continue.",
+      type: "error"
+    },
+    [UI_INVALID_DECRYPT]: {
+      message: "You provided an invalid password, try again.",
       type: "error"
     }
   },

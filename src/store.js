@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import { generateKey, key } from "openpgp";
 import {
   request,
+  API_AUTH_LOGIN,
   API_CONTAINER,
   API_CONTAINER_CREATE,
   API_CATEGORY_CREATE,
@@ -77,6 +78,16 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    api_login: ({ commit, dispatch }, { email, password }) => new Promise((resolve, reject) => {
+      request.do(API_AUTH_LOGIN, { data: { email, password }})
+        .then(res => {
+          commit('account_login', res)
+          dispatch('api_load_container')
+            .then(() => resolve())
+            .catch(reason => reject(reason))
+        })
+        .catch(reason => reject(reason))
+    }),
     api_load_container: ({ commit, dispatch }) => new Promise((resolve, reject) => {
       request.do(API_CONTAINER)
         .then(res => {
@@ -97,7 +108,7 @@ export default new Vuex.Store({
           console.error("Error while public certificate read:", err)
         })
     },
-    local_decrypt_private: ({ commit, state }, { password }) => new Promise((resolve, reject) => {
+    decrypt_private: ({ commit, state }, { password }) => new Promise((resolve, reject) => {
       key.readArmored(state.openpgp.private)
         .then(({ keys }) => {
           keys[0].decrypt(password)

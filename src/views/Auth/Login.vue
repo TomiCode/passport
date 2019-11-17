@@ -23,14 +23,13 @@
       Reset password
     </v-btn>
     <v-alert border="left" type="info" outlined>
-      Don't have an account? <router-link :to="{name: 'auth_register'}">Register</router-link> a new one, it's free forever.
+      Don't have an account? <router-link :to="{ name: 'auth_register' }">Register</router-link> a new one, it's free forever.
     </v-alert>
   </v-container>
 </template>
 
 <script>
-import { alert, UI_LOGIN_SUCCESS } from "@/modules/ui";
-import { request, API_AUTH_LOGIN, API_AUTH_ERR } from "@/modules/api";
+import { alert } from "@/modules/ui";
 
 export default {
   data: () => ({
@@ -43,12 +42,9 @@ export default {
   methods: {
     login() {
       this.loading = true
-      request.do(API_AUTH_LOGIN, { data: this.auth })
-        .then(resp => {
-          this.$store.commit('account_login', resp)
-          this.$router.push({ name: 'home_index' })
-        })
-        .catch(resp => {
+      this.$store.dispatch('api_login', this.auth)
+        .then(() => this.$router.push({ name: 'home_index' }))
+        .catch(err => {
           if (resp.status !== undefined) {
             alert.status(resp.status)
           }
