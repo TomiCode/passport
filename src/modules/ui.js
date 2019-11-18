@@ -48,7 +48,7 @@ export const icons = {
     { name: "Basket", value: "mdi-basket" },
     { name: "Bike", value: "mdi-bike" }
   ],
-  map: id => icons.icons[id].value || 'mdi-key-variant',
+  map: id => id ? icons.icons[id].value || 'mdi-key-variant' : 'mdi-key-variant',
   num: value => icons.icons.findIndex(i => value == i.value)
 }
 

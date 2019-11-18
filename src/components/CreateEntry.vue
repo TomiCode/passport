@@ -131,7 +131,7 @@ export default {
     store: {
       name: "",
       appearance: {
-        icon: "fas fa-key",
+        icon: "mdi-key-variant",
         color: "indigo darken-1"
       },
       description: "",
@@ -178,6 +178,13 @@ export default {
   },
   computed: mapState({
     categories: state => state.categories
-  })
+  }),
+  watch: {
+    dialog(value) {
+      if (value) {
+        this.store.category = this.$route.params.category
+      }
+    }
+  }
 }
 </script>

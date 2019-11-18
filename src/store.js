@@ -51,7 +51,7 @@ export default new Vuex.Store({
       state.openpgp.private = key
     },
     local_categories_update: (state, categories) => {
-      state.categories = categories
+      state.categories = categories.categories
     },
 
     account_login (state, login) {
@@ -188,6 +188,7 @@ export default new Vuex.Store({
   getters: {
     private_decrypted: state => state.openpgp.private instanceof key.Key,
     private_loaded: state => !!state.openpgp.private,
+    has_categories: state => state.categories.length > 0,
 
     logged_in: state => !!state.auth.token,
     auth_token: state => state.auth.token,

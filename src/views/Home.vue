@@ -1,7 +1,9 @@
 <template>
   <v-container fluid>
-    <v-breadcrumbs :items="path_items"></v-breadcrumbs>
-    <router-view></router-view>
+    <v-breadcrumbs :items="path_items" v-if="has_categories"></v-breadcrumbs>
+    <div class="home-container" v-if="private_decrypted">
+      <router-view></router-view>
+    </div>
   </v-container>
 </template>
 
@@ -31,7 +33,7 @@ export default {
       }
       return segments
     },
-    ...mapGetters([ 'container_valid' ]),
+    ...mapGetters([ 'container_valid', 'has_categories', 'private_decrypted' ]),
   }
 }
 </script>

@@ -17,6 +17,7 @@
           type="password"
           label="Contaner password"
           v-model="password"
+          v-on:keyup.enter="decrypt"
         ></v-text-field>
       </v-card-text>
       <v-divider></v-divider>

@@ -57,7 +57,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item @click="logout">
+          <v-list-item @click.stop="logout">
             <v-list-item-icon class="my-auto mr-3">
               <v-icon >mdi-logout-variant</v-icon>
             </v-list-item-icon>
@@ -108,6 +108,7 @@ export default {
   },
   methods: {
     logout () {
+      this.account = false
       this.$store.dispatch('logout')
         .then(() => {
           this.$router.push({ name: 'auth_login' })
