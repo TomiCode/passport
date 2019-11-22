@@ -55,6 +55,7 @@ export const icons = {
 export const UI_USER_LOGOUT = "ui_user_logout"
 export const UI_REQUIRE_AUTH = "ui_require_auth"
 export const UI_INVALID_DECRYPT = "ui_invalid_decrypt_pass"
+export const UI_CREATED_ENTITY = "ui_created_entity"
 
 export const alert = {
   config: {
@@ -85,6 +86,10 @@ export const alert = {
     [UI_INVALID_DECRYPT]: {
       message: "You provided an invalid password, try again.",
       type: "error"
+    },
+    [UI_CREATED_ENTITY]: {
+      message: "Your entity was created successfully!",
+      type: "success"
     }
   },
   status(status) {

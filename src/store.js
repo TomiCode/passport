@@ -54,6 +54,9 @@ export default new Vuex.Store({
     local_categories_update: (state, categories) => {
       state.categories = categories.categories
     },
+    local_container_update: (state, container) => {
+      state.auth.container = container
+    },
 
     account_login (state, account) {
       if (account.uuid !== undefined) {
@@ -104,6 +107,7 @@ export default new Vuex.Store({
     api_load_container: ({ commit, dispatch }) => new Promise((resolve, reject) => {
       request.do(API_CONTAINER)
         .then(res => {
+          commit('local_container_update', res.content.id)
           dispatch('prepare_keystore', {
             certificate: atob(res.content.certificate),
             encrypted: atob(res.content.encrypted)
@@ -115,8 +119,8 @@ export default new Vuex.Store({
     }),
     prepare_keystore: ({ commit }, { certificate, encrypted }) => {
       key.readArmored(certificate)
-        .then(certificate => {
-          commit('keystore_setup', { certificate, key: encrypted })
+        .then(store => {
+          commit('keystore_setup', { certificate: store.keys[0], key: encrypted })
         })
         .catch(err => {
           console.error("Error while public certificate read:", err)

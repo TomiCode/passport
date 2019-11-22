@@ -120,6 +120,8 @@ import { request, API_STORE_CREATE } from "@/modules/api";
 import { key, encrypt, message } from "openpgp";
 import { mapState } from "vuex";
 
+import { icons, colors, alert, UI_CREATED_ENTITY } from "@/modules/ui";
+
 export default {
   components: {
     PasswordGenerator, CustomizeEntity
@@ -131,8 +133,8 @@ export default {
     store: {
       name: "",
       appearance: {
-        icon: "mdi-key-variant",
-        color: "indigo darken-1"
+        icon: icons.icons[0].value,
+        color: colors.colors[0].value
       },
       description: "",
       category: 0
@@ -146,43 +148,65 @@ export default {
     loading: false
   }),
   methods: {
-    async create() {
+    create() {
+      console.log("teeest")
       this.loading = true
-
-      let options = {
-        message: message.fromText(JSON.stringify(this.encrypted)),
-        publicKeys: (await key.readArmored(this.$store.state.crypto.certificate)).keys,
-        armor: false
-      }
-      encrypt(options).then(ci => {
-        console.log(ci)
-        console.log(ci.message.packets.write())
-        request.do(API_STORE_CREATE, {
-        data: {
-          name: this.store.name,
-          container: 1,
-          category: 0,
-          icon: "fas fa-user",
-          color: 0,
-          content: btoa(String.fromCharCode.apply(null, ci.message.packets.write())),
-        }
-      })
-        .then(resp => {
-          console.log(resp)
+      encrypt({ message: this.msg_packet, publicKeys: this.public, armor: false })
+        .then(cipher => request.do(API_STORE_CREATE, {
+          data: {
+            name: this.store.name,
+            description: this.store.description,
+            container: this.container,
+            category: this.store.category,
+            icon: icons.num(this.store.appearance.icon),
+            color: colors.num(this.store.appearance.color),
+            content: btoa(String.fromCharCode.apply(null, cipher.message.packets.write()))
+          }
+        }))
+        .then(res => {
+          this.dialog = false
+          alert.status(UI_CREATED_ENTITY)
         })
-        .finally(() => {
-          this.loading = false
+        .catch(reason => {
+          console.log(reason)
         })
+        .finally(() => this.loading = false)
+    },
+    clear() {
+      this.store = Object.assign({}, {
+        name: "",
+        appearance: {
+          icon: icons.icons[0].value,
+          color: colors.colors[0].value
+        },
+        description: "",
+        category: 0
       })
-    }
+      this.encrypted = Object.assign({}, {
+        address: "",
+        login: "",
+        password: "",
+        notes: ""
+      })
+    },
   },
-  computed: mapState({
-    categories: state => state.categories
-  }),
+  computed:{
+    msg_packet() {
+      return message.fromText(JSON.stringify(this.encrypted))
+    },
+    ...mapState({
+      categories: state => state.categories,
+      public: state => state.openpgp.public,
+      container: state => state.auth.container
+    })
+  },
   watch: {
     dialog(value) {
       if (value) {
-        this.store.category = this.$route.params.category
+        this.store.category = int(this.$route.params.category)
+      }
+      else {
+        setTimeout(() => this.clear(), 150)
       }
     }
   }
