@@ -44,9 +44,9 @@ export default {
       this.loading = true
       this.$store.dispatch('api_login', this.auth)
         .then(() => this.$router.push({ name: 'home_index' }))
-        .catch(err => {
-          if (resp.status !== undefined) {
-            alert.status(resp.status)
+        .catch(reason => {
+          if (reason !== undefined && reason.status !== undefined) {
+            alert.status(reason.status)
           }
         })
         .finally(() => this.loading = false)

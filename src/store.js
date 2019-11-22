@@ -8,7 +8,8 @@ import {
   API_CONTAINER,
   API_CONTAINER_CREATE,
   API_CATEGORY_CREATE,
-  API_NO_CONTAINER
+  API_NO_CONTAINER,
+  API_AUTH_SESSION
 } from "@/modules/api";
 
 Vue.use(Vuex)
@@ -54,12 +55,14 @@ export default new Vuex.Store({
       state.categories = categories.categories
     },
 
-    account_login (state, login) {
-      localStorage.setItem('vinca:session', login.uuid)
-      state.auth.token = login.uuid
-      state.user.name = login.username
-      state.user.email = login.email
-      state.user.avatar = login.avatar
+    account_login (state, account) {
+      if (account.uuid !== undefined) {
+        localStorage.setItem('vinca:session', account.uuid)
+        state.auth.token = account.uuid
+      }
+      state.user.name = account.username
+      state.user.email = account.email
+      state.user.avatar = account.avatar
     },
     account_forget (state) {
       localStorage.removeItem('vinca:session')
@@ -81,7 +84,17 @@ export default new Vuex.Store({
     api_login: ({ commit, dispatch }, { email, password }) => new Promise((resolve, reject) => {
       request.do(API_AUTH_LOGIN, { data: { email, password }})
         .then(res => {
-          commit('account_login', res)
+          commit('account_login', res.content)
+          dispatch('api_load_container')
+            .then(() => resolve())
+            .catch(reason => reject(reason))
+        })
+        .catch(reason => reject(reason))
+    }),
+    api_auth_session: ({ commit, dispatch }) => new Promise((resolve, reject) => {
+      request.do(API_AUTH_SESSION)
+        .then(res => {
+          commit('account_login', res.content)
           dispatch('api_load_container')
             .then(() => resolve())
             .catch(reason => reject(reason))
@@ -92,10 +105,11 @@ export default new Vuex.Store({
       request.do(API_CONTAINER)
         .then(res => {
           dispatch('prepare_keystore', {
-            certificate: atob(res.certificate), encrypted: atob(res.encrypted)
+            certificate: atob(res.content.certificate),
+            encrypted: atob(res.content.encrypted)
           })
-          commit('local_categories_update', { categories: res.categories })
-          resolve(res)
+          commit('local_categories_update', { categories: res.content.categories })
+          resolve(res.content)
         })
         .catch(err => reject(err.status))
     }),

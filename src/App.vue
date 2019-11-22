@@ -1,5 +1,9 @@
 <template>
   <v-app>
+    <v-overlay :value="global_loading">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
+
     <alerts></alerts>
     <decrypt></decrypt>
     <category-navigation v-model="drawer"></category-navigation>
@@ -23,7 +27,6 @@
       ></v-text-field>
 
       <div class="flex-grow-1"></div>
-
       <v-menu
         v-model="account"
         close-on-click
@@ -43,8 +46,8 @@
               <v-img src="https://avatars1.githubusercontent.com/u/1648325?s=460"></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title >Username Username</v-list-item-title>
-              <v-list-item-subtitle>test@test.com</v-list-item-subtitle>
+              <v-list-item-title>{{ name }}</v-list-item-title>
+              <v-list-item-subtitle>{{ email }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-divider></v-divider>
@@ -71,6 +74,24 @@
 
     <v-content>
       <router-view/>
+      <v-footer
+        color="grey"
+        padless
+        absolute
+        height="1em"
+      >
+        <v-row
+          justify="center"
+          no-gutters
+        >
+          <v-col
+            class="grey lighten-4 py-4 text-center grey--text"
+            cols="12"
+          >
+            2019 &copy; Agnieszka &amp; Tomasz
+          </v-col>
+        </v-row>
+      </v-footer>
     </v-content>
   </v-app>
 </template>
@@ -82,14 +103,15 @@ import Decrypt from '@/components/Decrypt.vue'
 import Alerts from '@/components/Alerts'
 
 import { request, API_INVALID_SESSION } from '@/modules/api';
-import { alert, UI_USER_LOGOUT } from '@/modules/ui';
-import { mapActions, mapGetters } from 'vuex';
+import { alert, UI_USER_LOGOUT, UI_INVALID_DECRYPT } from '@/modules/ui';
+import { mapState } from 'vuex';
 
 export default {
   name: 'App',
   data: () => ({
     drawer: false,
-    account: false
+    account: false,
+    global_loading: false
   }),
   components: {
     CategoryNavigation, Alerts, Decrypt
@@ -103,7 +125,10 @@ export default {
       })
     }
     if (this.$store.state.auth.token !== null) {
-      this.$store.dispatch('api_load_container')
+      this.global_loading = true
+      this.$store.dispatch('api_auth_session')
+        .catch(reason => console.log(reason))
+        .finally(() => this.global_loading = false)
     }
   },
   methods: {
@@ -114,7 +139,13 @@ export default {
           this.$router.push({ name: 'auth_login' })
             .then(() => alert.status(UI_USER_LOGOUT))
         })
-    },
+    }
+  },
+  computed: {
+    ...mapState({
+      name: state => state.user.name,
+      email: state => state.user.email
+    })
   }
 };
 </script>
