@@ -1,11 +1,10 @@
 <template>
   <v-list subheader>
     <template>
-      <v-subheader >
+      <v-subheader>
         <v-icon small class="pr-4">mdi-history</v-icon>
         Last used entries
       </v-subheader>
-
       <v-divider></v-divider>
     </template>
     <v-subheader>

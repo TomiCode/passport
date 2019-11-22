@@ -2,6 +2,7 @@
   <v-container fluid>
     <v-breadcrumbs :items="path_items" v-if="has_categories"></v-breadcrumbs>
     <div class="home-container" v-if="private_decrypted">
+      <router-view name="create"></router-view>
       <router-view></router-view>
     </div>
   </v-container>

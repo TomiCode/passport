@@ -16,6 +16,9 @@ import HomeCategory from './views/Home/Category.vue'
 import HomeManage from './views/Home/Manage.vue'
 import HomeProfile from './views/Home/Profile.vue'
 
+import CreateCategory from './views/Home/Dialogs/CreateCategory'
+import CreateEntity from './views/Home/Dialogs/CreateEntity'
+
 import store from './store'
 import { alert, UI_REQUIRE_AUTH } from '@/modules/ui';
 
@@ -69,7 +72,10 @@ const router = new Router({
         {
           path: '/',
           name: 'home_index',
-          component: HomeIndex,
+          components: {
+            default: HomeIndex,
+            create: CreateEntity
+          },
           meta: {
             title: "General"
           }
@@ -77,7 +83,10 @@ const router = new Router({
         {
           path: 'manage',
           name: 'home_manage',
-          component: HomeManage,
+          components: {
+            default: HomeManage,
+            create: CreateCategory
+          },
           meta: {
             title: "Settings"
           }
@@ -93,7 +102,10 @@ const router = new Router({
         {
           path: 'category/:category',
           name: 'home_category',
-          component: HomeCategory,
+          components: {
+            default: HomeCategory,
+            create: CreateEntity
+          },
           meta: {
             title: "Category"
           }

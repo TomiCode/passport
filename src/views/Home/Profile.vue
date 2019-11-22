@@ -34,6 +34,7 @@ export default {
   data: () => ({
     password: "",
     username: "Current username",
+    email: "",
     new_password: "",
     password_confirmation: "",
     latest: true,

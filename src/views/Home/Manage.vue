@@ -1,6 +1,5 @@
 <template>
   <div class="category-manage">
-    <create-category></create-category>
     <v-list>
       <v-subheader inset>User defined categories</v-subheader>
       <v-list-item v-for="category in categories" :key="category.id">
@@ -22,15 +21,10 @@
 </template>
 
 <script>
-import CreateCategory from '@/components/CreateCategory.vue'
-
 import { icons } from "@/modules/ui";
 import { mapState } from "vuex";
 
 export default {
-  components: {
-    CreateCategory
-  },
   methods: {
     icon: id => icons.map(id)
   },

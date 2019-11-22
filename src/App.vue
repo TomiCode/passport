@@ -73,12 +73,13 @@
     </v-app-bar>
 
     <v-content>
-      <router-view/>
+      <div class="render-view-content">
+        <router-view/>
+      </div>
       <v-footer
         color="grey"
         padless
         absolute
-        height="1em"
       >
         <v-row
           justify="center"
@@ -88,7 +89,7 @@
             class="grey lighten-4 py-4 text-center grey--text"
             cols="12"
           >
-            2019 &copy; Agnieszka &amp; Tomasz
+            vinca project 2019 &copy; Agnieszka &amp; Tomasz
           </v-col>
         </v-row>
       </v-footer>
@@ -149,3 +150,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.render-view-content {
+  margin-bottom: 4em;
+}
+</style>

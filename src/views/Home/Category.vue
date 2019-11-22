@@ -35,22 +35,17 @@
         </v-list-item-action>
       </v-list-item>
     </v-list>
-    <create-entry></create-entry>
-    <!-- <v-btn text color="pink" @click="load">Test</v-btn> -->
   </v-col>
 </template>
 
 <script>
 import Entity from '@/components/Entity'
-import CreateEntry from '@/components/CreateEntry'
 import EntryDetails from '@/components/EntryDetails'
 
 import { request, API_STORES } from "@/modules/api";
 
 export default {
-  components: {
-    CreateEntry, EntryDetails, Entity
-  },
+  components: { EntryDetails, Entity },
   data: () => ({
     stores: [ ],
     drawer: false,
