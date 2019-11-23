@@ -149,7 +149,6 @@ export default {
   }),
   methods: {
     create() {
-      console.log("teeest")
       this.loading = true
       encrypt({ message: this.msg_packet, publicKeys: this.public, armor: false })
         .then(cipher => request.do(API_STORE_CREATE, {
@@ -166,6 +165,9 @@ export default {
         .then(res => {
           this.dialog = false
           alert.status(UI_CREATED_ENTITY)
+          if (this.$route.params.category == res.content.category) {
+            this.$emit('refresh')
+          }
         })
         .catch(reason => {
           console.log(reason)
@@ -203,7 +205,7 @@ export default {
   watch: {
     dialog(value) {
       if (value) {
-        this.store.category = int(this.$route.params.category)
+        this.store.category = parseInt(this.$route.params.category)
       }
       else {
         setTimeout(() => this.clear(), 150)

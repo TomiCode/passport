@@ -12,9 +12,12 @@ export default new Vuetify({
   theme: {
     themes: {
       light: {
+        secondary: colors.grey.lighten4,
         accent: colors.indigo,
       },
       dark: {
+        primary: colors.lightBlue.lighten1,
+        secondary: colors.grey.darken3,
         accent: colors.indigo
       }
     },

@@ -2,25 +2,19 @@
   <v-container fluid>
     <v-breadcrumbs :items="path_items" v-if="has_categories"></v-breadcrumbs>
     <div class="home-container" v-if="private_decrypted">
-      <router-view name="create"></router-view>
-      <router-view></router-view>
+      <router-view name="create" @refresh="reload_content = true"></router-view>
+      <router-view v-model="reload_content"></router-view>
     </div>
   </v-container>
 </template>
 
 <script>
-import CreateContainer from '@/components/CreateContainer.vue'
-import Decrypt from '@/components/Decrypt.vue'
-
 import { mapGetters } from "vuex";
 
 export default {
   data: () => ({
-    decryption_modals: false
+    reload_content: false
   }),
-  components: {
-    CreateContainer, Decrypt
-  },
   computed: {
     path_items() {
       let segments = this.$route.matched.map(route => ({ text: route.meta.title, disabled: true }))

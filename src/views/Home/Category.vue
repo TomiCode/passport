@@ -1,4 +1,6 @@
 <template>
+<div class="category-view">
+  <v-row v-if="has_stores">
   <v-col>
     <entry-details
       :store="detail"
@@ -17,8 +19,8 @@
 
         <v-list-item-content>
           <v-overlay absolute :value="false" opacity="0.05">
-      <v-progress-circular color="indigo" indeterminate size="24"></v-progress-circular>
-    </v-overlay>
+            <v-progress-circular color="indigo" indeterminate size="24"></v-progress-circular>
+          </v-overlay>
           <v-list-item-title v-text="item.name"></v-list-item-title>
           <v-list-item-subtitle v-text="item.username"></v-list-item-subtitle>
         </v-list-item-content>
@@ -36,6 +38,18 @@
       </v-list-item>
     </v-list>
   </v-col>
+  </v-row>
+   <v-row v-else
+          justify="center"
+          align="center"
+        >
+          <v-col cols="2">
+            <v-icon color="grey" size="96px">mdi-emoticon-neutral-outline</v-icon>
+
+          </v-col>
+          <v-col cols="12">No entities yet created. Add a new one using the + button.</v-col>
+   </v-row>
+</div>
 </template>
 
 <script>
@@ -50,14 +64,26 @@ export default {
     stores: [ ],
     drawer: false,
     dialog: false,
-    detail: null
+    detail: null,
+    invalid: false,
+    loading: false
   }),
+  created() {
+    this.fetch(this.$route.params.category)
+  },
+  props: {
+    value: Boolean
+  },
   methods: {
-    load() {
-      request.do(API_STORES)
-        .then(resp => {
-          this.stores = resp.stores
-        })
+    fetch(category) {
+      if (category === undefined) {
+        this.invalid = true
+        return
+      }
+      this.loading = true
+      request.do(API_STORES, { data: { category: parseInt(category) }})
+        .then(res => this.stores = res.content.stores)
+        .finally(() => this.loading = false)
     },
     showDetails(store) {
       if (this.detail == store) {
@@ -70,6 +96,23 @@ export default {
     },
     details_closed() {
       this.detail = null
+    }
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.fetch(to.params.category)
+    next()
+  },
+  watch: {
+    value(state) {
+      if (state) {
+        this.fetch(this.$route.params.category)
+        this.$emit('input', !state)
+      }
+    }
+  },
+  computed: {
+    has_stores() {
+      return this.stores !== null && this.stores.length > 0
     }
   }
 }

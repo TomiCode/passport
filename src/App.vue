@@ -40,7 +40,7 @@
           </v-btn>
         </template>
 
-        <v-list dark color="primary">
+        <v-list dark color="indigo accent-2">
           <v-list-item>
             <v-list-item-avatar>
               <v-img src="https://avatars1.githubusercontent.com/u/1648325?s=460"></v-img>
@@ -77,7 +77,7 @@
         <router-view/>
       </div>
       <v-footer
-        color="grey"
+        color="secondary"
         padless
         absolute
       >
@@ -86,7 +86,7 @@
           no-gutters
         >
           <v-col
-            class="grey lighten-4 py-4 text-center grey--text"
+            class="secondary py-4 text-center grey--text"
             cols="12"
           >
             vinca project 2019 &copy; Agnieszka &amp; Tomasz
