@@ -19,6 +19,9 @@ import HomeProfile from './views/Home/Profile.vue'
 import CreateCategory from './views/Home/Dialogs/CreateCategory'
 import CreateEntity from './views/Home/Dialogs/CreateEntity'
 
+import NavsAuthenticated from './views/Navs/Authenticated'
+import NavsBasic from './views/Navs/Basic'
+
 import store from './store'
 import { alert, UI_REQUIRE_AUTH } from '@/modules/ui';
 
@@ -30,7 +33,10 @@ const router = new Router({
   routes: [
     {
       path: '/auth/',
-      component: Auth,
+      components: {
+        default: Auth,
+        nav: NavsBasic
+      },
       meta: {
         title: "Authorization"
       },
@@ -56,14 +62,17 @@ const router = new Router({
           name: 'auth_reset',
           component: AuthReset,
           meta: {
-            title: "Password reset"
+            title: "Password restore"
           }
         }
       ]
     },
     {
       path: '/home/',
-      component: Home,
+      components: {
+        default: Home,
+        nav: NavsAuthenticated
+      },
       meta: {
         login: true,
         title: "Home"
@@ -120,7 +129,10 @@ const router = new Router({
     {
       path: '/',
       name: 'about_index',
-      component: () => import('./views/About.vue')
+      components: {
+        default: () => import('./views/About.vue'),
+        nav: NavsBasic
+      }
     }
   ]
 })

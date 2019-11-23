@@ -1,7 +1,9 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-breadcrumbs :items="path_items"></v-breadcrumbs>
-    <router-view></router-view>
+    <div class="auth-container">
+      <router-view></router-view>
+    </div>
   </v-container>
 </template>
 
@@ -14,7 +16,16 @@ export default {
         ...this.$route.matched.map(route => ({ text: route.meta.title, to: route.path }))
       ]
     },
-
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@media only screen and (min-width: 720px) {
+  .auth-container {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+</style>

@@ -1,31 +1,56 @@
 <template>
-  <v-container fluid>
-    <v-text-field
-      v-model="auth.email"
-      label="Email address"
-      prepend-inner-icon="mdi-account"
-    ></v-text-field>
-    <v-text-field
-      v-model="auth.password"
-      type="password"
-      label="Password"
-      prepend-inner-icon="mdi-lock"
-    ></v-text-field>
-    <v-btn
-      class="ma-2"
-      outlined
-      color="primary"
-      @click="login"
-      :loading="loading"
-    >Login
-    </v-btn>
-    <v-btn outlined color="accent" :to="{ name: 'auth_reset' }">
-      Reset password
-    </v-btn>
-    <v-alert border="left" type="info" outlined>
-      Don't have an account? <router-link :to="{ name: 'auth_register' }">Register</router-link> a new one, it's free forever.
-    </v-alert>
-  </v-container>
+  <v-row>
+    <v-col cols="12">
+      <v-form lazy-validation ref="login_form">
+        <v-text-field
+          v-model="auth.email"
+          label="Email address"
+          prepend-inner-icon="mdi-account"
+          :rules="[rules.required, rules.email]"
+        ></v-text-field>
+        <v-text-field
+          v-model="auth.password"
+          type="password"
+          label="Password"
+          prepend-inner-icon="mdi-lock"
+          :rules="[rules.required]"
+        ></v-text-field>
+      </v-form>
+    </v-col>
+    <v-col cols="6">
+      <v-btn
+        block
+        outlined
+        color="primary"
+        @click="login"
+        :loading="loading"
+      >
+        Login
+      </v-btn>
+    </v-col>
+    <v-col cols="6">
+      <v-btn
+        block
+        outlined
+        color="accent"
+        :to="{ name: 'auth_reset' }"
+      >
+        Reset password
+      </v-btn>
+    </v-col>
+    <v-col cols="12">
+      <v-alert
+        colored-border
+        border="left"
+        color="info"
+        icon="mdi-information-variant"
+      >
+        Don't have an account?
+        <router-link :to="{ name: 'auth_register' }" class="grey--text text--darken-2">Register</router-link>
+        a new one, it's free forever.
+      </v-alert>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -37,10 +62,17 @@ export default {
       email: "",
       password: ""
     },
+    rules: {
+      required: (val) => !!val || 'This field is required.',
+      email: (val) => /^\S+@\S+[\.][0-9a-z]+$/.test(val) || 'Invalid email address.'
+    },
     loading: false
   }),
   methods: {
     login() {
+      if (!this.$refs.login_form.validate()) {
+        return
+      }
       this.loading = true
       this.$store.dispatch('api_login', this.auth)
         .then(() => this.$router.push({ name: 'home_index' }))

@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-breadcrumbs :items="path_items" v-if="has_categories"></v-breadcrumbs>
     <div class="home-container" v-if="private_decrypted">
       <router-view name="create" @refresh="reload_content = true"></router-view>

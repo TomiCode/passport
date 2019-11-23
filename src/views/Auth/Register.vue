@@ -1,52 +1,60 @@
 <template>
-  <v-container fluid>
-    <v-form ref="registrar">
-      <v-text-field
-        v-model="user.username"
-        label="Username"
-        :rules="[rules.required, rules.name]"
-        counter="16"
-      ></v-text-field>
-      <v-text-field
-        v-model="user.email"
-        label="Email address"
-        :rules="[rules.required, rules.email]"
-      ></v-text-field>
-      <v-text-field
-        v-model="user.password"
-        type="password"
-        label="Password"
-        :rules="[rules.required]"
-      ></v-text-field>
-      <v-text-field
-        type="password"
-        label="Confirm password"
-        :rules="[password_confirmed]"
-      ></v-text-field>
-      <v-checkbox
-        v-model="user.rules"
-        :rules="[v => !!v || 'You must agree to continue!']"
-        label="Do you agree to sell your kidney?"
-        required
-      ></v-checkbox>
-      <v-btn
-        class="mr-4"
-        outlined
-        color="primary"
-        @click="register"
-        :loading="loading"
-      >Register</v-btn>
+  <div class="auth-register">
+    <v-form ref="registrar" class="pb-4">
+      <div class="form-fields">
+        <v-text-field
+          v-model="user.username"
+          label="Username"
+          :rules="[rules.required, rules.name]"
+          counter="16"
+        ></v-text-field>
+        <v-text-field
+          v-model="user.email"
+          label="Email address"
+          :rules="[rules.required, rules.email]"
+        ></v-text-field>
+        <v-text-field
+          v-model="user.password"
+          type="password"
+          label="Password"
+          :rules="[rules.required]"
+        ></v-text-field>
+        <v-text-field
+          type="password"
+          label="Confirm password"
+          :rules="[password_confirmed]"
+        ></v-text-field>
+        <v-checkbox
+          v-model="user.rules"
+          :rules="[v => !!v || 'You must agree to continue!']"
+          label="Do you agree to sell your kidney?"
+          required
+        ></v-checkbox>
+      </div>
+      <div class="form-actions mt-4">
+        <v-btn block large
+          class="mr-4"
+          outlined
+          color="primary"
+          @click="register"
+          :loading="loading"
+        >
+          Register
+        </v-btn>
+      </div>
     </v-form>
     <v-alert
-      outlined
-      color="teal"
+      colored-border
       border="left"
+      color="accent lighten-2"
       icon="mdi-help-circle-outline"
       class="mt-4"
     >
-      Already have an account? <router-link :to="{ name: 'auth_login' }">Log in</router-link> to your existing one.
+      Already have an account?
+      <router-link :to="{ name: 'auth_login' }" class="grey--text text--darken-2">Log in</router-link>
+      to your existing one.
     </v-alert>
-  </v-container>
+  </div>
 </template>
 
 <script>

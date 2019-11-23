@@ -16,6 +16,7 @@ export const API_AUTH_ERR = "user_login_invalid"
 export const API_INVALID_SESSION = "user_session_invalid"
 export const API_NO_CONTAINER = "user_no_container"
 
+export const APP_NETWORK_ERR = "app_network_err"
 export const API_FATAL_ERR = "fetch_err"
 
 // Request handler
@@ -24,6 +25,11 @@ export const request = {
     errorHandlers: { },
     authToken: () => null,
     absoluteUri: uri => process.env.VUE_APP_BACKEND + uri
+  },
+  handleError(err, reason) {
+    if (this.config.errorHandlers[err] !== undefined) {
+      this.config.errorHandlers[err](reason)
+    }
   },
   handlers: {
     credentials: (auth) => auth ? { 'Vinca-Authentication' : auth } : { }
@@ -56,12 +62,15 @@ export const request = {
           resolve(resp)
         })
         .catch(reason => {
-          if (this.config.errorHandlers[API_FATAL_ERR] !== undefined) {
-            this.config.errorHandlers[API_FATAL_ERR](reason)
+          if (reason instanceof TypeError) {
+            this.handleError(APP_NETWORK_ERR, reason)
+            reject({ status: APP_NETWORK_ERR })
+            return
           }
+          this.handleError(API_FATAL_ERR, reason)
           console.log("Fatal fetch error:", reason)
           reject({ status: API_FATAL_ERR })
         })
     })
-  }
+  },
 }
