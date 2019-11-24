@@ -1,12 +1,13 @@
 <template>
   <v-app>
-    <v-overlay :value="global_loading">
-      <v-progress-circular indeterminate size="64"></v-progress-circular>
-    </v-overlay>
+    <router-view name="nav"></router-view>
     <alerts></alerts>
     <decrypt></decrypt>
-    <router-view name="nav"></router-view>
+    <create-container></create-container>
     <v-content>
+      <v-overlay :value="global_loading">
+        <v-progress-circular indeterminate size="64"></v-progress-circular>
+      </v-overlay>
       <div class="render-view-content">
         <router-view></router-view>
       </div>
@@ -43,15 +44,14 @@ export default {
     global_loading: false
   }),
   components: {
-    CategoryNavigation, Alerts, Decrypt
+    CategoryNavigation, Alerts, Decrypt, CreateContainer
   },
   created () {
     request.config.authToken = () => this.$store.getters.auth_token
     request.config.errorHandlers[API_INVALID_SESSION] = () => {
-      this.$router.push({ name: 'auth_login' }).then(() => {
-        alert.status(API_INVALID_SESSION)
-        this.$store.commit('account_forget')
-      })
+      this.$store.commit('account_forget')
+      this.$router.push({ name: 'auth_login' })
+        .then(() => alert.status(API_INVALID_SESSION))
     }
     if (this.$store.state.auth.token !== null) {
       this.global_loading = true

@@ -58,7 +58,8 @@
 </template>
 
 <script>
-import { request, API_AUTH_REGISTER } from "../../modules/api";
+import { request, API_AUTH_REGISTER } from "@/modules/api"
+import { alert, UI_USER_REGISTERED } from "@/modules/ui"
 
 export default {
   data: () => ({
@@ -80,11 +81,16 @@ export default {
       return val == this.user.password || 'Passwords don\'t match.'
     },
     register() {
-      if (this.$refs.registrar.validate() === false)
+      if (this.$refs.registrar.validate() === false) {
         return
+      }
+
       this.loading = true
       request.do(API_AUTH_REGISTER, { data: this.user })
-        .then(resp => { })
+        .then(resp => {
+          this.$router.push({ name: 'auth_login' })
+            .then(() => alert.status(UI_USER_REGISTERED))
+        })
         .finally(() => this.loading = false)
     }
   }

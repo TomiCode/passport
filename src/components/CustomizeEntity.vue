@@ -73,7 +73,6 @@ export default {
     dialog: false,
   }),
   created() {
-    console.log("hello sweetheart.")
     this.handler.show = this.show
   },
   methods: {

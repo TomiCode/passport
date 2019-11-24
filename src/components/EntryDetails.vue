@@ -77,9 +77,6 @@ export default {
     drawer: false,
     visible: false
   }),
-  created() {
-    console.log("Hello my dear.")
-  },
   props: {
     store: Object
   },

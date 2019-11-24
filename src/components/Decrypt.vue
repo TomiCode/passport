@@ -5,10 +5,16 @@
     :value="visible"
   >
     <v-card>
-      <v-card-title>Decrypt your account</v-card-title>
+      <v-card-title>Account decryption</v-card-title>
       <v-divider></v-divider>
       <v-card-text>
-        <v-alert text color="teal lighten-1" border="left" class="mt-2" prominent icon="mdi-information-variant">
+        <v-alert
+          prominent
+          text
+          class="mt-2"
+          color="teal lighten-1"
+          icon="mdi-information-variant"
+        >
           Please enter the decryption key below to access your personal data.
           The password isn't stored nor send through the web.
         </v-alert>
@@ -52,7 +58,6 @@ import { mapGetters } from "vuex";
 export default {
   data: () => ({
     loading: false,
-    dialog: false,
     password: ""
   }),
   methods: {

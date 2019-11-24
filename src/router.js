@@ -7,9 +7,6 @@ import AuthLogin from './views/Auth/Login.vue'
 import AuthRegister from './views/Auth/Register.vue'
 import AuthReset from './views/Auth/Reset.vue'
 
-import ProfileDecrypt from './views/Profile/Decrypt.vue'
-import ProfileSetup from './views/Profile/Setup.vue'
-
 import HomeIndex from './views/Home/Home.vue'
 import HomeSearch from './views/Home/Search.vue'
 import HomeCategory from './views/Home/Category.vue'

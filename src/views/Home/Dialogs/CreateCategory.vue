@@ -22,10 +22,9 @@
           <v-text-field
             v-model="category.name"
             label="Title"
-            :counter="16"
+            :counter="24"
             :rules="[ validation.name ]"
           ></v-text-field>
-
           <v-text-field
             v-model="category.description"
             label="Description"
@@ -78,8 +77,8 @@ export default {
       icon: icons.icons[0]
     },
     validation: {
-      name: (val) => /^[\w ]{3,16}$/u.test(val) || 'Invalid category name!',
-      description: (val) => /^[\w ]{0,32}$/u.test(val) || 'Invalid category description!'
+      name: (val) => (val.length > 2 && val.length <= 24) || 'Invalid category name!',
+      description: (val) => (val.length <= 32) || 'Category description to long!'
     },
     icons: icons.icons,
   }),

@@ -21,15 +21,8 @@ export default new Vuex.Store({
       container: null
     },
     openpgp: {
-      server: false,
       public: null,
       private: null,
-    },
-    crypto: {
-      certificate: null,
-      private: null,
-      open_private: null,
-      container: 0
     },
     user: {
       name: "",
@@ -40,7 +33,6 @@ export default new Vuex.Store({
         lastused: true
       }
     },
-    stores: [ ],
     categories: [ ]
   },
   mutations: {
@@ -52,7 +44,9 @@ export default new Vuex.Store({
       state.openpgp.private = key
     },
     local_categories_update: (state, categories) => {
-      state.categories = categories.categories
+      if (categories !== null && categories !== undefined) {
+        state.categories = categories.categories
+      }
     },
     local_container_update: (state, container) => {
       state.auth.container = container
@@ -108,14 +102,42 @@ export default new Vuex.Store({
       request.do(API_CONTAINER)
         .then(res => {
           commit('local_container_update', res.content.id)
+          if (res.content.id !== -1) {
+            dispatch('prepare_keystore', {
+              certificate: atob(res.content.certificate),
+              encrypted: atob(res.content.encrypted)
+            })
+            commit('local_categories_update', { categories: res.content.categories })
+          }
+          resolve(res.content)
+        })
+        .catch(err => reject(err.status))
+    }),
+    api_create_container: ({ commit, dispatch, state }, { password }) => new Promise((resolve, reject) => {
+      generateKey({
+        userIds: [{ name: state.user.name, email: state.user.email }],
+        rsaBits: 4096,
+        passphrase: password,
+        armor: false
+      })
+        .then(keystore => request.do(API_CONTAINER_CREATE, {
+          data: {
+            certificate: btoa(keystore.publicKeyArmored),
+            encrypted: btoa(keystore.privateKeyArmored)
+          }
+        }))
+        .then(res => {
+          commit('local_container_update', res.content.id)
           dispatch('prepare_keystore', {
             certificate: atob(res.content.certificate),
             encrypted: atob(res.content.encrypted)
           })
-          commit('local_categories_update', { categories: res.content.categories })
-          resolve(res.content)
+          commit('local_categories_update', {
+            categories: res.content.categories
+          })
+          resolve(res)
         })
-        .catch(err => reject(err.status))
+        .catch(reason => reject(reason))
     }),
     prepare_keystore: ({ commit }, { certificate, encrypted }) => {
       key.readArmored(certificate)
@@ -196,7 +218,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         request.do(API_CATEGORY_CREATE, { data: category })
           .then(response => {
-            commit('categories_update', response.categories)
+            commit('categories_update', response.content.categories)
             resolve()
           })
           .catch(() => reject())
@@ -204,9 +226,11 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    no_container: state => state.auth.container == -1,
     private_decrypted: state => state.openpgp.private instanceof key.Key,
     private_loaded: state => !!state.openpgp.private,
-    has_categories: state => state.categories.length > 0,
+    has_categories: state => state.categories && !!state.categories.length,
+    categories: state => state.categories || [ ],
 
     logged_in: state => !!state.auth.token,
     auth_token: state => state.auth.token,

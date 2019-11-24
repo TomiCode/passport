@@ -53,6 +53,7 @@ export const icons = {
 }
 
 export const UI_USER_LOGOUT = "ui_user_logout"
+export const UI_USER_REGISTERED = "ui_user_registered"
 export const UI_REQUIRE_AUTH = "ui_require_auth"
 export const UI_ALREADY_AUTH = "ui_already_auth_complete"
 export const UI_INVALID_DECRYPT = "ui_invalid_decrypt_pass"
@@ -79,6 +80,10 @@ export const alert = {
     [UI_USER_LOGOUT]: {
       message: "Logout successful. Have a nice day.",
       type: "info"
+    },
+    [UI_USER_REGISTERED]: {
+      message: "Your account is successfully registered. Please login to Your new account.",
+      type: "success"
     },
     [UI_REQUIRE_AUTH]: {
       message: "You need to authenticate to continue.",
