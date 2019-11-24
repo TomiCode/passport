@@ -2,13 +2,13 @@
   <v-col>
     <v-text-field
       readonly
-      v-model="username"
+      :value="username"
       label="Username"
       prepend-icon="mdi-account"
     ></v-text-field>
     <v-text-field
       readonly
-      v-model="email"
+      :value="email"
       label="Address email"
       prepend-icon="mdi-email-edit"
     ></v-text-field>
@@ -30,11 +30,11 @@
 </template>
 
 <script>
+import { mapState } from "vuex"
+
 export default {
   data: () => ({
     password: "",
-    username: "Current username",
-    email: "",
     new_password: "",
     password_confirmation: "",
     latest: true,
@@ -44,6 +44,10 @@ export default {
     dark(value) {
       this.$vuetify.theme.dark = value
     }
-  }
+  },
+  computed: mapState({
+    username: state => state.user.name,
+    email: state => state.user.email,
+  })
 }
 </script>

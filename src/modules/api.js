@@ -1,5 +1,6 @@
 // Server entry points
 export const API_AUTH_LOGIN = "api/v1/auth/login"
+export const API_AUTH_RESET = "api/v1/auth/reset"
 export const API_AUTH_REGISTER = "api/v1/auth/register"
 export const API_AUTH_SESSION = "api/v1/auth/session"
 export const API_CONTAINER = "api/v1/home/container"

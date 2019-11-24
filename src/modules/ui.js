@@ -52,6 +52,7 @@ export const icons = {
   num: value => icons.icons.findIndex(i => value == i.value)
 }
 
+export const UI_USER_RESET = "ui_user_pass_reset"
 export const UI_USER_LOGOUT = "ui_user_logout"
 export const UI_USER_REGISTERED = "ui_user_registered"
 export const UI_REQUIRE_AUTH = "ui_require_auth"
@@ -76,6 +77,10 @@ export const alert = {
     [API_AUTH_ERR]: {
       message: "Invalid username and/or password. Check your data.",
       type: "error"
+    },
+    [UI_USER_RESET]: {
+      message: "Password reset procedure was send at the provided email address.",
+      type: "info"
     },
     [UI_USER_LOGOUT]: {
       message: "Logout successful. Have a nice day.",

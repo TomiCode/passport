@@ -68,6 +68,7 @@
 
 <script>
 import CategoryNavigation from '@/components/CategoryNavigation'
+import { alert, UI_USER_LOGOUT } from "@/modules/ui";
 import { mapState } from "vuex";
 
 export default {

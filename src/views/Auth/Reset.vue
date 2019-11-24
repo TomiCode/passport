@@ -24,9 +24,9 @@
     <v-col cols="6">
       <v-btn
         outlined
-        block=""
+        block
         color="primary"
-        @click.stop="submit"
+        @click="reset"
       >
         Reset
       </v-btn>
@@ -34,8 +34,8 @@
     <v-col cols="6">
       <v-btn
         block
-        color="grey darken-1"
         outlined
+        color="grey darken-1"
         :to="{ name: 'auth_login' }"
       >
         Cancel
@@ -45,12 +45,21 @@
 </template>
 
 <script>
+import { request, API_AUTH_RESET } from "@/modules/api";
+import { alert, UI_USER_RESET } from "@/modules/ui";
+
 export default {
   data: () => ({
     email: ""
   }),
   methods: {
-    submit() {
+    reset() {
+      request.do(API_AUTH_RESET, { data: { email: this.email }})
+        .then(res => {
+          this.$router.push({ name: 'auth_login' })
+            .then(() => alert.status(UI_USER_RESET))
+        })
+        .catch(reason => alert.status(reason.status))
     }
   }
 }
