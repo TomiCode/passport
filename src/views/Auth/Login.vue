@@ -3,6 +3,7 @@
     <v-col cols="12">
       <v-form lazy-validation ref="login_form">
         <v-text-field
+          validate-on-blur
           v-model="auth.email"
           label="Email address"
           prepend-inner-icon="mdi-account"

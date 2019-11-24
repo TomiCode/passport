@@ -19,11 +19,11 @@ import HomeProfile from './views/Home/Profile.vue'
 import CreateCategory from './views/Home/Dialogs/CreateCategory'
 import CreateEntity from './views/Home/Dialogs/CreateEntity'
 
-import NavsAuthenticated from './views/Navs/Authenticated'
+import NavsProfile from './views/Navs/Profile'
 import NavsBasic from './views/Navs/Basic'
 
 import store from './store'
-import { alert, UI_REQUIRE_AUTH } from '@/modules/ui';
+import { alert, UI_REQUIRE_AUTH, UI_ALREADY_AUTH } from '@/modules/ui';
 
 Vue.use(Router)
 
@@ -38,7 +38,8 @@ const router = new Router({
         nav: NavsBasic
       },
       meta: {
-        title: "Authorization"
+        title: "Authorization",
+        login: false
       },
       children: [
         {
@@ -71,7 +72,7 @@ const router = new Router({
       path: '/home/',
       components: {
         default: Home,
-        nav: NavsAuthenticated
+        nav: NavsProfile
       },
       meta: {
         login: true,
@@ -138,13 +139,21 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(route => route.meta.login)) {
+  if (to.matched.some(route => route.meta.login === true)) {
     if (store.getters.logged_in) {
       next()
       return
     }
     alert.status(UI_REQUIRE_AUTH)
     next({ name: 'auth_login' })
+  }
+  else if (to.matched.some(route => route.meta.login === false)) {
+    if (!store.getters.logged_in) {
+      next()
+      return
+    }
+    alert.status(UI_ALREADY_AUTH)
+    next({ name: 'home_index' })
   }
   else {
     next()

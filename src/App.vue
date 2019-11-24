@@ -10,23 +10,17 @@
       <div class="render-view-content">
         <router-view></router-view>
       </div>
-      <v-footer
-        color="secondary"
-        padless
-        absolute
-      >
-        <v-row
-          justify="center"
-          no-gutters
-          class="app-border-top"
+      <v-footer padless absolute>
+        <v-card
+          outlined tile
+          width="100%"
+          class="text-center"
+          style="border-width: 1px 0 0;"
         >
-          <v-col
-            class="secondary py-4 text-center grey--text"
-            cols="12"
-          >
+          <v-card-text>
             Vinca Project 2019 &copy; Agnieszka &amp; Tomasz
-          </v-col>
-        </v-row>
+          </v-card-text>
+        </v-card>
       </v-footer>
     </v-content>
   </v-app>
@@ -70,23 +64,11 @@ export default {
 </script>
 
 <style lang="scss">
-$color-pack: false;
-
-@import '~vuetify/src/styles/main.sass';
-
+.passport-headline {
+  text-decoration: none;
+  font-size: 1.35rem;
+}
 .render-view-content {
   margin-bottom: 4em;
-}
-
-.app-border-top {
-  border-top-width: 1px;
-  border-top-style: solid;
-  border-top-color: map-get($material-theme, 'dividers') !important;
-}
-
-.app-border-bottom {
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: map-get($material-theme, 'dividers') !important;
 }
 </style>

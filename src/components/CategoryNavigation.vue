@@ -17,8 +17,26 @@
           <v-list-item-subtitle>Home sweet home</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
-      <div class="user-categories" v-if="hasCategories">
-        <v-divider class="my-2"></v-divider>
+    </v-list>
+    <v-divider></v-divider>
+    <v-list subheader v-if="hasCategories">
+        <v-row align="center" class="pa-0">
+          <v-col cols="6" class="py-0">
+            <v-subheader>Categories</v-subheader>
+          </v-col>
+          <v-col cols="6" class="text-right">
+            <v-btn
+              text
+              small
+              rounded
+              class="mr-2"
+              :to="{ name: 'home_manage' }"
+            >
+              Manage
+              <v-icon right small>mdi-wrench</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
         <v-list-item
           v-for="category in categories"
           :key="category.id"
@@ -32,14 +50,6 @@
             <v-list-item-subtitle v-text="category.description"></v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-      </div>
-      <v-divider class="my-2"></v-divider>
-      <v-list-item :to="{ name: 'home_manage' }">
-        <v-list-item-icon>
-          <v-icon>mdi-circle-edit-outline</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>Manage Categories</v-list-item-title>
-      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>

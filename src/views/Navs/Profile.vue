@@ -6,19 +6,18 @@
       <v-toolbar-title class="passport-headline mr-4">
         Vinca <strong>Passport</strong>
       </v-toolbar-title>
-      <div class="flex-grow-1"></div>
+      <v-spacer></v-spacer>
       <v-text-field
         flat
         solo-inverted
         hide-details
         prepend-inner-icon="mdi-magnify"
-        label="Search"
-        class="hidden-sm-and-down"
-        color="primary darken-1"
+        label="Search..."
+        class="hidden-sm-and-down my-0"
+        color="accent"
         clear-icon="far fa-times-circle"
         clearable
       ></v-text-field>
-
       <div class="flex-grow-1"></div>
       <v-menu
         v-model="account"
@@ -29,6 +28,7 @@
         <template v-slot:activator="{ on }">
           <v-btn text v-on="on" class="mr-1">
             My Account
+            <v-icon right>mdi-chevron-down</v-icon>
           </v-btn>
         </template>
 
