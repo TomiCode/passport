@@ -14,15 +14,18 @@
         @click="showDetails(item)"
       >
         <v-list-item-avatar>
-          <v-icon class="indigo lighten-1 white--text">mdi-earth</v-icon>
+          <v-icon
+            class="white--text"
+            :class="color(item.color)"
+            v-text="icon(item.icon)"
+          ></v-icon>
         </v-list-item-avatar>
-
         <v-list-item-content>
           <v-overlay absolute :value="false" opacity="0.05">
             <v-progress-circular color="indigo" indeterminate size="24"></v-progress-circular>
           </v-overlay>
-          <v-list-item-title v-text="item.name"></v-list-item-title>
-          <v-list-item-subtitle v-text="item.username"></v-list-item-subtitle>
+          <v-list-item-title>{{ item.name }}</v-list-item-title>
+          <v-list-item-subtitle>{{ item.description }}</v-list-item-subtitle>
         </v-list-item-content>
 
         <v-list-item-action>
@@ -45,7 +48,6 @@
         >
           <v-col cols="2">
             <v-icon color="grey" size="96px">mdi-emoticon-neutral-outline</v-icon>
-
           </v-col>
           <v-col cols="12">No entities yet created. Add a new one using the + button.</v-col>
    </v-row>
@@ -57,6 +59,7 @@ import Entity from '@/components/Entity'
 import EntryDetails from '@/components/EntryDetails'
 
 import { request, API_STORES } from "@/modules/api";
+import { colors, icons } from "@/modules/ui";
 
 export default {
   components: { EntryDetails, Entity },
@@ -96,7 +99,9 @@ export default {
     },
     details_closed() {
       this.detail = null
-    }
+    },
+    icon: icons.map,
+    color: id => colors.colors[id].value
   },
   beforeRouteUpdate(to, from, next) {
     this.fetch(to.params.category)

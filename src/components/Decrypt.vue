@@ -5,12 +5,12 @@
     :value="visible"
   >
     <v-card>
-      <v-card-title>Decryption key</v-card-title>
+      <v-card-title>Decrypt your account</v-card-title>
       <v-divider></v-divider>
       <v-card-text>
-        <v-alert text color="orange" border="left" class="mt-2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Cras tempus felis interdum, sollicitudin enim in, convallis augue.
+        <v-alert text color="teal lighten-1" border="left" class="mt-2" prominent icon="mdi-information-variant">
+          Please enter the decryption key below to access your personal data.
+          The password isn't stored nor send through the web.
         </v-alert>
         <v-text-field
           prepend-icon="mdi-account-lock"

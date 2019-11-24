@@ -1,7 +1,7 @@
 <template>
   <div class="navs-authenticated">
     <category-navigation v-model="drawer"></category-navigation>
-    <v-app-bar app color="accent" dark clipped-left>
+    <v-app-bar app dark color="accent" clipped-left elevation="2">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="ml-1"></v-app-bar-nav-icon>
       <v-toolbar-title class="passport-headline mr-4">
         Vinca <strong>Passport</strong>
@@ -14,7 +14,7 @@
         prepend-inner-icon="mdi-magnify"
         label="Search"
         class="hidden-sm-and-down"
-        color="indigo darken-1"
+        color="primary darken-1"
         clear-icon="far fa-times-circle"
         clearable
       ></v-text-field>
@@ -27,15 +27,15 @@
         offset-y
       >
         <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on" class="mr-1">
-            <v-icon>mdi-account-circle-outline</v-icon>
+          <v-btn text v-on="on" class="mr-1">
+            My Account
           </v-btn>
         </template>
 
         <v-list dark color="indigo accent-2">
           <v-list-item>
             <v-list-item-avatar>
-              <v-img src="https://avatars1.githubusercontent.com/u/1648325?s=460"></v-img>
+              <v-icon>mdi-account</v-icon>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>{{ name }}</v-list-item-title>
@@ -68,13 +68,29 @@
 
 <script>
 import CategoryNavigation from '@/components/CategoryNavigation'
+import { mapState } from "vuex";
 
 export default {
   data: () => ({
-    drawer: false
+    drawer: false,
+    account: false
   }),
   components: {
     CategoryNavigation
+  },
+  computed: mapState({
+    name: state => state.user.name,
+    email: state => state.user.email
+  }),
+  methods: {
+    logout () {
+      this.account = false
+      this.$store.dispatch('logout')
+        .then(() => {
+          this.$router.push({ name: 'auth_login' })
+            .then(() => alert.status(UI_USER_LOGOUT))
+        })
+    }
   }
 }
 </script>

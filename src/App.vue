@@ -18,7 +18,7 @@
         <v-row
           justify="center"
           no-gutters
-          style="border-top: 1px solid lightgray"
+          class="app-border-top"
         >
           <v-col
             class="secondary py-4 text-center grey--text"
@@ -40,7 +40,6 @@ import Alerts from '@/components/Alerts'
 
 import { request, API_INVALID_SESSION } from '@/modules/api';
 import { alert, UI_USER_LOGOUT, UI_INVALID_DECRYPT } from '@/modules/ui';
-import { mapState } from 'vuex';
 
 export default {
   name: 'App',
@@ -66,28 +65,28 @@ export default {
         .catch(reason => console.log(reason))
         .finally(() => this.global_loading = false)
     }
-  },
-  methods: {
-    logout () {
-      this.account = false
-      this.$store.dispatch('logout')
-        .then(() => {
-          this.$router.push({ name: 'auth_login' })
-            .then(() => alert.status(UI_USER_LOGOUT))
-        })
-    }
-  },
-  computed: {
-    ...mapState({
-      name: state => state.user.name,
-      email: state => state.user.email
-    })
   }
 };
 </script>
 
 <style lang="scss">
+$color-pack: false;
+
+@import '~vuetify/src/styles/main.sass';
+
 .render-view-content {
   margin-bottom: 4em;
+}
+
+.app-border-top {
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: map-get($material-theme, 'dividers') !important;
+}
+
+.app-border-bottom {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: map-get($material-theme, 'dividers') !important;
 }
 </style>

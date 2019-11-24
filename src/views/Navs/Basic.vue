@@ -1,8 +1,8 @@
 <template>
-  <v-toolbar max-height="64px" flat tile style="border-bottom: 1px solid lightgray">
+  <v-toolbar max-height="64px" flat tile class="app-border-bottom">
     <v-container class="pa-0 d-flex">
       <v-toolbar-title>
-        <router-link :to="{ name: 'about_index' }" class="passport-headline grey--text text--darken-2">
+        <router-link :to="{ name: 'about_index' }" class="passport-headline" style="color: inherit;">
           Vinca <strong>Passport</strong>
         </router-link>
       </v-toolbar-title>

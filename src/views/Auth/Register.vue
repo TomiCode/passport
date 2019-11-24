@@ -47,11 +47,11 @@
       colored-border
       border="left"
       color="accent lighten-2"
-      icon="mdi-help-circle-outline"
+      icon="mdi-help"
       class="mt-4"
     >
       Already have an account?
-      <router-link :to="{ name: 'auth_login' }" class="grey--text text--darken-2">Log in</router-link>
+      <router-link :to="{ name: 'auth_login' }" style="color: inherit;">Log in</router-link>
       to your existing one.
     </v-alert>
   </div>

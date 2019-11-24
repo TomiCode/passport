@@ -32,7 +32,7 @@
       <v-btn
         block
         outlined
-        color="accent"
+        color="deep-orange darken-1"
         :to="{ name: 'auth_reset' }"
       >
         Reset password
@@ -46,7 +46,7 @@
         icon="mdi-information-variant"
       >
         Don't have an account?
-        <router-link :to="{ name: 'auth_register' }" class="grey--text text--darken-2">Register</router-link>
+        <router-link :to="{ name: 'auth_register' }" style="color: inherit;">Register</router-link>
         a new one, it's free forever.
       </v-alert>
     </v-col>

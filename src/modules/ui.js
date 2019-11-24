@@ -8,9 +8,9 @@ export const colors = {
   colors: [
     { name: "Red", value: "red darken-1" },
     { name: "Pink", value: "pink darken-1" },
-    { name: "Purple", value: "purple darken-1" },
+    { name: "Purple", value: "purple" },
     { name: "Deep purple", value: "deep-purple darken-1" },
-    { name: "Indigo", value: "indigo darken-1" },
+    { name: "Indigo", value: "indigo" },
     { name: "Blue", value: "blue darken-1" },
     { name: "Light blue", value: "light-blue darken-1" },
     { name: "Cyan", value: "cyan darken-1" },
