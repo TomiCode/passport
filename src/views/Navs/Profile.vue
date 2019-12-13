@@ -1,7 +1,8 @@
 <template>
   <div class="navs-authenticated">
     <category-navigation v-model="drawer"></category-navigation>
-    <v-app-bar app dark color="accent" clipped-left elevation="2">
+    <v-app-bar app dark color="accent" clipped-left elevation="2" extended extension-height="5"  >
+
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="ml-1"></v-app-bar-nav-icon>
       <v-toolbar-title class="passport-headline mr-4">
         Vinca <strong>Passport</strong>
@@ -62,8 +63,11 @@
           </v-list-item>
         </v-list>
       </v-menu>
+
     </v-app-bar>
+
   </div>
+
 </template>
 
 <script>

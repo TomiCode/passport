@@ -9,6 +9,13 @@
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
       <div class="render-view-content">
+        <div class="render-content-loader">
+          <v-progress-linear
+            v-if="content_loading"
+            color="red lighten-1"
+            :indeterminate="true"
+          ></v-progress-linear>
+        </div>
         <router-view></router-view>
       </div>
       <v-footer padless absolute>
@@ -35,6 +42,7 @@ import Alerts from '@/components/Alerts'
 
 import { request, API_INVALID_SESSION } from '@/modules/api';
 import { alert, UI_USER_LOGOUT, UI_INVALID_DECRYPT } from '@/modules/ui';
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'App',
@@ -59,7 +67,10 @@ export default {
         .catch(reason => console.log(reason))
         .finally(() => this.global_loading = false)
     }
-  }
+  },
+  computed: mapState({
+    content_loading: state => state.content_loading
+  })
 };
 </script>
 
@@ -70,5 +81,8 @@ export default {
 }
 .render-view-content {
   margin-bottom: 4em;
+}
+.render-content-loader {
+  height: 7px;
 }
 </style>

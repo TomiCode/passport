@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { generateKey, key } from "openpgp";
+import { generateKey, key, message, decrypt } from "openpgp";
 import {
   request,
   API_AUTH_LOGIN,
@@ -9,7 +9,8 @@ import {
   API_CONTAINER_CREATE,
   API_CATEGORY_CREATE,
   API_NO_CONTAINER,
-  API_AUTH_SESSION
+  API_AUTH_SESSION,
+  API_STORE
 } from "@/modules/api";
 
 Vue.use(Vuex)
@@ -33,7 +34,8 @@ export default new Vuex.Store({
         lastused: true
       }
     },
-    categories: [ ]
+    categories: [ ],
+    content_loading: false,
   },
   mutations: {
     keystore_setup: (state, { certificate, key }) => {
@@ -51,6 +53,7 @@ export default new Vuex.Store({
     local_container_update: (state, container) => {
       state.auth.container = container
     },
+    api_content_loading: (state, value) => state.content_loading = value,
 
     account_login (state, account) {
       if (account.uuid !== undefined) {
@@ -139,6 +142,14 @@ export default new Vuex.Store({
         })
         .catch(reason => reject(reason))
     }),
+    api_load_store: ({ commit, dispatch }, { store }) => new Promise((resolve, reject) => {
+      commit('api_content_loading', true)
+      request.do(API_STORE, { data: { store_id: store }})
+        .then(res => dispatch('decrypt_store', { store: res.content }))
+        .then(store => resolve(store))
+        .catch(reason => reject(reason))
+        .finally(() => commit('api_content_loading', false))
+    }),
     prepare_keystore: ({ commit }, { certificate, encrypted }) => {
       key.readArmored(certificate)
         .then(store => {
@@ -158,6 +169,16 @@ export default new Vuex.Store({
             })
             .catch(reason => reject(reason))
         })
+        .catch(reason => reject(reason))
+    }),
+    decrypt_store: ({ state }, { store }) => new Promise((resolve, reject) => {
+      message.read(Uint8Array.from(atob(store.content), c => c.charCodeAt(0)))
+        .then(message => decrypt({
+          message: message,
+          privateKeys: state.openpgp.private,
+          armor: false
+        }))
+        .then(str => resolve({ ...store, content: JSON.parse(str.data) }))
         .catch(reason => reject(reason))
     }),
 
