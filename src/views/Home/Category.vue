@@ -1,55 +1,54 @@
 <template>
 <div class="category-view">
   <v-row v-if="has_stores">
-  <v-col>
-    <entry-details
-      :store="detail"
-      @closed="details_closed"
-    ></entry-details>
+    <v-col>
+      <entry-details
+        :store="detail"
+        @closed="detail = null"
+      ></entry-details>
 
-    <v-list>
-      <v-list-item
-        v-for="item in stores"
-        :key="item.id"
-        @click="showDetails(item)"
-      >
-        <v-list-item-avatar>
-          <v-icon
-            class="white--text"
-            :class="color(item.color)"
-            v-text="icon(item.icon)"
-          ></v-icon>
-        </v-list-item-avatar>
-        <v-list-item-content>
-          <v-overlay absolute :value="false" opacity="0.05">
-            <v-progress-circular color="indigo" indeterminate size="24"></v-progress-circular>
-          </v-overlay>
-          <v-list-item-title>{{ item.name }}</v-list-item-title>
-          <v-list-item-subtitle>{{ item.description }}</v-list-item-subtitle>
-        </v-list-item-content>
-
-        <v-list-item-action>
-          <v-btn icon>
-            <v-icon color="grey">mdi-at</v-icon>
-          </v-btn>
-        </v-list-item-action>
-        <v-list-item-action>
-          <v-btn icon>
-            <v-icon color="grey">mdi-key</v-icon>
-          </v-btn>
-        </v-list-item-action>
-      </v-list-item>
-    </v-list>
-  </v-col>
-  </v-row>
-   <v-row v-else
-          justify="center"
-          align="center"
+      <v-list>
+        <v-list-item
+          v-for="item in stores"
+          :key="item.id"
+          @click="showDetails(item)"
         >
-          <v-col cols="2">
-            <v-icon color="grey" size="96px">mdi-emoticon-neutral-outline</v-icon>
-          </v-col>
-          <v-col cols="12">No entities yet created. Add a new one using the + button.</v-col>
+          <v-list-item-avatar>
+            <v-icon
+              class="white--text"
+              :class="color(item.color)"
+              v-text="icon(item.icon)"
+            ></v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-overlay absolute :value="false" opacity="0.05">
+              <v-progress-circular color="indigo" indeterminate size="24"></v-progress-circular>
+            </v-overlay>
+            <v-list-item-title>{{ item.name }}</v-list-item-title>
+            <v-list-item-subtitle>{{ item.description }}</v-list-item-subtitle>
+          </v-list-item-content>
+
+          <v-list-item-action>
+            <v-btn icon>
+              <v-icon color="grey">mdi-at</v-icon>
+            </v-btn>
+          </v-list-item-action>
+          <v-list-item-action>
+            <v-btn icon>
+              <v-icon color="grey">mdi-key</v-icon>
+            </v-btn>
+          </v-list-item-action>
+        </v-list-item>
+      </v-list>
+    </v-col>
+  </v-row>
+  <v-row v-else class="mt-10">
+    <v-col cols="12" class="text-center">
+      <v-icon size="6em">mdi-folder-information-outline</v-icon>
+    </v-col>
+    <v-col cols="12" class="title font-italic font-weight-regular text-center">
+      No entities yet created. Add a new one using the + button.
+    </v-col>
    </v-row>
 </div>
 </template>
@@ -58,8 +57,10 @@
 import Entity from '@/components/Entity'
 import EntryDetails from '@/components/EntryDetails'
 
-import { request, API_STORES } from "@/modules/api";
-import { colors, icons } from "@/modules/ui";
+import _ from 'lodash'
+
+import { request, API_STORES } from "@/modules/api"
+import { colors, icons } from "@/modules/ui"
 
 export default {
   components: { EntryDetails, Entity },
@@ -83,25 +84,15 @@ export default {
         this.invalid = true
         return
       }
-      this.loading = true
-      request.do(API_STORES, { data: { category: parseInt(category) }})
+      this.$store.dispatch('api_load_category', { category: parseInt(category) })
         .then(res => this.stores = res.content.stores)
-        .finally(() => this.loading = false)
+        .catch(reason => console.log(reason))
     },
-    showDetails(store) {
-      if (this.detail == store) {
-        console.log("override detail object to trigger watcher")
-        this.detail = Object.assign({}, store)
-      }
-      else {
-        this.detail = store
-      }
-    },
-    details_closed() {
-      this.detail = null
-    },
+    showDetails: _.throttle(function(store) {
+      this.detail = (this.detail == store) ? Object.assign({}, store) : store
+    }, 512),
+    color: id => colors.colors[id].value,
     icon: icons.map,
-    color: id => colors.colors[id].value
   },
   beforeRouteUpdate(to, from, next) {
     this.fetch(to.params.category)

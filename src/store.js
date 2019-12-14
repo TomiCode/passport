@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -8,8 +9,8 @@ import {
   API_CONTAINER,
   API_CONTAINER_CREATE,
   API_CATEGORY_CREATE,
-  API_NO_CONTAINER,
   API_AUTH_SESSION,
+  API_STORES,
   API_STORE
 } from "@/modules/api";
 
@@ -35,8 +36,7 @@ export default new Vuex.Store({
       }
     },
     categories: [ ],
-    content_loading: false,
-    clipboard_clear: false,
+    content_loading: false
   },
   mutations: {
     keystore_setup: (state, { certificate, key }) => {
@@ -143,13 +143,22 @@ export default new Vuex.Store({
         })
         .catch(reason => reject(reason))
     }),
+    api_load_category: ({ commit }, { category }) => new Promise((resolve, reject) => {
+      commit('api_content_loading', true)
+      _.delay(() => {
+        request.do(API_STORES, { data: { category }})
+          .then(res => resolve(res))
+          .catch(reason => reject(reason))
+          .finally(() => _.delay(() => commit('api_content_loading', false), 128))
+      }, 256)
+    }),
     api_load_store: ({ commit, dispatch }, { store }) => new Promise((resolve, reject) => {
       commit('api_content_loading', true)
       request.do(API_STORE, { data: { store_id: store }})
         .then(res => dispatch('decrypt_store', { store: res.content }))
         .then(store => resolve(store))
         .catch(reason => reject(reason))
-        .finally(() => commit('api_content_loading', false))
+        .finally(() => _.delay(() => commit('api_content_loading', false), 256))
     }),
     prepare_keystore: ({ commit }, { certificate, encrypted }) => {
       key.readArmored(certificate)
@@ -253,7 +262,6 @@ export default new Vuex.Store({
     private_loaded: state => !!state.openpgp.private,
     has_categories: state => state.categories && !!state.categories.length,
     categories: state => state.categories || [ ],
-    clipboard: state => state.clipboard_clear,
 
     logged_in: state => !!state.auth.token,
     auth_token: state => state.auth.token,

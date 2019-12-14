@@ -9,6 +9,7 @@
   "dependencies": {
     "@mdi/font": "^4.5.95",
     "core-js": "^2.6.5",
+    "lodash": "^4.17.15",
     "openpgp": "^4.6.2",
     "roboto-fontface": "*",
     "vue": "^2.6.10",
