@@ -105,7 +105,11 @@
               >
                 mdi-backup-restore
               </v-icon>
-              <v-icon v-else key="content.address.copy">
+              <v-icon
+                v-else
+                key="content.address.copy"
+                @click="clipboard(values.content.address)"
+              >
                 mdi-content-copy
               </v-icon>
             </v-fade-transition>
@@ -129,7 +133,11 @@
               >
                 mdi-backup-restore
               </v-icon>
-              <v-icon v-else key="content.login.copy">
+              <v-icon
+                v-else
+                key="content.login.copy"
+                @click="clipboard(values.content.login)"
+              >
                 mdi-content-copy
               </v-icon>
             </v-fade-transition>
@@ -162,7 +170,11 @@
                   >
                     mdi-pencil
                   </v-icon>
-                  <v-icon key="password.copy.icon" v-else>
+                  <v-icon
+                    v-else
+                    key="password.copy.icon"
+                    @click="clipboard(values.content.password)"
+                  >
                     mdi-content-copy
                   </v-icon>
                 </v-slide-x-reverse-transition>
@@ -205,7 +217,7 @@
 import PasswordGenerator from '@/components/PasswordGenerator.vue'
 
 import { mapState } from "vuex";
-import { icons, colors, alert } from "@/modules/ui";
+import { icons, colors, alert, clipboard } from "@/modules/ui";
 
 export default {
   components: {
@@ -219,7 +231,9 @@ export default {
       visible: false,
       editing: false
     },
-    loaded: { },
+    loaded: {
+      content: { }
+    },
     values: {
       content: {
         address: "",
@@ -260,9 +274,14 @@ export default {
     },
     cache() {
       this.values = Object.assign({}, this.loaded)
-      this.values.content = Object.assign({}, this.loaded.content)
+      if (this.loaded !== undefined)
+        this.values.content = Object.assign({}, this.loaded.content)
       this.editing = false
       this.drawer = true
+    },
+    clipboard(value) {
+      clipboard.set(value)
+      setTimeout(() => clipboard.clear(), 10000)
     },
     icon: id => icons.icons[id].value,
     color: id => colors.colors[id].value

@@ -118,3 +118,49 @@ export const alert = {
     }
   }
 }
+
+export const clipboard = {
+  style: "width:0!important;padding:0!important;border:0!important;margin:0!important;outline:none!important;boxShadow:none!important;",
+  clear: () => clipboard.set(' '),
+  set: value => {
+    const textarea = document.createElement("textarea")
+
+    textarea.value = value
+    textarea.setAttribute("readonly", "")
+    textarea.style.cssText = clipboard.style
+
+    document.body.appendChild(textarea)
+
+    if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
+      const editable = textarea.contentEditable;
+      const readOnly = textarea.readOnly;
+
+      textarea.contentEditable = true
+      textarea.readOnly = true
+
+      const range = document.createRange()
+      range.selectNodeContents(textarea)
+
+      const selection = window.getSelection()
+      selection.removeAllRanges()
+      selection.addRange(range)
+
+      textarea.setSelectionRange(0, 999999)
+      textarea.contentEditable = editable
+      textarea.readOnly = readOnly
+    } else {
+      textarea.select()
+    }
+
+    let success = false
+    try {
+      success = document.execCommand("copy")
+    } catch (err) {
+      console.log(err)
+    }
+    finally {
+      document.body.removeChild(textarea)
+    }
+    return success
+  }
+}
