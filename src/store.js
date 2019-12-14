@@ -36,6 +36,7 @@ export default new Vuex.Store({
     },
     categories: [ ],
     content_loading: false,
+    clipboard_clear: false,
   },
   mutations: {
     keystore_setup: (state, { certificate, key }) => {
@@ -252,6 +253,7 @@ export default new Vuex.Store({
     private_loaded: state => !!state.openpgp.private,
     has_categories: state => state.categories && !!state.categories.length,
     categories: state => state.categories || [ ],
+    clipboard: state => state.clipboard_clear,
 
     logged_in: state => !!state.auth.token,
     auth_token: state => state.auth.token,

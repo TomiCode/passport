@@ -281,7 +281,8 @@ export default {
     },
     clipboard(value) {
       clipboard.set(value)
-      setTimeout(() => clipboard.clear(), 10000)
+      this.drawer = false
+      this.$store.state.clipboard_clear = true
     },
     icon: id => icons.icons[id].value,
     color: id => colors.colors[id].value
