@@ -1,31 +1,31 @@
 <template>
   <v-navigation-drawer
     v-model="drawer"
-    temporary
-    floating
-    fixed
-    right
-    width="360"
+    temporary floating
+    fixed right
+    width="380"
     @transitionend="visible = drawer ? visible : false"
   >
     <v-list v-if="visible">
       <v-list-item>
         <v-list-item-avatar>
-          <v-icon class="indigo lighten-1 white--text">mdi-earth</v-icon>
+          <v-icon
+            class="white--text"
+            v-text="icon(values.icon)"
+            :class="color(values.color)"
+          ></v-icon>
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title>Test</v-list-item-title>
-          <v-list-item-subtitle>Test test</v-list-item-subtitle>
+          <v-list-item-title v-text="values.name"></v-list-item-title>
+          <v-list-item-subtitle v-text="values.description"></v-list-item-subtitle>
         </v-list-item-content>
         <v-list-item-icon>
-          <v-slide-x-reverse-transition
-            mode="out-in"
-          >
+          <v-slide-x-reverse-transition mode="out-in">
             <v-icon
-              :key="`icon-${isEditing}`"
-              :color="isEditing ? 'success' : 'info'"
-              @click="isEditing = !isEditing"
-              v-text="isEditing ? 'mdi-check-outline' : 'mdi-circle-edit-outline'"
+              :key="`store-icon-${editing}`"
+              :color="editing ? 'red lighten-1' : 'primary'"
+              @click="editing = !editing"
+              v-text="editing ? 'mdi-cloud-upload' : 'mdi-circle-edit-outline'"
             ></v-icon>
           </v-slide-x-reverse-transition>
         </v-list-item-icon>
@@ -34,84 +34,193 @@
       <v-list-item>
         <v-text-field
           label="Title"
-          append-outer-icon="mdi-content-copy"
+          v-model="values.name"
+          :class="{ 'v-input--is-disabled': !editing }"
+          :readonly="!editing"
         >
+          <template v-slot:append-outer>
+            <v-icon
+              color="accent"
+              v-if="values.name != loaded.name"
+              @click="values.name = loaded.name"
+            >
+              mdi-backup-restore
+            </v-icon>
+          </template>
         </v-text-field>
       </v-list-item>
-
       <v-list-item>
         <v-text-field
           label="Description"
-          prepend-inner-icon="mdi-content-copy"
-        ></v-text-field>
-      </v-list-item>
-
-      <v-list-item>
-        <v-text-field
-          label="Website"
-          value="https://login.example.com"
-          prepend-inner-icon="mdi-content-copy"
-        ></v-text-field>
-      </v-list-item>
-
-      <v-list-item>
-          <v-text-field
-            label="Login"
-            value="aaaa@aaa.com"
-          ></v-text-field>
-      </v-list-item>
-
-      <v-list-item>
-        <v-text-field
-          type="password"
-          label="Password"
-          value="aaaa@aaa.com"
+          v-model="values.description"
+          :class="{ 'v-input--is-disabled': !editing }"
+          :readonly="!editing"
         >
           <template v-slot:append-outer>
-            <v-slide-x-reverse-transition mode="out-in">
-              <v-icon
-                :key="`icon-${isEditing}-outer`"
-                :color="isEditing ? 'success' : 'info'"
-                @click="isEditing = !isEditing"
-                v-text="isEditing ? 'mdi-check-outline' : 'mdi-circle-edit-outline'"
-              ></v-icon>
-            </v-slide-x-reverse-transition>
+            <v-icon
+              color="accent"
+              v-if="values.description != loaded.description"
+              @click="values.description = loaded.description"
+            >
+              mdi-backup-restore
+            </v-icon>
           </template>
-          <template v-slot:append>
+        </v-text-field>
+      </v-list-item>
+      <v-list-item>
+        <v-autocomplete
+          v-model="values.category"
+          label="Category"
+          clearable
+          item-value="id"
+          item-text="name"
+          :items="categories"
+          :disabled="!editing"
+        >
+          <template v-slot:append-outer>
+            <v-icon
+              color="accent"
+              v-if="values.category != loaded.category"
+              @click="values.category = loaded.category"
+            >
+              mdi-backup-restore
+            </v-icon>
+          </template>
+        </v-autocomplete>
+      </v-list-item>
+      <v-list-item>
+        <v-text-field
+          label="Website / Address"
+          v-model="values.content.address"
+          :class="{ 'v-input--is-disabled': !editing }"
+          :readonly="!editing"
+        >
+          <template v-slot:append-outer>
             <v-fade-transition mode="out-in">
               <v-icon
-                :key="`icon-${isEditing}-append`"
-                @click="isEditing = !isEditing"
-                v-text="isEditing ? 'mdi-check-outline' : 'mdi-eye'"
-              ></v-icon>
+                key="content.address.restore"
+                color="accent"
+                v-if="values.content.address != loaded.content.address"
+                @click="values.content.address = loaded.content.address"
+              >
+                mdi-backup-restore
+              </v-icon>
+              <v-icon v-else key="content.address.copy">
+                mdi-content-copy
+              </v-icon>
             </v-fade-transition>
           </template>
         </v-text-field>
       </v-list-item>
-
+      <v-list-item>
+        <v-text-field
+          label="Login"
+          v-model="values.content.login"
+          :class="{ 'v-input--is-disabled': !editing }"
+          :readonly="!editing"
+        >
+          <template v-slot:append-outer>
+            <v-fade-transition mode="out-in">
+              <v-icon
+                key="content.login.restore"
+                color="accent"
+                v-if="values.content.login != loaded.content.login"
+                @click="values.content.login = loaded.content.login"
+              >
+                mdi-backup-restore
+              </v-icon>
+              <v-icon v-else key="content.login.copy">
+                mdi-content-copy
+              </v-icon>
+            </v-fade-transition>
+          </template>
+        </v-text-field>
+      </v-list-item>
+      <v-list-item>
+        <v-text-field
+          label="Password"
+          v-model="values.content.password"
+          :class="{ 'v-input--is-disabled': !password.editing }"
+          :readonly="!password.editing"
+          :type="password.visible || password.editing ? 'text' : 'password'"
+        >
+          <template v-slot:append-outer>
+            <password-generator @accepted="values.content.password = $event">
+              <template v-slot:activator="{ handler }">
+                <v-slide-x-reverse-transition mode="out-in">
+                  <v-icon
+                    key="password.editing.generator.icon"
+                    v-if="editing && password.editing"
+                    @click="handler.show"
+                  >
+                    mdi-cards-variant
+                  </v-icon>
+                  <v-icon
+                    key="password.edit.icon"
+                    v-else-if="editing"
+                    @click="password.editing = true"
+                  >
+                    mdi-pencil
+                  </v-icon>
+                  <v-icon key="password.copy.icon" v-else>
+                    mdi-content-copy
+                  </v-icon>
+                </v-slide-x-reverse-transition>
+              </template>
+            </password-generator>
+          </template>
+          <template v-slot:append>
+            <v-icon
+              v-if="!password.editing"
+              v-text="password.visible ? 'mdi-eye-off' : 'mdi-eye'"
+              @click="password.visible = !password.visible"
+            ></v-icon>
+            <v-icon
+              v-else-if="values.content.password != loaded.content.password"
+              @click="values.content.password = loaded.content.password"
+            >
+              mdi-backup-restore
+            </v-icon>
+            <v-icon v-else @click="password.editing = false">
+              mdi-pencil-off
+            </v-icon>
+          </template>
+        </v-text-field>
+      </v-list-item>
       <v-list-item>
         <v-textarea
           label="Notes"
           rows="1"
-          auto-grow
-          no-resize
+          auto-grow no-resize
+          v-model="values.content.notes"
+          :class="{ 'v-input--is-disabled': !editing }"
+          :readonly="!editing"
         ></v-textarea>
-      </v-list-item>
-
-      <v-list-item>
-        <v-btn text>Update</v-btn>
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script>
+import PasswordGenerator from '@/components/PasswordGenerator.vue'
+
+import { mapState } from "vuex";
+import { icons, colors, alert } from "@/modules/ui";
+
 export default {
+  components: {
+    PasswordGenerator
+  },
   data: () => ({
     drawer: false,
     visible: false,
     editing: false,
-    loaded: {
+    password: {
+      visible: false,
+      editing: false
+    },
+    loaded: { },
+    values: {
       content: {
         address: "",
         login: "",
@@ -123,39 +232,20 @@ export default {
       category: "",
       icon: 0,
       color: 0
-    },
-    defaults: {
-      content: {
-        address: "",
-        login: "",
-        password: "",
-        notes: ""
-      },
-      name: "",
-      description: "",
-      category: "",
-      icon: 0,
-      color: 0
-    },
-    isEditing: false
+    }
   }),
   props: {
     store: Object
   },
   watch: {
     store (val, old) {
-      // console.log("watcher object value:", value)
-      // Load encrypted container from server and decrypt it.
       if (val !== null) {
-        if (!this.visible) {
+        if (!this.visible)
           this.visible = true
-        }
-        // if (!this.drawer) {
-        //   this.drawer = true
-        // }
-      }
-      if (val !== null) {
-        this.fetch(val)
+        if (old === null || old.id !== val.id)
+          this.fetch(val)
+        else
+          this.cache()
       }
     }
   },
@@ -163,11 +253,22 @@ export default {
     fetch() {
       this.$store.dispatch('api_load_store', { store: this.store.id })
         .then(store => {
-          this.drawer = true
-          console.log(store)
+          this.loaded = store
+          this.cache()
         })
         .catch(reason => console.log(reason))
-    }
-  }
+    },
+    cache() {
+      this.values = Object.assign({}, this.loaded)
+      this.values.content = Object.assign({}, this.loaded.content)
+      this.editing = false
+      this.drawer = true
+    },
+    icon: id => icons.icons[id].value,
+    color: id => colors.colors[id].value
+  },
+  computed: mapState({
+    categories: state => state.categories
+  })
 }
 </script>
