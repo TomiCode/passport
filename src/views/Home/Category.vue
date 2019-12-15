@@ -4,9 +4,9 @@
     <v-col>
       <entry-details
         :store="detail"
-        @closed="detail = null"
+        v-model="show_details"
+        @update="fetch($route.params.category)"
       ></entry-details>
-
       <v-list>
         <v-list-item
           v-for="item in stores"
@@ -70,7 +70,8 @@ export default {
     dialog: false,
     detail: null,
     invalid: false,
-    loading: false
+    loading: false,
+    show_details: false
   }),
   created() {
     this.fetch(this.$route.params.category)
@@ -84,12 +85,15 @@ export default {
         this.invalid = true
         return
       }
-      this.$store.dispatch('api_load_category', { category: parseInt(category) })
+      this.$store.dispatch('api_load_category', {
+        category: parseInt(category)
+      })
         .then(res => this.stores = res.content.stores)
         .catch(reason => console.log(reason))
     },
     showDetails: _.throttle(function(store) {
-      this.detail = (this.detail == store) ? Object.assign({}, store) : store
+      this.detail = store
+      this.show_details = true
     }, 512),
     color: id => colors.colors[id].value,
     icon: icons.map,

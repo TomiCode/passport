@@ -1,13 +1,13 @@
 <template>
   <div class="entity-details-content">
     <v-navigation-drawer
-      v-model="drawer"
       temporary floating
       fixed right
       width="340"
-      @transitionend="visible = (drawer || clipboard_clear) ? visible : false"
+      v-model="drawer"
+      @transitionend="change_state"
     >
-      <v-list>
+      <v-list v-if="visible">
         <v-list-item>
           <v-list-item-avatar>
             <v-icon
@@ -23,11 +23,16 @@
           <v-list-item-icon>
             <v-slide-x-reverse-transition mode="out-in">
               <v-icon
-                :key="`store-icon-${editing}`"
-                :color="editing ? 'red lighten-1' : undefined"
-                @click="editing = !editing"
-                v-text="editing ? 'mdi-cloud-upload' : 'mdi-circle-edit-outline'"
-              ></v-icon>
+                v-if="editing"
+                key="store-icon-save"
+                color="deep-orange lighten-1"
+                @click="save"
+              >
+                mdi-cloud-upload
+              </v-icon>
+              <v-icon v-else @click="editing = true" key="store-icon-edit">
+                mdi-circle-edit-outline
+              </v-icon>
             </v-slide-x-reverse-transition>
           </v-list-item-icon>
         </v-list-item>
@@ -210,6 +215,16 @@
             :readonly="!editing"
           ></v-textarea>
         </v-list-item>
+        <v-list-item class="text-center mt-4">
+          <v-btn
+            text block
+            color="red lighten-1"
+            :disabled="!editing"
+          >
+            <v-icon left>mdi-trash-can</v-icon>
+            Remove
+          </v-btn>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-overlay :value="clipboard_clear" opacity=".9" z-index="999">
@@ -267,6 +282,7 @@ export default {
       editing: false
     },
     loaded: {
+      id: 0,
       content: { }
     },
     values: {
@@ -284,15 +300,15 @@ export default {
     }
   }),
   props: {
-    store: Object
+    store: Object,
+    value: Boolean
   },
   watch: {
-    store (val, old) {
-      if (val !== null) {
-        if (!this.visible)
-          this.visible = true
-        if (old === null || old.id !== val.id)
-          this.fetch(val)
+    value(state) {
+      if (state && this.store !== null) {
+        this.visible = true
+        if (this.store.id !== this.loaded.id)
+          this.fetch()
         else
           this.cache()
       }
@@ -328,6 +344,28 @@ export default {
         clipboard.clear()
       this.clipboard_clear = false
       this.drawer = true
+    },
+    save() {
+      this.$store.dispatch('api_update_store', { store: this.values })
+        .then(({ content }) => {
+          this.drawer = false
+          if (content.category == this.store.category) {
+            this.store.color = content.color
+            this.store.icon = content.icon
+            this.store.name = content.name
+            this.store.description = content.description
+            this.loaded = this.values
+          }
+          else
+            this.$emit('update')
+        })
+        .catch(reason => console.log(reason))
+    },
+    change_state() {
+      if (!this.drawer && !this.clipboard_clear) {
+        this.visible = false
+        this.$emit('input', false)
+      }
     },
     icon: id => icons.icons[id].value,
     color: id => colors.colors[id].value

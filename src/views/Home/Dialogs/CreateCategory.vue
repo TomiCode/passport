@@ -2,14 +2,12 @@
   <v-dialog v-model="dialog" max-width="520">
     <template v-slot:activator="{ on }">
       <v-btn
-        style="z-index: 100;"
+        class="mb-5"
+        style="z-index: 5;"
         v-on="on"
-        color="deep-orange"
-        bottom
-        dark
-        fab
-        fixed
-        right
+        color="deep-orange accent-3"
+        dark fab
+        fixed right bottom
       >
         <v-icon>mdi-plus</v-icon>
       </v-btn>

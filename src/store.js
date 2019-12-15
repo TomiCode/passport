@@ -2,7 +2,7 @@ import _ from 'lodash'
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { generateKey, key, message, decrypt } from "openpgp";
+import { generateKey, key, message, decrypt, encrypt } from "openpgp";
 import {
   request,
   API_AUTH_LOGIN,
@@ -160,6 +160,14 @@ export default new Vuex.Store({
         .catch(reason => reject(reason))
         .finally(() => _.delay(() => commit('api_content_loading', false), 256))
     }),
+    api_update_store: ({ commit, dispatch }, { store }) => new Promise((resolve, reject) => {
+      commit('api_content_loading', true)
+      dispatch('encrypt_store', { store })
+        .then(store => request.do(API_STORE, { data: { ...store }, method: "PATCH" }))
+        .then(res => resolve(res))
+        .catch(reason => reject(reason))
+        .finally(() => commit('api_content_loading', false))
+    }),
     prepare_keystore: ({ commit }, { certificate, encrypted }) => {
       key.readArmored(certificate)
         .then(store => {
@@ -179,6 +187,18 @@ export default new Vuex.Store({
             })
             .catch(reason => reject(reason))
         })
+        .catch(reason => reject(reason))
+    }),
+    encrypt_store: ({ state }, { store }) => new Promise((resolve, reject) => {
+      encrypt({
+        message: message.fromText(JSON.stringify(store.content)),
+        publicKeys: state.openpgp.public,
+        armor: false
+      })
+        .then(cipher => resolve({
+          ...store,
+          content: btoa(String.fromCharCode.apply(null, cipher.message.packets.write()))
+        }))
         .catch(reason => reject(reason))
     }),
     decrypt_store: ({ state }, { store }) => new Promise((resolve, reject) => {
