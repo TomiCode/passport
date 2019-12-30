@@ -7,7 +7,7 @@
           v-model="auth.email"
           label="Email address"
           prepend-inner-icon="mdi-account"
-          :rules="[rules.required, rules.email]"
+          :rules="[rules.required, rules.user.email]"
         ></v-text-field>
         <v-text-field
           v-model="auth.password"
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { alert } from "@/modules/ui";
+import { alert, validatiors } from "@/modules/ui";
 
 export default {
   data: () => ({
@@ -63,10 +63,7 @@ export default {
       email: "",
       password: ""
     },
-    rules: {
-      required: (val) => !!val || 'This field is required.',
-      email: (val) => /^\S+@\S+[\.][0-9a-z]+$/.test(val) || 'Invalid email address.'
-    },
+    rules: validatiors,
     loading: false
   }),
   methods: {

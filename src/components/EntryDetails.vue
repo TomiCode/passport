@@ -44,7 +44,7 @@
             :class="{ 'v-input--is-disabled': !editing }"
             :readonly="!editing"
           >
-            <template v-slot:append-outer>
+            <template v-slot:append>
               <v-icon
                 color="accent"
                 v-if="values.name != loaded.name"
@@ -62,7 +62,7 @@
             :class="{ 'v-input--is-disabled': !editing }"
             :readonly="!editing"
           >
-            <template v-slot:append-outer>
+            <template v-slot:append>
               <v-icon
                 color="accent"
                 v-if="values.description != loaded.description"
@@ -266,7 +266,7 @@ import PasswordGenerator from '@/components/PasswordGenerator.vue'
 
 import _ from 'lodash'
 import { mapState } from "vuex"
-import { icons, colors, alert, clipboard } from "@/modules/ui"
+import { icons, colors, alert, clipboard, UI_UPDATED_ENTITY } from "@/modules/ui"
 
 export default {
   components: {
@@ -358,6 +358,7 @@ export default {
           }
           else
             this.$emit('update')
+          alert.status(UI_UPDATED_ENTITY)
         })
         .catch(reason => console.log(reason))
     },

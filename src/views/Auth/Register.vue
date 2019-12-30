@@ -5,13 +5,13 @@
         <v-text-field
           v-model="user.username"
           label="Username"
-          :rules="[rules.required, rules.name]"
+          :rules="[rules.required, rules.user.name]"
           counter="16"
         ></v-text-field>
         <v-text-field
           v-model="user.email"
           label="Email address"
-          :rules="[rules.required, rules.email]"
+          :rules="[rules.required, rules.user.email]"
         ></v-text-field>
         <v-text-field
           v-model="user.password"
@@ -59,7 +59,7 @@
 
 <script>
 import { request, API_AUTH_REGISTER } from "@/modules/api"
-import { alert, UI_USER_REGISTERED } from "@/modules/ui"
+import { alert, validatiors, UI_USER_REGISTERED } from "@/modules/ui"
 
 export default {
   data: () => ({
@@ -67,13 +67,8 @@ export default {
       username: "",
       email: "",
       password: "",
-      rules: false
     },
-    rules: {
-      required: (val) => !!val || 'This field is required.',
-      name: (val) => /^[A-Za-z]+$/.test(val) || 'Invalid username.',
-      email: (val) => /^\S+@\S+[\.][0-9a-z]+$/.test(val) || 'Invalid email address.'
-    },
+    rules: validatiors,
     loading: false
   }),
   methods: {
@@ -84,7 +79,6 @@ export default {
       if (this.$refs.registrar.validate() === false) {
         return
       }
-
       this.loading = true
       request.do(API_AUTH_REGISTER, { data: this.user })
         .then(resp => {

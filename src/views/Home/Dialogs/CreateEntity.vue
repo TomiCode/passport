@@ -2,37 +2,34 @@
   <v-dialog v-model="dialog" max-width="640">
     <template v-slot:activator="{ on }">
       <v-btn
+        fixed right bottom
+        dark fab
+        color="pink accent-3"
         class="mb-5"
         style="z-index: 5;"
         v-on="on"
-        color="pink accent-3"
-        dark fab
-        fixed right bottom
       >
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
     <v-card>
-      <v-card-title>Create new entry</v-card-title>
+      <v-card-title>New password entry</v-card-title>
       <v-divider class="mb-4"></v-divider>
       <v-card-text>
-        <v-form
-          ref="form"
-          v-model="valid"
-        >
+        <v-form ref="form">
           <customize-entity v-model="store.appearance">
             <template v-slot:activator="{ handler }">
               <v-text-field
+                label="Name"
                 v-model="store.name"
-                label="Title"
                 :counter="32"
+                :rules="[rules.required, rules.entity.name]"
               >
                 <template slot="prepend">
                   <v-btn
-                    :class="store.appearance.color"
-                    class="white--text"
-                    icon
+                    icon class="white--text"
                     @click="handler.show"
+                    :class="store.appearance.color"
                   >
                     <v-icon v-text="store.appearance.icon"></v-icon>
                   </v-btn>
@@ -45,13 +42,12 @@
             v-model="store.description"
             label="Description"
             :counter="64"
-            hint="aaaaa"
+            :rules="[rules.entity.description]"
           ></v-text-field>
 
           <v-autocomplete
+            clearable label="Category"
             v-model="store.category"
-            label="Category"
-            clearable
             item-value="id"
             item-text="name"
             :items="categories"
@@ -66,6 +62,7 @@
           <v-text-field
             v-model="encrypted.login"
             label="Login"
+            :rules=[rules.entity.login]
           ></v-text-field>
 
           <password-generator @accepted="encrypted.password = $event">
@@ -85,13 +82,12 @@
           </password-generator>
 
           <v-textarea
-            v-model="encrypted.notes"
-            name="input-7-4"
+            auto-grow no-resize
             label="Notes"
             rows="1"
-            auto-grow
-            no-resize
+            v-model="encrypted.notes"
             :counter="255"
+            :rules=[rules.entity.notes]
           ></v-textarea>
         </v-form>
       </v-card-text>
@@ -100,11 +96,12 @@
         <v-btn text @click="dialog = false">Cancel</v-btn>
         <v-spacer></v-spacer>
         <v-btn
-          color="primary"
-          text
+          text color="primary"
           @click="create"
           :loading="loading"
-        >Submit</v-btn>
+        >
+          Submit
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -114,36 +111,37 @@
 import PasswordGenerator from '@/components/PasswordGenerator.vue'
 import CustomizeEntity from '@/components/CustomizeEntity.vue'
 
-import { request, API_STORE_CREATE } from "@/modules/api";
-import { key, encrypt, message } from "openpgp";
 import { mapState } from "vuex";
-
-import { icons, colors, alert, UI_CREATED_ENTITY } from "@/modules/ui";
+import { key, encrypt, message } from "openpgp";
+import { request, API_STORE_CREATE } from "@/modules/api";
+import {
+  icons, colors, alert, validatiors, UI_CREATED_ENTITY
+} from "@/modules/ui";
 
 export default {
   components: {
     PasswordGenerator, CustomizeEntity
   },
   data: () => ({
-    valid: false,
     dialog: false,
+    loading: false,
     generator: false,
     store: {
       name: "",
+      category: 0,
+      description: "",
       appearance: {
         icon: icons.icons[0].value,
         color: colors.colors[0].value
-      },
-      description: "",
-      category: 0
+      }
     },
     encrypted: {
-      address: "",
       login: "",
       password: "",
+      address: "",
       notes: ""
     },
-    loading: false
+    rules: validatiors
   }),
   methods: {
     create() {
@@ -162,30 +160,28 @@ export default {
         }))
         .then(res => {
           this.dialog = false
-          alert.status(UI_CREATED_ENTITY)
           if (this.$route.params.category == res.content.category) {
             this.$emit('refresh')
           }
+          alert.status(UI_CREATED_ENTITY)
         })
-        .catch(reason => {
-          console.log(reason)
-        })
+        .catch(reason => console.log(reason))
         .finally(() => this.loading = false)
     },
     clear() {
       this.store = Object.assign({}, {
         name: "",
+        category: 0,
+        description: "",
         appearance: {
           icon: icons.icons[0].value,
           color: colors.colors[0].value
-        },
-        description: "",
-        category: 0
+        }
       })
       this.encrypted = Object.assign({}, {
-        address: "",
         login: "",
         password: "",
+        address: "",
         notes: ""
       })
     },

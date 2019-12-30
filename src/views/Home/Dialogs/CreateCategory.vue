@@ -16,25 +16,25 @@
       <v-card-title>Add new category</v-card-title>
       <v-divider class="mb-4"></v-divider>
       <v-card-text>
-        <v-form ref="form" v-model="form">
+        <v-form ref="form">
           <v-text-field
             v-model="category.name"
             label="Title"
             :counter="24"
-            :rules="[ validation.name ]"
+            :rules="[rules.required, rules.category.name]"
           ></v-text-field>
           <v-text-field
             v-model="category.description"
             label="Description"
             :counter="32"
-            :rules="[ validation.description ]"
+            :rules="[rules.category.description]"
           ></v-text-field>
 
           <v-select
-            v-model="category.icon"
-            label="Category icon"
-            item-text="name"
             return-object
+            label="Category icon"
+            v-model="category.icon"
+            item-text="name"
             :items="icons"
             :prepend-icon="category.icon.value"
           >
@@ -47,14 +47,17 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
-        <v-btn text @click="dialog = false">Cancel</v-btn>
+        <v-btn text @click="dialog = false">
+          Cancel
+        </v-btn>
         <v-spacer></v-spacer>
         <v-btn
-          text
-          color="primary"
+          text color="primary"
           @click="create"
           :loading="loading"
-        >Submit</v-btn>
+        >
+          Submit
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -62,28 +65,25 @@
 
 <script>
 import { request, API_CATEGORY_CREATE } from "@/modules/api";
-import { icons } from "@/modules/ui";
+import { icons, validatiors } from "@/modules/ui";
 
 export default {
   data: () => ({
     loading: false,
     dialog: false,
-    form: false,
     category: {
       name: "",
       description: "",
       icon: icons.icons[0]
     },
-    validation: {
-      name: (val) => (val.length > 2 && val.length <= 24) || 'Invalid category name!',
-      description: (val) => (val.length <= 32) || 'Category description to long!'
-    },
+    rules: validatiors,
     icons: icons.icons,
   }),
   methods: {
     create() {
-      if (!this.$refs.form.validate()) return
-
+      if (!this.$refs.form.validate()) {
+        return
+      }
       this.loading = true
       this.$store.dispatch('category_create', {
         name: this.category.name,

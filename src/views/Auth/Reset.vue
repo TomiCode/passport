@@ -2,8 +2,7 @@
   <v-row>
     <v-col cols="12">
       <v-alert
-        colored-border
-        prominent
+        colored-border prominent
         border="left"
         color="accent lighten-2"
         icon="mdi-email-receive-outline"
@@ -18,13 +17,13 @@
           v-model="email"
           label="Email address"
           prepend-inner-icon="mdi-email-edit-outline"
+          :rules="[rules.required, rules.user.email]"
         ></v-text-field>
       </v-form>
     </v-col>
     <v-col cols="6">
       <v-btn
-        outlined
-        block
+        block outlined
         color="primary"
         @click="reset"
       >
@@ -33,8 +32,7 @@
     </v-col>
     <v-col cols="6">
       <v-btn
-        block
-        outlined
+        block outlined
         color="grey darken-1"
         :to="{ name: 'auth_login' }"
       >
@@ -46,11 +44,12 @@
 
 <script>
 import { request, API_AUTH_RESET } from "@/modules/api";
-import { alert, UI_USER_RESET } from "@/modules/ui";
+import { alert, validatiors, UI_USER_RESET } from "@/modules/ui";
 
 export default {
   data: () => ({
-    email: ""
+    email: "",
+    rules: validatiors
   }),
   methods: {
     reset() {

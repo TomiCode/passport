@@ -59,6 +59,7 @@ export const UI_REQUIRE_AUTH = "ui_require_auth"
 export const UI_ALREADY_AUTH = "ui_already_auth_complete"
 export const UI_INVALID_DECRYPT = "ui_invalid_decrypt_pass"
 export const UI_CREATED_ENTITY = "ui_created_entity"
+export const UI_UPDATED_ENTITY = "ui_updated_entity"
 
 export const alert = {
   config: {
@@ -105,6 +106,10 @@ export const alert = {
     [UI_ALREADY_AUTH]: {
       message: "You are already authenticated.",
       type: "warning"
+    },
+    [UI_UPDATED_ENTITY]: {
+      message: "Your entry was updated successfully!",
+      type: "success"
     }
   },
   status(status) {
@@ -162,5 +167,23 @@ export const clipboard = {
       document.body.removeChild(textarea)
     }
     return success
+  }
+}
+
+export const validatiors = {
+  required: (val) => !!val || 'This field is required.',
+  user: {
+    email: (val) => /^\S+@\S+[\.][0-9a-z]+$/.test(val) || 'Invalid email address.',
+    username: (val) => /^[A-Za-z]+$/.test(val) || 'Invalid username.',
+  },
+  category: {
+    name: (val) => (val.length > 2 && val.length <= 24) || 'Invalid category name',
+    description: (val) => (val.length <= 32) || 'Category description to long!'
+  },
+  entity: {
+    name: (val) => (val.length > 3 && val.length <= 32) || 'Invalid entry name.',
+    description: (val) => (val.length <= 64) || 'Entry description is too long.',
+    login: (val) => (val.indexOf("@") === -1) || validatiors.user.email(val),
+    notes: (val) => (val.length <= 255) || 'Note is too long, remember to keep it short!'
   }
 }
