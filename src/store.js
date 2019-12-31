@@ -11,6 +11,7 @@ import {
   API_CATEGORY_CREATE,
   API_AUTH_SESSION,
   API_STORES,
+  API_STORE_CREATE,
   API_STORE
 } from "@/modules/api";
 
@@ -142,6 +143,14 @@ export default new Vuex.Store({
           resolve(res)
         })
         .catch(reason => reject(reason))
+    }),
+    api_create_store: ({ commit, dispatch }, { store }) => new Promise((resolve, reject) => {
+      commit('api_content_loading', true)
+      dispatch('encrypt_store', { store })
+        .then(store => request.do(API_STORE_CREATE, { data: { ...store }}))
+        .then(res => resolve(res))
+        .catch(reason => reject(reason))
+        .finally(() => commit('api_content_loading', false))
     }),
     api_load_category: ({ commit }, { category }) => new Promise((resolve, reject) => {
       commit('api_content_loading', true)

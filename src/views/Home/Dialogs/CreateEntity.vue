@@ -112,7 +112,6 @@ import PasswordGenerator from '@/components/PasswordGenerator.vue'
 import CustomizeEntity from '@/components/CustomizeEntity.vue'
 
 import { mapState } from "vuex";
-import { key, encrypt, message } from "openpgp";
 import { request, API_STORE_CREATE } from "@/modules/api";
 import {
   icons, colors, alert, validatiors, UI_CREATED_ENTITY
@@ -146,18 +145,16 @@ export default {
   methods: {
     create() {
       this.loading = true
-      encrypt({ message: this.msg_packet, publicKeys: this.public, armor: false })
-        .then(cipher => request.do(API_STORE_CREATE, {
-          data: {
-            name: this.store.name,
-            description: this.store.description,
-            container: this.container,
-            category: this.store.category,
-            icon: icons.num(this.store.appearance.icon),
-            color: colors.num(this.store.appearance.color),
-            content: btoa(String.fromCharCode.apply(null, cipher.message.packets.write()))
-          }
-        }))
+      this.$store.dispatch('api_create_store', {
+        store: {
+          name: this.store.name,
+          description: this.store.description,
+          container: this.container,
+          category: this.store.category,
+          icon: icons.num(this.store.appearance.icon),
+          color: colors.num(this.store.appearance.color),
+          content: this.encrypted
+      }})
         .then(res => {
           this.dialog = false
           if (this.$route.params.category == res.content.category) {
@@ -186,16 +183,10 @@ export default {
       })
     },
   },
-  computed:{
-    msg_packet() {
-      return message.fromText(JSON.stringify(this.encrypted))
-    },
-    ...mapState({
-      categories: state => state.categories,
-      public: state => state.openpgp.public,
-      container: state => state.auth.container
-    })
-  },
+  computed: mapState({
+    categories: state => state.categories,
+    container: state => state.auth.container
+  }),
   watch: {
     dialog(value) {
       if (value) {
