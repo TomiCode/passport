@@ -9,34 +9,40 @@
     >
       <v-form ref="form" lazy-validation v-if="visible">
         <v-list>
-          <v-list-item>
-            <v-list-item-avatar>
-              <v-icon
-                class="white--text"
-                v-text="icon(values.icon)"
-                :class="color(values.color)"
-              ></v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title v-text="values.name"></v-list-item-title>
-              <v-list-item-subtitle v-text="values.description"></v-list-item-subtitle>
-            </v-list-item-content>
-            <v-list-item-icon>
-              <v-slide-x-reverse-transition mode="out-in">
-                <v-icon
-                  v-if="editing"
-                  key="store-icon-save"
-                  color="deep-orange lighten-1"
-                  @click="save"
-                >
-                  mdi-cloud-upload
-                </v-icon>
-                <v-icon v-else @click="editing = true" key="store-icon-edit">
-                  mdi-circle-edit-outline
-                </v-icon>
-              </v-slide-x-reverse-transition>
-            </v-list-item-icon>
-          </v-list-item>
+          <customize-entity :value="appearance" @input="update_appearance">
+            <template v-slot:activator="{ handler }">
+              <v-list-item>
+                <v-list-item-avatar >
+                  <v-icon
+                    class="white--text"
+                    v-text="icon(values.icon)"
+                    :class="color(values.color)"
+                    :disabled="!editing"
+                    @click="handler.show"
+                  ></v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="values.name"></v-list-item-title>
+                  <v-list-item-subtitle v-text="values.description"></v-list-item-subtitle>
+                </v-list-item-content>
+                <v-list-item-icon>
+                  <v-slide-x-reverse-transition mode="out-in">
+                    <v-icon
+                      v-if="editing"
+                      key="store-icon-save"
+                      color="deep-orange lighten-1"
+                      @click="save"
+                    >
+                      mdi-cloud-upload
+                    </v-icon>
+                    <v-icon v-else @click="editing = true" key="store-icon-edit">
+                      mdi-circle-edit-outline
+                    </v-icon>
+                  </v-slide-x-reverse-transition>
+                </v-list-item-icon>
+              </v-list-item>
+            </template>
+          </customize-entity>
           <v-divider class="mb-4"></v-divider>
           <v-list-item>
             <v-text-field
@@ -268,6 +274,7 @@
 
 <script>
 import PasswordGenerator from '@/components/PasswordGenerator.vue'
+import CustomizeEntity from '@/components/CustomizeEntity.vue'
 
 import _ from 'lodash'
 import { mapState } from "vuex"
@@ -278,7 +285,7 @@ import {
 
 export default {
   components: {
-    PasswordGenerator
+    PasswordGenerator, CustomizeEntity
   },
   data: () => ({
     drawer: false,
@@ -380,11 +387,23 @@ export default {
         this.$emit('input', false)
       }
     },
+    update_appearance({ icon, color }) {
+      this.values.icon = icons.num(icon)
+      this.values.color = colors.num(color)
+    },
     icon: id => icons.icons[id].value,
     color: id => colors.colors[id].value
   },
-  computed: mapState({
-    categories: state => state.categories
-  })
+  computed: {
+    appearance() {
+      return {
+        icon: this.icon(this.values.icon),
+        color: this.color(this.values.color)
+      }
+    },
+    ...mapState({
+      categories: state => state.categories
+    })
+  }
 }
 </script>
