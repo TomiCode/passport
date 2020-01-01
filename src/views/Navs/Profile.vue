@@ -1,8 +1,7 @@
 <template>
   <div class="navs-authenticated">
     <category-navigation v-model="drawer"></category-navigation>
-    <v-app-bar app dark color="accent" clipped-left elevation="2" extended extension-height="5"  >
-
+    <v-app-bar app dark color="accent" clipped-left extended extension-height="0" elevation="2">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="ml-1"></v-app-bar-nav-icon>
       <v-toolbar-title class="passport-headline mr-4">
         Vinca <strong>Passport</strong>
@@ -32,7 +31,6 @@
             <v-icon right>mdi-chevron-down</v-icon>
           </v-btn>
         </template>
-
         <v-list dark color="indigo accent-2">
           <v-list-item>
             <v-list-item-avatar>
@@ -52,7 +50,6 @@
             <v-list-item-title>Preferences</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-
           <v-list-item @click.stop="logout">
             <v-list-item-icon class="my-auto mr-3">
               <v-icon >mdi-logout-variant</v-icon>
@@ -63,11 +60,16 @@
           </v-list-item>
         </v-list>
       </v-menu>
-
+      <template v-slot:extension>
+        <v-progress-linear
+          v-if="content_loading"
+          color="red lighten-1"
+          class="mt-1"
+          :indeterminate="true"
+        ></v-progress-linear>
+      </template>
     </v-app-bar>
-
   </div>
-
 </template>
 
 <script>
@@ -85,7 +87,8 @@ export default {
   },
   computed: mapState({
     name: state => state.user.name,
-    email: state => state.user.email
+    email: state => state.user.email,
+    content_loading: state => state.content_loading
   }),
   methods: {
     logout () {
@@ -99,3 +102,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+header .v-toolbar__extension {
+  padding: 0;
+}
+</style>

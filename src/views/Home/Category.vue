@@ -27,17 +27,6 @@
             <v-list-item-title>{{ item.name }}</v-list-item-title>
             <v-list-item-subtitle>{{ item.description }}</v-list-item-subtitle>
           </v-list-item-content>
-
-          <v-list-item-action>
-            <v-btn icon>
-              <v-icon color="grey">mdi-at</v-icon>
-            </v-btn>
-          </v-list-item-action>
-          <v-list-item-action>
-            <v-btn icon>
-              <v-icon color="grey">mdi-key</v-icon>
-            </v-btn>
-          </v-list-item-action>
         </v-list-item>
       </v-list>
     </v-col>
@@ -58,7 +47,7 @@ import Entity from '@/components/Entity'
 import EntryDetails from '@/components/EntryDetails'
 
 import _ from 'lodash'
-
+import { mapState } from "vuex";
 import { request, API_STORES } from "@/modules/api"
 import { colors, icons } from "@/modules/ui"
 
