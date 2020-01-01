@@ -184,6 +184,7 @@ export const validatiors = {
     name: (val) => (val.length > 3 && val.length <= 32) || 'Invalid entry name.',
     description: (val) => (val.length <= 64) || 'Entry description is too long.',
     login: (val) => (val.indexOf("@") === -1) || validatiors.user.email(val),
-    notes: (val) => (val.length <= 255) || 'Note is too long, remember to keep it short!'
+    notes: (val) => (val.length <= 255) || 'Note is too long, remember to keep it short!',
+    other: (val) => (val.length <= 255) || 'To many characters!'
   }
 }

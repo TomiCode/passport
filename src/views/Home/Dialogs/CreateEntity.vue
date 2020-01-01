@@ -56,13 +56,12 @@
           <v-text-field
             v-model="encrypted.address"
             label="Website / Address"
-            :counter="64"
+            :rules="[rules.entity.other]"
           ></v-text-field>
-
           <v-text-field
             v-model="encrypted.login"
             label="Login"
-            :rules=[rules.entity.login]
+            :rules="[rules.entity.login]"
           ></v-text-field>
 
           <password-generator @accepted="encrypted.password = $event">
@@ -71,6 +70,7 @@
                 v-model="encrypted.password"
                 label="Password"
                 hint="You can also use the password generator on the left side."
+                :rules="[rules.required, rules.entity.other]"
               >
                 <template slot="prepend">
                   <v-btn color="primary lighten-1" icon @click="handler.show">
@@ -121,11 +121,18 @@ export default {
   components: {
     PasswordGenerator, CustomizeEntity
   },
-  data: () => ({
-    dialog: false,
-    loading: false,
-    generator: false,
-    store: {
+  data() {
+    return {
+      dialog: false,
+      loading: false,
+      generator: false,
+      store: this.default_store(),
+      encrypted: this.default_encrypted(),
+      rules: validatiors
+    }
+  },
+  methods: {
+    default_store: () => ({
       name: "",
       category: 0,
       description: "",
@@ -133,17 +140,17 @@ export default {
         icon: icons.icons[0].value,
         color: colors.colors[0].value
       }
-    },
-    encrypted: {
+    }),
+    default_encrypted: () => ({
       login: "",
       password: "",
       address: "",
       notes: ""
-    },
-    rules: validatiors
-  }),
-  methods: {
+    }),
     create() {
+      if (this.$refs.form.validate() == false) {
+        return
+      }
       this.loading = true
       this.$store.dispatch('api_create_store', {
         store: {
@@ -166,21 +173,9 @@ export default {
         .finally(() => this.loading = false)
     },
     clear() {
-      this.store = Object.assign({}, {
-        name: "",
-        category: 0,
-        description: "",
-        appearance: {
-          icon: icons.icons[0].value,
-          color: colors.colors[0].value
-        }
-      })
-      this.encrypted = Object.assign({}, {
-        login: "",
-        password: "",
-        address: "",
-        notes: ""
-      })
+      this.$refs.form.resetValidation()
+      this.store = Object.assign({}, this.default_store())
+      this.encrypted = Object.assign({}, this.default_encrypted())
     },
   },
   computed: mapState({
