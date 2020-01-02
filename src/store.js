@@ -13,7 +13,9 @@ import {
   API_STORES,
   API_STORE_CREATE,
   API_STORE_DELETE,
-  API_STORE
+  API_STORE,
+  API_CATEGORY,
+  API_CATEGORY_DELETE
 } from "@/modules/api";
 
 Vue.use(Vuex)
@@ -45,18 +47,17 @@ export default new Vuex.Store({
       state.openpgp.public = certificate
       state.openpgp.private = key
     },
-    local_private_update: (state, key) => {
-      state.openpgp.private = key
-    },
+    local_private_update: (state, key) => state.openpgp.private = key,
     local_categories_update: (state, categories) => {
       if (categories !== null && categories !== undefined) {
         state.categories = categories.categories
       }
     },
-    local_container_update: (state, container) => {
-      state.auth.container = container
-    },
+    local_container_update: (state, container) => state.auth.container = container,
     api_content_loading: (state, value) => state.content_loading = value,
+    api_remove_category: (state, category) => {
+      state.categories.splice(state.categories.findIndex(c => c.id === category.id), 1)
+    },
 
     account_login (state, account) {
       if (account.uuid !== undefined) {
@@ -161,6 +162,23 @@ export default new Vuex.Store({
           .catch(reason => reject(reason))
           .finally(() => _.delay(() => commit('api_content_loading', false), 128))
       }, 256)
+    }),
+    api_update_category: ({ commit }, { category }) => new Promise((resolve, reject) => {
+      request.do(API_CATEGORY, { data: { ...category }, method: "PATCH" })
+        .then(res => resolve(res))
+        .catch(reason => reject(reason))
+    }),
+    api_delete_category: ({ commit }, { category, migrate }) => new Promise((resolve, reject) => {
+      commit('api_content_loading', true)
+      request.do(API_CATEGORY_DELETE, { data: { id: category.id, migrate }})
+        .then(res => {
+          if (res.content.removed !== undefined) {
+            commit('api_remove_category', category)
+          }
+          resolve(res)
+        })
+        .catch(reason => reject(reason))
+        .finally(() => commit('api_content_loading', false))
     }),
     api_load_store: ({ commit, dispatch }, { store }) => new Promise((resolve, reject) => {
       commit('api_content_loading', true)

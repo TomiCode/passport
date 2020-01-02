@@ -13,10 +13,10 @@
       </v-btn>
     </template>
     <v-card>
-      <v-card-title>Add new category</v-card-title>
+      <v-card-title>Create category</v-card-title>
       <v-divider class="mb-4"></v-divider>
       <v-card-text>
-        <v-form ref="form">
+        <v-form ref="form" lazy-validation>
           <v-text-field
             v-model="category.name"
             label="Title"
@@ -45,18 +45,15 @@
           </v-select>
         </v-form>
       </v-card-text>
-      <v-divider></v-divider>
       <v-card-actions>
-        <v-btn text @click="dialog = false">
-          Cancel
-        </v-btn>
         <v-spacer></v-spacer>
+        <v-btn text @click="dialog = false">Cancel</v-btn>
         <v-btn
           text color="primary"
           @click="create"
           :loading="loading"
         >
-          Submit
+          Create Category
         </v-btn>
       </v-card-actions>
     </v-card>

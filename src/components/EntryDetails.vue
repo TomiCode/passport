@@ -148,8 +148,7 @@
                     mdi-backup-restore
                   </v-icon>
                   <v-icon
-                    v-else
-                    key="content.login.copy"
+                    v-else key="content.login.copy"
                     @click="clipboard(values.content.login)"
                   >
                     mdi-content-copy
@@ -229,13 +228,13 @@
             <v-dialog v-model="remove_dialog" max-width="480">
               <template v-slot:activator="{ on }">
                 <v-btn text block color="red lighten-1" :disabled="!editing" v-on="on">
-                      <v-icon left>mdi-trash-can</v-icon> Delete
-                    </v-btn>
+                  <v-icon left>mdi-trash-can</v-icon> Delete
+                </v-btn>
               </template>
               <v-card>
                 <v-card-title class="headline">Delete entry</v-card-title>
                 <v-divider class="mb-4"></v-divider>
-                <v-card-text>
+                <v-card-text class="body-1">
                   Do You really want to remove <span class="font-weight-bold">{{values.name}}</span> from your database?
                 </v-card-text>
                 <v-card-actions>
@@ -261,20 +260,16 @@
           </v-col>
           <v-col cols="12" class="text-center">
             <v-btn
-              text
-              color="primary lighten-2"
-              class="mx-2"
+              text class="mx-2" color="error lighten-1"
+              @click="overlay_click(false)"
+            >
+              <v-icon left>mdi-close</v-icon> Close
+            </v-btn>
+            <v-btn
+              text class="mx-2" color="primary lighten-1"
               @click="overlay_click(true)"
             >
               <v-icon left>mdi-trash-can-outline</v-icon> Clear
-            </v-btn>
-            <v-btn
-              text
-              color="error lighten-2"
-              class="mx-2"
-              @click="overlay_click(false)"
-            >
-              <v-icon left>mdi-close</v-icon> Cancel
             </v-btn>
           </v-col>
         </v-row>

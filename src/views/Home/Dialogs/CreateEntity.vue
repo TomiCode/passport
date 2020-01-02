@@ -13,7 +13,7 @@
       </v-btn>
     </template>
     <v-card>
-      <v-card-title>Create new entry</v-card-title>
+      <v-card-title>Create entry</v-card-title>
       <v-divider class="mb-4"></v-divider>
       <v-card-text>
         <v-form ref="form">

@@ -60,6 +60,10 @@ export const UI_ALREADY_AUTH = "ui_already_auth_complete"
 export const UI_INVALID_DECRYPT = "ui_invalid_decrypt_pass"
 export const UI_CREATED_ENTITY = "ui_created_entity"
 export const UI_UPDATED_ENTITY = "ui_updated_entity"
+export const UI_DELETED_ENTITY = "ui_deleted_entity"
+export const UI_CREATED_CATEGORY = "ui_created_category"
+export const UI_UPDATED_CATEGORY = "ui_updated_category"
+export const UI_DELETED_CATEGORY = "ui_deleted_category"
 
 export const alert = {
   config: {
@@ -109,6 +113,10 @@ export const alert = {
     },
     [UI_UPDATED_ENTITY]: {
       message: "Your entry was updated successfully!",
+      type: "success"
+    },
+    [UI_UPDATED_CATEGORY]: {
+      message: "Your category was updated succesfully!",
       type: "success"
     }
   },
