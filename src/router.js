@@ -95,7 +95,7 @@ const router = new Router({
             create: CreateCategory
           },
           meta: {
-            title: "Settings"
+            title: "Manage Categories"
           }
         },
         {

@@ -21,29 +21,24 @@
         <v-text-field
           prepend-icon="mdi-account-lock"
           type="password"
-          label="Contaner password"
+          label="Decryption password"
           v-model="password"
           v-on:keyup.enter="decrypt"
         ></v-text-field>
       </v-card-text>
-      <v-divider></v-divider>
       <v-card-actions>
-        <v-btn
-          color="red darken-1"
-          text
-          :disabled="loading"
-        >
+        <v-spacer></v-spacer>
+        <v-btn text color="red darken-1" :disabled="loading">
           <v-icon left dark>mdi-logout-variant</v-icon>
           Logout
         </v-btn>
         <v-btn
-          color="blue darken-1"
-          text
-          @click.stop="decrypt"
+          text color="accent darken-1"
           :disabled="loading"
           :loading="loading"
+          @click.stop="decrypt"
         >
-        <v-icon left dark>mdi-lock-open</v-icon>
+          <v-icon left dark>mdi-lock-open</v-icon>
           Decrypt
         </v-btn>
       </v-card-actions>

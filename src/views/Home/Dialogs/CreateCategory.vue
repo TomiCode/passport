@@ -92,6 +92,17 @@ export default {
       })
         .then(() => this.dialog = false)
         .finally(() => this.loading = false)
+    },
+    clear() {
+      this.category.name = ""
+      this.category.description = ""
+      this.category.icon = icons.icons[0]
+      this.$refs.form.resetValidation()
+    }
+  },
+  watch: {
+    dialog(value) {
+      if (!value) setTimeout(() => this.clear(), 256)
     }
   }
 }

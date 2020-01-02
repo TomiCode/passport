@@ -1,7 +1,7 @@
 <template>
-  <div class="category-manage">
+<v-row>
+  <v-col>
     <v-list>
-      <v-subheader inset>User defined categories</v-subheader>
       <v-list-item v-for="category in categories" :key="category.id">
         <v-list-item-icon>
           <v-icon v-text="icon(category.icon)"></v-icon>
@@ -17,7 +17,8 @@
         </v-list-item-action>
       </v-list-item>
     </v-list>
-  </div>
+  </v-col>
+</v-row>
 </template>
 
 <script>

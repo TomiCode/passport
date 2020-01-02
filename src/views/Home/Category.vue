@@ -33,12 +33,12 @@
   </v-row>
   <v-row v-else class="mt-10">
     <v-col cols="12" class="text-center">
-      <v-icon size="6em">mdi-folder-information-outline</v-icon>
+      <v-icon size="6em" class="text--disabled">mdi-folder-information-outline</v-icon>
     </v-col>
-    <v-col cols="12" class="title font-italic font-weight-regular text-center">
+    <v-col cols="12" class="title font-weight-regular text-center text--disabled">
       No entities yet created. Add a new one using the + button.
     </v-col>
-   </v-row>
+  </v-row>
 </div>
 </template>
 

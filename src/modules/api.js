@@ -9,6 +9,7 @@ export const API_CATEGORIES = "api/v1/home/categories"
 export const API_CATEGORY = "api/v1/home/category"
 export const API_CATEGORY_CREATE = "api/v1/home/category/create"
 export const API_STORE_CREATE = "api/v1/home/store/create"
+export const API_STORE_DELETE = "api/v1/home/store/delete"
 export const API_STORE = "api/v1/home/store"
 export const API_STORES = "api/v1/home/stores"
 

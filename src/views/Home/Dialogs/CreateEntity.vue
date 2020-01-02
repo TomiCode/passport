@@ -13,7 +13,7 @@
       </v-btn>
     </template>
     <v-card>
-      <v-card-title>New password entry</v-card-title>
+      <v-card-title>Create new entry</v-card-title>
       <v-divider class="mb-4"></v-divider>
       <v-card-text>
         <v-form ref="form">
@@ -91,16 +91,11 @@
           ></v-textarea>
         </v-form>
       </v-card-text>
-      <v-divider></v-divider>
       <v-card-actions>
-        <v-btn text @click="dialog = false">Cancel</v-btn>
         <v-spacer></v-spacer>
-        <v-btn
-          text color="primary"
-          @click="create"
-          :loading="loading"
-        >
-          Submit
+        <v-btn text @click="dialog = false">Cancel</v-btn>
+        <v-btn text color="primary" @click="create" :loading="loading">
+          Create new
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -184,12 +179,10 @@ export default {
   }),
   watch: {
     dialog(value) {
-      if (value) {
+      if (value)
         this.store.category = parseInt(this.$route.params.category)
-      }
-      else {
-        setTimeout(() => this.clear(), 150)
-      }
+      else
+        setTimeout(() => this.clear(), 256)
     }
   }
 }

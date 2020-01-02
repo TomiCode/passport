@@ -48,15 +48,15 @@
             </v-btn-toggle>
           </v-row>
         </v-card-text>
-        <v-divider></v-divider>
         <v-card-actions>
-          <v-btn text @click="dialog = false">Cancel</v-btn>
           <v-spacer></v-spacer>
+          <v-btn text @click="dialog = false">Cancel</v-btn>
           <v-btn
-            color="primary"
-            text
+            text color="primary"
             @click="accept"
-          >Accept</v-btn>
+          >
+            Accept
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

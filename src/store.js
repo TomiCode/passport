@@ -12,6 +12,7 @@ import {
   API_AUTH_SESSION,
   API_STORES,
   API_STORE_CREATE,
+  API_STORE_DELETE,
   API_STORE
 } from "@/modules/api";
 
@@ -173,6 +174,13 @@ export default new Vuex.Store({
       commit('api_content_loading', true)
       dispatch('encrypt_store', { store })
         .then(store => request.do(API_STORE, { data: { ...store }, method: "PATCH" }))
+        .then(res => resolve(res))
+        .catch(reason => reject(reason))
+        .finally(() => commit('api_content_loading', false))
+    }),
+    api_delete_store: ({ commit }, { store }) => new Promise((resolve, reject) => {
+      commit('api_content_loading', true)
+      request.do(API_STORE_DELETE, { data: { id: store.id }})
         .then(res => resolve(res))
         .catch(reason => reject(reason))
         .finally(() => commit('api_content_loading', false))

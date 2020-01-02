@@ -55,7 +55,6 @@
             >
               <template v-slot:append>
                 <v-icon
-                  color="accent"
                   v-if="values.name != loaded.name"
                   @click="values.name = loaded.name"
                 >
@@ -75,7 +74,6 @@
             >
               <template v-slot:append>
                 <v-icon
-                  color="accent"
                   v-if="values.description != loaded.description"
                   @click="values.description = loaded.description"
                 >
@@ -96,7 +94,6 @@
             >
               <template v-slot:append-outer>
                 <v-icon
-                  color="accent"
                   v-if="values.category != loaded.category"
                   @click="values.category = loaded.category"
                 >
@@ -117,7 +114,6 @@
                 <v-fade-transition mode="out-in">
                   <v-icon
                     key="content.address.restore"
-                    color="accent"
                     v-if="values.content.address != loaded.content.address"
                     @click="values.content.address = loaded.content.address"
                   >
@@ -146,7 +142,6 @@
                 <v-fade-transition mode="out-in">
                   <v-icon
                     key="content.login.restore"
-                    color="accent"
                     v-if="values.content.login != loaded.content.login"
                     @click="values.content.login = loaded.content.login"
                   >
@@ -231,9 +226,25 @@
             ></v-textarea>
           </v-list-item>
           <v-list-item class="text-center mt-4">
-            <v-btn text block color="red lighten-1" :disabled="!editing">
-              <v-icon left>mdi-trash-can</v-icon> Remove
-            </v-btn>
+            <v-dialog v-model="remove_dialog" max-width="480">
+              <template v-slot:activator="{ on }">
+                <v-btn text block color="red lighten-1" :disabled="!editing" v-on="on">
+                      <v-icon left>mdi-trash-can</v-icon> Delete
+                    </v-btn>
+              </template>
+              <v-card>
+                <v-card-title class="headline">Delete entry</v-card-title>
+                <v-divider class="mb-4"></v-divider>
+                <v-card-text>
+                  Do You really want to remove <span class="font-weight-bold">{{values.name}}</span> from your database?
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="primary darken-1" text @click="remove_dialog = false">Cancel</v-btn>
+                  <v-btn color="red darken-1" text @click="remove">Delete</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-list-item>
         </v-list>
       </v-form>
@@ -292,6 +303,7 @@ export default {
     visible: false,
     editing: false,
     clipboard_clear: false,
+    remove_dialog: false,
     password: {
       visible: false,
       editing: false
@@ -380,6 +392,17 @@ export default {
           alert.status(UI_UPDATED_ENTITY)
         })
         .catch(reason => console.log(reason))
+    },
+    remove() {
+      this.$store.dispatch('api_delete_store', { store: this.loaded })
+        .then(res => {
+          if (res.content.id == this.loaded.id) {
+            this.drawer = false
+            this.$emit('update')
+          }
+          this.remove_dialog = false
+        })
+        .catch(err => console.log(err))
     },
     change_state() {
       if (!this.drawer && !this.clipboard_clear) {
