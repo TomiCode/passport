@@ -19,14 +19,18 @@ export default {
     path_items() {
       let segments = this.$route.matched.map(route => ({ text: route.meta.title, disabled: true }))
       if (this.$route.name === "home_category") {
-        segments.push({
-          text: this.$store.state.categories.find(
-              category => category.id == this.$route.params.category
-            ).name,
-          disabled: true
-        })
+        if (this.category === undefined) {
+          this.$router.push({ name: 'home_index' })
+          return
+        }
+        segments.push({ text: this.category.name, disabled: true })
       }
       return segments
+    },
+    category() {
+      return this.$store.state.categories.find(
+        category => category.id == this.$route.params.category
+      )
     },
     ...mapGetters([ 'container_valid', 'has_categories', 'private_decrypted' ]),
   }

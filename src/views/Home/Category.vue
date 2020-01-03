@@ -21,9 +21,6 @@
             ></v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-overlay absolute :value="false" opacity="0.05">
-              <v-progress-circular color="indigo" indeterminate size="24"></v-progress-circular>
-            </v-overlay>
             <v-list-item-title>{{ item.name }}</v-list-item-title>
             <v-list-item-subtitle>{{ item.description }}</v-list-item-subtitle>
           </v-list-item-content>

@@ -18,7 +18,7 @@
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title>Home</v-list-item-title>
-          <v-list-item-subtitle>Aaaaaaa</v-list-item-subtitle>
+          <v-list-item-subtitle>Unassigned &amp; last used</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -30,10 +30,7 @@
         </v-col>
         <v-col cols="6" class="text-right">
           <v-btn
-            text
-            small
-            rounded
-            class="mr-2"
+            text small rounded class="mr-2"
             :to="{ name: 'home_manage' }"
           >
             Manage

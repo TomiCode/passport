@@ -15,7 +15,8 @@ import {
   API_STORE_DELETE,
   API_STORE,
   API_CATEGORY,
-  API_CATEGORY_DELETE
+  API_CATEGORY_DELETE,
+  API_USER_HOME
 } from "@/modules/api";
 
 Vue.use(Vuex)
@@ -104,6 +105,15 @@ export default new Vuex.Store({
             .catch(reason => reject(reason))
         })
         .catch(reason => reject(reason))
+    }),
+    api_load_home: ({ commit }) => new Promise((resolve, reject) => {
+      commit('api_content_loading', true)
+      _.delay(() => {
+        request.do(API_USER_HOME)
+          .then(res => resolve(res))
+          .catch(reason => reject(reason))
+          .finally(() => commit('api_content_loading', false))
+      }, 256)
     }),
     api_load_container: ({ commit, dispatch }) => new Promise((resolve, reject) => {
       request.do(API_CONTAINER)

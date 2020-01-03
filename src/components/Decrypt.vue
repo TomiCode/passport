@@ -33,7 +33,7 @@
           Logout
         </v-btn>
         <v-btn
-          text color="accent darken-1"
+          text color="primary darken-1"
           :disabled="loading"
           :loading="loading"
           @click.stop="decrypt"

@@ -13,6 +13,7 @@ export const API_STORE_CREATE = "api/v1/home/store/create"
 export const API_STORE_DELETE = "api/v1/home/store/delete"
 export const API_STORE = "api/v1/home/store"
 export const API_STORES = "api/v1/home/stores"
+export const API_USER_HOME = "api/v1/home"
 
 // Error constants
 export const API_SUCCESS = "success"
