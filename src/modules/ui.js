@@ -64,6 +64,9 @@ export const UI_DELETED_ENTITY = "ui_deleted_entity"
 export const UI_CREATED_CATEGORY = "ui_created_category"
 export const UI_UPDATED_CATEGORY = "ui_updated_category"
 export const UI_DELETED_CATEGORY = "ui_deleted_category"
+export const UI_UPDATED_USER = "ui_updated_user"
+export const SYS_EMAIL_EXISTS = "sys_email_exists"
+export const SYS_INVALID_PASS = "usr_invalid_pass"
 
 export const alert = {
   config: {
@@ -117,6 +120,18 @@ export const alert = {
     },
     [UI_UPDATED_CATEGORY]: {
       message: "Your category was updated succesfully!",
+      type: "success"
+    },
+    [SYS_EMAIL_EXISTS]: {
+      message: "This email address already exists in the database.",
+      type: "error"
+    },
+    [SYS_INVALID_PASS]: {
+      message: "Account confirmation failed, invalid password!",
+      type: "error"
+    },
+    [UI_UPDATED_USER]: {
+      message: "Your account was successfully saved.",
       type: "success"
     }
   },

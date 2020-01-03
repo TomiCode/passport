@@ -121,6 +121,9 @@ const router = new Router({
           path: 'profile',
           name: 'home_profile',
           component: HomeProfile,
+          meta: {
+            title: "Preferences"
+          }
         }
       ]
     },
@@ -131,6 +134,17 @@ const router = new Router({
         default: () => import('./views/About.vue'),
         nav: NavsBasic
       }
+    },
+    {
+      path: '/404',
+      name: 'not_found',
+      components: {
+        default: () => import('./views/NotFound.vue'),
+        nav: NavsBasic
+      }
+    },
+    {
+      path: '*', redirect: '/404'
     }
   ]
 })

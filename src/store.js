@@ -16,7 +16,8 @@ import {
   API_STORE,
   API_CATEGORY,
   API_CATEGORY_DELETE,
-  API_USER_HOME
+  API_USER_HOME,
+  API_USER_UPDATE
 } from "@/modules/api";
 
 Vue.use(Vuex)
@@ -36,8 +37,8 @@ export default new Vuex.Store({
       email: "",
       avatar: "",
       preferences: {
-        darkmode: false,
-        lastused: true
+        dark_mode: false,
+        last_used: true
       }
     },
     categories: [ ],
@@ -58,6 +59,19 @@ export default new Vuex.Store({
     api_content_loading: (state, value) => state.content_loading = value,
     api_remove_category: (state, category) => {
       state.categories.splice(state.categories.findIndex(c => c.id === category.id), 1)
+    },
+    api_account_login: (state, uuid) => {
+      if (uuid !== undefined) {
+        localStorage.setItem('vinca:session', uuid)
+        state.auth.token = uuid
+      }
+    },
+    api_account_update: (state, account) => {
+      state.user.name = account.username
+      state.user.email = account.email
+      state.user.avatar = account.avatar
+      state.user.preferences.dark_mode = account.dark_mode
+      state.user.preferences.last_used = account.last_used
     },
 
     account_login (state, account) {
@@ -89,7 +103,8 @@ export default new Vuex.Store({
     api_login: ({ commit, dispatch }, { email, password }) => new Promise((resolve, reject) => {
       request.do(API_AUTH_LOGIN, { data: { email, password }})
         .then(res => {
-          commit('account_login', res.content)
+          commit('api_account_login', res.content.uuid)
+          commit('api_account_update', res.content)
           dispatch('api_load_container')
             .then(() => resolve())
             .catch(reason => reject(reason))
@@ -105,6 +120,21 @@ export default new Vuex.Store({
             .catch(reason => reject(reason))
         })
         .catch(reason => reject(reason))
+    }),
+    api_user_update: ({ commit }, { confirmation, properties }) => new Promise((resolve, reject) => {
+      request.do(API_USER_UPDATE, {
+        data: {
+          confirmation,
+          email: properties.email,
+          password: properties.password,
+          ...properties.preferences
+        }
+      })
+      .then(res => {
+        commit('api_account_update', res.content)
+        resolve(res)
+      })
+      .catch(reason => reject(reason))
     }),
     api_load_home: ({ commit }) => new Promise((resolve, reject) => {
       commit('api_content_loading', true)

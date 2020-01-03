@@ -20,7 +20,7 @@ export default {
       let segments = this.$route.matched.map(route => ({ text: route.meta.title, disabled: true }))
       if (this.$route.name === "home_category") {
         if (this.category === undefined) {
-          this.$router.push({ name: 'home_index' })
+          this.$router.push({ name: 'not_found' })
           return
         }
         segments.push({ text: this.category.name, disabled: true })

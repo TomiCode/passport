@@ -33,6 +33,8 @@ import CreateContainer from '@/components/CreateContainer.vue'
 import Decrypt from '@/components/Decrypt.vue'
 import Alerts from '@/components/Alerts'
 
+import { mapState } from "vuex";
+
 import { request, API_INVALID_SESSION } from '@/modules/api';
 import { alert, UI_USER_LOGOUT, UI_INVALID_DECRYPT } from '@/modules/ui';
 
@@ -59,6 +61,14 @@ export default {
         .catch(reason => console.log(reason))
         .finally(() => this.global_loading = false)
     }
+  },
+  computed: mapState({
+    dark_mode: state => state.user.preferences.dark_mode
+  }),
+  watch: {
+    dark_mode(value) {
+      this.$vuetify.theme.dark = value
+    }
   }
 };
 </script>
@@ -69,6 +79,7 @@ export default {
   font-size: 1.35rem;
 }
 .render-view-content {
-  margin-bottom: 4em;
+  padding-bottom: 4em;
+  height: 100%;
 }
 </style>
