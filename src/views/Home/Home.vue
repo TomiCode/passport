@@ -2,60 +2,63 @@
 <div class="home-view" >
   <v-row>
     <v-col v-if="history.length || unassigned.length">
-      <entry-details :store="detail" v-model="show_details"></entry-details>
-      <v-list>
-        <template v-if="history.length > 0">
-          <v-subheader class="body-2 text--disabled">
-            <v-icon small class="pr-4">mdi-history</v-icon>
-            Last used entries
-          </v-subheader>
-          <v-list-item
-            v-for="store in history"
-            :key="`${store.id}.history`"
-            @click="details(store)"
-          >
-            <v-list-item-avatar>
-              <v-icon
-                class="white--text"
-                :class="color(store.color)"
-                v-text="icon(store.icon)"
-              ></v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title>{{ store.name }}</v-list-item-title>
-              <v-list-item-subtitle>{{ store.description }}</v-list-item-subtitle>
-            </v-list-item-content>
-            <v-list-item-action v-if="store.category != 0">
-              <v-chip label :to="{ name: 'home_category', params: { category: store.category }}">
-                <v-icon left v-text="icon(category(store.category).icon)"></v-icon>
-                {{ category(store.category).name }}
-              </v-chip>
-            </v-list-item-action>
-          </v-list-item>
-          <v-divider class="mt-2"></v-divider>
+      <entry-details>
+        <template v-slot:activator="{ handler }">
+          <v-list>
+            <template v-if="history.length > 0">
+              <v-subheader class="body-2 text--disabled">
+                <v-icon small class="pr-4">mdi-history</v-icon>
+                Last used entries
+              </v-subheader>
+              <v-list-item
+                v-for="store in history"
+                :key="`h.${store.id}`"
+                @click="handler.show(store)"
+              >
+                <v-list-item-avatar>
+                  <v-icon
+                    class="white--text"
+                    :class="color(store.color)"
+                    v-text="icon(store.icon)"
+                  ></v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>{{ store.name }}</v-list-item-title>
+                  <v-list-item-subtitle>{{ store.description }}</v-list-item-subtitle>
+                </v-list-item-content>
+                <v-list-item-action v-if="store.category != 0">
+                  <v-chip label :to="{ name: 'home_category', params: { category: store.category }}">
+                    <v-icon left v-text="icon(category(store.category).icon)"></v-icon>
+                    {{ category(store.category).name }}
+                  </v-chip>
+                </v-list-item-action>
+              </v-list-item>
+              <v-divider class="mt-2"></v-divider>
+            </template>
+            <v-subheader class="body-2 text--disabled">
+              <v-icon small class="pr-4">mdi-key-outline</v-icon>
+              Unassigned entries
+            </v-subheader>
+            <v-list-item
+              v-for="store in unassigned"
+              :key="`u.${store.id}`"
+              @click="handler.show(store)"
+            >
+              <v-list-item-avatar>
+                <v-icon
+                  class="white--text"
+                  :class="color(store.color)"
+                  v-text="icon(store.icon)"
+                ></v-icon>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title>{{ store.name }}</v-list-item-title>
+                <v-list-item-subtitle>{{ store.description }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
         </template>
-        <v-subheader class="body-2 text--disabled">
-          <v-icon small class="pr-4">mdi-key-outline</v-icon>
-          Unassigned entries
-        </v-subheader>
-        <v-list-item
-          v-for="store in unassigned"
-          :key="`${store.id}.unassigned`"
-          @click="details(store)"
-        >
-          <v-list-item-avatar>
-            <v-icon
-              class="white--text"
-              :class="color(store.color)"
-              v-text="icon(store.icon)"
-            ></v-icon>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>{{ store.name }}</v-list-item-title>
-            <v-list-item-subtitle>{{ store.description }}</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      </entry-details>
     </v-col>
   </v-row>
 </div>
@@ -69,8 +72,6 @@ import { colors, icons } from "@/modules/ui"
 
 export default {
   data: () => ({
-    show_details: false,
-    detail: { },
     unassigned: [ ],
     history: [ ]
   }),
@@ -89,10 +90,6 @@ export default {
         })
         .catch(err => console.log(err))
     },
-    details: _.throttle(function(store) {
-      this.detail = store
-      this.show_details = true
-    }, 512),
     category(id) {
       return this.categories.find(category => category.id == id)
     },

@@ -144,15 +144,15 @@ export default {
       })
         .then(() => {
           this.save.dialog = false
-          this.$router.push({ name: 'home_index' })
           alert.status(UI_UPDATED_USER)
+          setTimeout(() => this.$router.push({ name: 'home_index' }), 200)
         })
         .catch(err => {
           if (err.status !== undefined) {
             if (err.status == SYS_EMAIL_EXISTS) {
-              this.save.dialog = false
               this.email = ""
-              this.save.password = ""
+              this.save.dialog = false
+              setTimeout(() => this.save.password = "", 256)
             }
             else if (err.status == SYS_INVALID_PASS) {
               this.save.password = ""

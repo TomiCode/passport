@@ -2,30 +2,29 @@
 <div class="category-view">
   <v-row v-if="has_stores">
     <v-col>
-      <entry-details
-        :store="detail"
-        v-model="show_details"
-        @update="fetch($route.params.category)"
-      ></entry-details>
-      <v-list>
-        <v-list-item
-          v-for="item in stores"
-          :key="item.id"
-          @click="showDetails(item)"
-        >
-          <v-list-item-avatar>
-            <v-icon
-              class="white--text"
-              :class="color(item.color)"
-              v-text="icon(item.icon)"
-            ></v-icon>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>{{ item.name }}</v-list-item-title>
-            <v-list-item-subtitle>{{ item.description }}</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      <entry-details @update="fetch($route.params.category)">
+        <template v-slot:activator="{ handler }">
+          <v-list>
+            <v-list-item
+              v-for="item in stores"
+              :key="item.id"
+              @click="handler.show(item)"
+            >
+              <v-list-item-avatar>
+                <v-icon
+                  class="white--text"
+                  :class="color(item.color)"
+                  v-text="icon(item.icon)"
+                ></v-icon>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title>{{ item.name }}</v-list-item-title>
+                <v-list-item-subtitle>{{ item.description }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </template>
+      </entry-details>
     </v-col>
   </v-row>
   <v-row v-else class="mt-10">
@@ -52,12 +51,7 @@ export default {
   components: { EntryDetails, Entity },
   data: () => ({
     stores: [ ],
-    drawer: false,
-    dialog: false,
-    detail: null,
-    invalid: false,
-    loading: false,
-    show_details: false
+    invalid: false
   }),
   created() {
     this.fetch(this.$route.params.category)
@@ -77,10 +71,6 @@ export default {
         .then(res => this.stores = res.content.stores)
         .catch(reason => console.log(reason))
     },
-    showDetails: _.throttle(function(store) {
-      this.detail = store
-      this.show_details = true
-    }, 512),
     color: id => colors.colors[id].value,
     icon: icons.map,
   },

@@ -1,11 +1,11 @@
 <template>
+<div class="entity-content">
+  <slot name="activator" :handler="handler"></slot>
   <div class="entity-details-content">
     <v-navigation-drawer
-      temporary floating
-      fixed right
-      width="340"
+      temporary fixed right
       v-model="drawer"
-      @transitionend="change_state"
+      width="340"
     >
       <v-form ref="form" lazy-validation v-if="visible">
         <v-list>
@@ -276,6 +276,7 @@
       </v-container>
     </v-overlay>
   </div>
+</div>
 </template>
 
 <script>
@@ -320,39 +321,38 @@ export default {
       icon: 0,
       color: 0
     },
+    handler: { show: () => { } },
     rules: validatiors
   }),
-  props: {
-    store: Object,
-    value: Boolean
-  },
-  watch: {
-    value(state) {
-      if (state && this.store !== null) {
-        this.visible = true
-        if (this.store.id !== this.loaded.id)
-          this.fetch()
-        else
-          this.cache()
-      }
-    }
+  created() {
+    this.handler.show = this.show
   },
   methods: {
-    fetch: _.throttle(function() {
-      this.$store.dispatch('api_load_store', { store: this.store.id })
+    show(store) {
+      if (this.loaded.id === store.id) {
+        this.cache()
+      }
+      else {
+        this.visible = false
+        this.fetch(store.id)
+      }
+    },
+    fetch(store_id) {
+      this.$store.dispatch('api_load_store', { store: store_id })
         .then(store => {
           this.loaded = store
+          this.visible = true
           this.cache()
         })
         .catch(reason => console.log(reason))
-    }, 128),
+    },
     cache() {
       this.values = Object.assign({}, this.loaded)
       if (this.loaded !== undefined)
         this.values.content = Object.assign({}, this.loaded.content)
-      this.editing = false
       this.password.visible = false
       this.password.editing = false
+      this.editing = false
       _.delay(() => this.drawer = true, 64)
     },
     clipboard(value) {
@@ -369,7 +369,7 @@ export default {
     },
     save() {
       if (this.$refs.form.validate() == false) {
-        return;
+        return
       }
       this.$store.dispatch('api_update_store', { store: this.values })
         .then(({ content }) => {
@@ -398,12 +398,6 @@ export default {
           this.remove_dialog = false
         })
         .catch(err => console.log(err))
-    },
-    change_state() {
-      if (!this.drawer && !this.clipboard_clear) {
-        this.visible = false
-        this.$emit('input', false)
-      }
     },
     update_appearance({ icon, color }) {
       this.values.icon = icons.num(icon)
