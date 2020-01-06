@@ -114,7 +114,8 @@ export default new Vuex.Store({
     api_auth_session: ({ commit, dispatch }) => new Promise((resolve, reject) => {
       request.do(API_AUTH_SESSION)
         .then(res => {
-          commit('account_login', res.content)
+          commit('api_account_login', res.content.uuid)
+          commit('api_account_update', res.content)
           dispatch('api_load_container')
             .then(() => resolve())
             .catch(reason => reject(reason))

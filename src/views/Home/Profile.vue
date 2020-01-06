@@ -60,6 +60,7 @@
               prepend-icon="mdi-lock-outline"
               v-model="save.password"
               :rules="[rules.required]"
+              v-on:keydown.enter.prevent="accept_save"
             ></v-text-field>
           </v-form>
         </v-card-text>
@@ -116,8 +117,10 @@ export default {
       this.password = ""
       this.preferences = Object.assign({}, this.user_preferences)
       this.save.password = ""
-      this.$refs.form.resetValidation()
-      this.$refs.save_form.resetValidation()
+      if (this.$refs.form !== undefined)
+        this.$refs.form.resetValidation()
+      if (this.$refs.save_form !== undefined)
+        this.$refs.save_form.resetValidation()
     },
     check_save() {
       if (!this.$refs.form.validate()) {

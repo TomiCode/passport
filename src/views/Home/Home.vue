@@ -1,7 +1,7 @@
 <template>
-<div class="home-view" >
+<div class="home-view">
   <v-row>
-    <v-col v-if="history.length || unassigned.length">
+    <v-col v-if="(history && history.length) || (unassigned && unassigned.length)">
       <entry-details>
         <template v-slot:activator="{ handler }">
           <v-list>
@@ -59,6 +59,17 @@
           </v-list>
         </template>
       </entry-details>
+    </v-col>
+    <v-col v-else-if="categories && categories.length">
+    </v-col>
+    <v-col v-else>
+      <div class="text-center">
+        <img src="@/assets/empty.svg" height="340"/>
+      </div>
+      <div class="title font-weight-light text-center">
+        Oh no, your account seems to be empty!
+      </div>
+      <div class=""></div>
     </v-col>
   </v-row>
 </div>

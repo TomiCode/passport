@@ -51,6 +51,7 @@
             item-value="id"
             item-text="name"
             :items="categories"
+            :disabled="!categories"
           ></v-autocomplete>
 
           <v-text-field

@@ -195,6 +195,10 @@ export const clipboard = {
 
 export const validatiors = {
   required: (val) => !!val || 'This field is required.',
+  password: {
+    basic: (val) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(val) || 'Minimum eight characters, at least one letter and one number.',
+    private: (val) => /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(val) || 'Minimum eight characters, at least one letter, one number and one special character.'
+  },
   user: {
     email: (val) => /^\S+@\S+[\.][0-9a-z]+$/.test(val) || 'Invalid email address.',
     username: (val) => /^[A-Za-z]+$/.test(val) || 'Invalid username.',

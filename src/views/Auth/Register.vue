@@ -1,6 +1,6 @@
 <template>
   <div class="auth-register">
-    <v-form ref="registrar" class="pb-4">
+    <v-form ref="registrar" class="pb-4" lazy-validation>
       <div class="form-fields">
         <v-text-field
           v-model="user.username"
@@ -17,7 +17,7 @@
           v-model="user.password"
           type="password"
           label="Password"
-          :rules="[rules.required]"
+          :rules="[rules.required, rules.password.basic]"
         ></v-text-field>
         <v-text-field
           type="password"
@@ -73,7 +73,7 @@ export default {
   }),
   methods: {
     password_confirmed(val) {
-      return val == this.user.password || 'Passwords don\'t match.'
+      return val == this.user.password || "Password confirmation does not match."
     },
     register() {
       if (this.$refs.registrar.validate() === false) {
@@ -84,6 +84,12 @@ export default {
         .then(resp => {
           this.$router.push({ name: 'auth_login' })
             .then(() => alert.status(UI_USER_REGISTERED))
+        })
+        .catch(err => {
+          if (err.status !== undefined) {
+            alert.status(err.status)
+          }
+          console.log(err)
         })
         .finally(() => this.loading = false)
     }

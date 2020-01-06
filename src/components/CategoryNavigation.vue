@@ -56,10 +56,7 @@
       </template>
       <v-list-item v-else>
         <v-list-item-content>
-          <v-list-item-subtitle class="text-center">
-            Empty, no user categories..
-            <v-icon right>mdi-emoticon-sad-outline</v-icon>
-          </v-list-item-subtitle>
+          <v-list-item-subtitle>No categories available.</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-list>

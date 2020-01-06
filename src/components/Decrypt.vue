@@ -1,22 +1,14 @@
 <template>
-  <v-dialog
-    max-width="640"
-    persistent
-    :value="visible"
-  >
+  <v-dialog persistent max-width="640" :value="visible">
     <v-card>
       <v-card-title>Account decryption</v-card-title>
       <v-divider></v-divider>
       <v-card-text>
-        <v-alert
-          prominent
-          text
-          class="mt-2"
-          color="teal lighten-1"
-          icon="mdi-information-variant"
-        >
-          Please enter the decryption key below to access your personal data.
-          The password isn't stored nor send through the web.
+        <div class="text-center">
+          <img src="@/assets/decrypt.svg" height="240"/>
+        </div>
+        <v-alert prominent text color="info" icon="mdi-shield-key-outline">
+          To access your encrypted data, you need to enter your decryption password below.
         </v-alert>
         <v-text-field
           prepend-icon="mdi-account-lock"
@@ -29,7 +21,6 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn text color="red darken-1" :disabled="loading">
-          <v-icon left dark>mdi-logout-variant</v-icon>
           Logout
         </v-btn>
         <v-btn
@@ -38,8 +29,8 @@
           :loading="loading"
           @click.stop="decrypt"
         >
-          <v-icon left dark>mdi-lock-open</v-icon>
           Decrypt
+          <v-icon right dark>mdi-chevron-right</v-icon>
         </v-btn>
       </v-card-actions>
     </v-card>
