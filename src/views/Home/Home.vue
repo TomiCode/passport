@@ -1,13 +1,13 @@
 <template>
 <div class="home-view">
-  <v-row>
+  <v-row v-if="loaded">
     <v-col v-if="(history && history.length) || (unassigned && unassigned.length)">
       <entry-details>
         <template v-slot:activator="{ handler }">
           <v-list>
-            <template v-if="history.length > 0">
+            <template v-if="history && history.length">
               <v-subheader class="body-2 text--disabled">
-                <v-icon small class="pr-4">mdi-history</v-icon>
+                <v-icon class="text--disabled" left>mdi-history</v-icon>
                 Last used entries
               </v-subheader>
               <v-list-item
@@ -26,50 +26,70 @@
                   <v-list-item-title>{{ store.name }}</v-list-item-title>
                   <v-list-item-subtitle>{{ store.description }}</v-list-item-subtitle>
                 </v-list-item-content>
-                <v-list-item-action v-if="store.category != 0">
+                <v-list-item-action v-if="store.category != 0 && $vuetify.breakpoint.smAndUp">
                   <v-chip label :to="{ name: 'home_category', params: { category: store.category }}">
                     <v-icon left v-text="icon(category(store.category).icon)"></v-icon>
                     {{ category(store.category).name }}
                   </v-chip>
                 </v-list-item-action>
               </v-list-item>
-              <v-divider class="mt-2"></v-divider>
             </template>
-            <v-subheader class="body-2 text--disabled">
-              <v-icon small class="pr-4">mdi-key-outline</v-icon>
-              Unassigned entries
-            </v-subheader>
-            <v-list-item
-              v-for="store in unassigned"
-              :key="`u.${store.id}`"
-              @click="handler.show(store)"
-            >
-              <v-list-item-avatar>
-                <v-icon
-                  class="white--text"
-                  :class="color(store.color)"
-                  v-text="icon(store.icon)"
-                ></v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>{{ store.name }}</v-list-item-title>
-                <v-list-item-subtitle>{{ store.description }}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
+            <template v-if="unassigned && unassigned.length">
+              <v-subheader class="body-2 text--disabled">
+                <v-icon left class="text--disabled">mdi-key-outline</v-icon>
+                Unassigned entries
+              </v-subheader>
+              <v-list-item
+                v-for="store in unassigned"
+                :key="`u.${store.id}`"
+                @click="handler.show(store)"
+              >
+                <v-list-item-avatar>
+                  <v-icon
+                    class="white--text"
+                    :class="color(store.color)"
+                    v-text="icon(store.icon)"
+                  ></v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>{{ store.name }}</v-list-item-title>
+                  <v-list-item-subtitle>{{ store.description }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
           </v-list>
         </template>
       </entry-details>
     </v-col>
     <v-col v-else-if="categories && categories.length">
+      <v-list>
+        <v-subheader class="body-2 text--disabled">
+          <v-icon class="text--disabled" left>mdi-folder-heart</v-icon>
+          Categories
+        </v-subheader>
+        <v-list-item
+          v-for="category in categories"
+          :key="category.id"
+          :to="{ name: 'home_category', params: { category: category.id }}"
+        >
+          <v-list-item-avatar>
+            <v-icon v-text="icon(category.icon)"></v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title v-text="category.name"></v-list-item-title>
+            <v-list-item-subtitle v-text="category.description"></v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
     </v-col>
     <v-col v-else>
+      <div class="app-baner-main">
+        <img src="@/assets/empty.svg" />
+      </div>
       <div class="text-center">
-        <img src="@/assets/empty.svg" height="340"/>
+        <div class="title font-weight-light mb-2">Oh no, Your account seems to be empty!</div>
+        <div class="subtitle">However, you can change that by adding passwords or creating categories to organize them as preferred.</div>
       </div>
-      <div class="title font-weight-light text-center">
-        Oh no, your account seems to be empty!
-      </div>
-      <div class=""></div>
     </v-col>
   </v-row>
 </div>
@@ -84,7 +104,8 @@ import { colors, icons } from "@/modules/ui"
 export default {
   data: () => ({
     unassigned: [ ],
-    history: [ ]
+    history: [ ],
+    loaded: false
   }),
   components: {
     EntryDetails
@@ -98,6 +119,7 @@ export default {
         .then(res => {
           this.unassigned = res.content.unassigned
           this.history = res.content.history
+          this.loaded = true
         })
         .catch(err => console.log(err))
     },
@@ -113,3 +135,12 @@ export default {
   })
 }
 </script>
+
+<style lang="scss">
+.app-baner-main {
+  max-width: 480px;
+  max-height: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>

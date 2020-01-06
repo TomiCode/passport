@@ -76,7 +76,7 @@ export default {
 <style lang="scss">
 .passport-headline {
   text-decoration: none;
-  font-size: 1.35rem;
+  font-size: 1.4rem;
 }
 .render-view-content {
   padding-bottom: 4em;

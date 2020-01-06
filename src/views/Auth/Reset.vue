@@ -12,7 +12,7 @@
       </v-alert>
     </v-col>
     <v-col cols="12">
-      <v-form lazy-validation ref="reset_form">
+      <v-form lazy-validation ref="form">
         <v-text-field
           v-model="email"
           label="Email address"
@@ -22,21 +22,13 @@
       </v-form>
     </v-col>
     <v-col cols="6">
-      <v-btn
-        block outlined
-        color="primary"
-        @click="reset"
-      >
-        Reset
+      <v-btn block outlined :to="{ name: 'auth_login' }">
+        Cancel
       </v-btn>
     </v-col>
     <v-col cols="6">
-      <v-btn
-        block outlined
-        color="grey darken-1"
-        :to="{ name: 'auth_login' }"
-      >
-        Cancel
+      <v-btn block outlined color="primary" @click="reset">
+        Reset
       </v-btn>
     </v-col>
   </v-row>
@@ -53,6 +45,9 @@ export default {
   }),
   methods: {
     reset() {
+      if (this.$refs.form.validate() == false) {
+        return
+      }
       request.do(API_AUTH_RESET, { data: { email: this.email }})
         .then(res => {
           this.$router.push({ name: 'auth_login' })

@@ -1,6 +1,6 @@
 <template>
   <div class="password-generator">
-    <v-dialog v-model="dialog" max-width="480">
+    <v-dialog v-model="dialog" max-width="480" :fullscreen="$vuetify.breakpoint.xsOnly">
       <v-card>
         <v-card-title>Password generator</v-card-title>
         <v-divider></v-divider>

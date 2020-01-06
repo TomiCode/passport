@@ -39,6 +39,13 @@
                       mdi-circle-edit-outline
                     </v-icon>
                   </v-slide-x-reverse-transition>
+                  <v-icon
+                    right
+                    v-if="$vuetify.breakpoint.xsOnly"
+                    @click="drawer = false"
+                  >
+                    mdi-close
+                  </v-icon>
                 </v-list-item-icon>
               </v-list-item>
             </template>

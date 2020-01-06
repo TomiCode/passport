@@ -2,23 +2,16 @@
   <div class="navs-authenticated">
     <category-navigation v-model="drawer"></category-navigation>
     <v-app-bar app dark color="accent" clipped-left extended extension-height="0" elevation="2">
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="ml-1"></v-app-bar-nav-icon>
-      <v-toolbar-title class="passport-headline mr-4">
-        Vinca <strong>Passport</strong>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="mr-2"></v-app-bar-nav-icon>
+      <img src="@/assets/logo_dark.svg" height="42" />
+      <v-toolbar-title class="passport-headline ml-1">
+        Vinca <strong class="d-none d-sm-inline-block">Passport</strong>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-text-field
-        flat
-        solo-inverted
-        hide-details
-        prepend-inner-icon="mdi-magnify"
-        label="Search..."
-        class="hidden-sm-and-down my-0"
-        color="accent"
-        clear-icon="far fa-times-circle"
-        clearable
-      ></v-text-field>
-      <div class="flex-grow-1"></div>
+      <v-btn text class="mr-1" :icon="$vuetify.breakpoint.xsOnly">
+        <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-magnify</v-icon>
+         <span class="d-none d-sm-inline">Search</span>
+      </v-btn>
       <v-menu
         v-model="account"
         close-on-click
@@ -26,9 +19,9 @@
         offset-y
       >
         <template v-slot:activator="{ on }">
-          <v-btn text v-on="on" class="mr-1">
-            My Account
-            <v-icon right>mdi-chevron-down</v-icon>
+          <v-btn text v-on="on" :icon="$vuetify.breakpoint.xsOnly">
+            <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-account-outline</v-icon>
+            <span class="d-none d-sm-inline">Account</span>
           </v-btn>
         </template>
         <v-list dark color="indigo accent-2">

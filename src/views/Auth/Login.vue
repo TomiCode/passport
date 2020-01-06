@@ -31,12 +31,11 @@
     </v-col>
     <v-col cols="6">
       <v-btn
-        block
-        outlined
+        block outlined
         color="deep-orange darken-1"
         :to="{ name: 'auth_reset' }"
       >
-        Reset password
+        Recover
       </v-btn>
     </v-col>
     <v-col cols="12">

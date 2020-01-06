@@ -1,5 +1,5 @@
 <template>
-<v-dialog v-model="dialog" max-width="520">
+<v-dialog v-model="dialog" max-width="520" :fullscreen="$vuetify.breakpoint.xsOnly">
   <v-card>
     <v-card-title>Edit category</v-card-title>
     <v-divider class="mb-4"></v-divider>

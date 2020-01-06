@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="520">
+  <v-dialog v-model="dialog" max-width="520" :fullscreen="$vuetify.breakpoint.xsOnly">
     <template v-slot:activator="{ on }">
       <v-btn
         class="mb-5"

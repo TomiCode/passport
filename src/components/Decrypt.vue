@@ -1,5 +1,5 @@
 <template>
-  <v-dialog persistent max-width="640" :value="visible">
+  <v-dialog persistent max-width="640" :value="visible" :fullscreen="$vuetify.breakpoint.xsOnly">
     <v-card>
       <v-card-title>Account decryption</v-card-title>
       <v-divider></v-divider>
@@ -7,7 +7,12 @@
         <div class="text-center">
           <img src="@/assets/decrypt.svg" height="240"/>
         </div>
-        <v-alert prominent text color="info" icon="mdi-shield-key-outline">
+        <v-alert
+          text color="info"
+          icon="mdi-shield-key-outline"
+          :dense="$vuetify.breakpoint.xsOnly"
+          :prominent="$vuetify.breakpoint.smAndUp"
+        >
           To access your encrypted data, you need to enter your decryption password below.
         </v-alert>
         <v-text-field

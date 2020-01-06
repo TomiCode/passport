@@ -1,6 +1,6 @@
 <template>
 <v-row>
-  <v-col>
+  <v-col v-if="categories && categories.length">
     <category-edit v-model="edit.show" :category="edit.category"></category-edit>
     <v-list>
       <v-list-item v-for="category in categories" :key="category.id" @click="edit_dialog(category)">
@@ -45,6 +45,15 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+  </v-col>
+  <v-col v-else>
+    <div class="app-baner-main">
+      <img src="@/assets/empty_categories.svg" />
+    </div>
+    <div class="text-center">
+      <div class="title font-weight-light mb-2">Seems that you’re missing out on categories.</div>
+      <div class="subtitle">Add some to create and organize your passwords more clearly.</div>
+    </div>
   </v-col>
 </v-row>
 </template>
