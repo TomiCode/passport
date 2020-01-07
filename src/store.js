@@ -17,7 +17,8 @@ import {
   API_CATEGORY,
   API_CATEGORY_DELETE,
   API_USER_HOME,
-  API_USER_UPDATE
+  API_USER_UPDATE,
+  API_STORE_SEARCH
 } from "@/modules/api";
 
 Vue.use(Vuex)
@@ -228,6 +229,15 @@ export default new Vuex.Store({
         .then(store => resolve(store))
         .catch(reason => reject(reason))
         .finally(() => _.delay(() => commit('api_content_loading', false), 256))
+    }),
+    api_search_store: ({ commit }, { query }) => new Promise((resolve, reject) => {
+      commit('api_content_loading', true)
+      _.delay(() => {
+        request.do(API_STORE_SEARCH, { data: { query }})
+          .then(res => resolve(res))
+          .catch(reason => reject(reason))
+          .finally(() => _.delay(() => commit('api_content_loading', false), 128))
+      }, 256)
     }),
     api_update_store: ({ commit, dispatch }, { store }) => new Promise((resolve, reject) => {
       commit('api_content_loading', true)

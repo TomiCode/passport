@@ -19,7 +19,8 @@
           style="border-width: 1px 0 0;"
         >
           <v-card-text>
-            Vinca Project 2019 &copy; Agnieszka &amp; Tomasz
+            <span class="d-none d-sm-inline">Vinca Project</span>
+            2019-2020 &copy; Agnieszka &amp; Tomasz
           </v-card-text>
         </v-card>
       </v-footer>

@@ -201,7 +201,7 @@ export const validatiors = {
   },
   user: {
     email: (val) => /^\S+@\S+[\.][0-9a-z]+$/.test(val) || 'Invalid email address.',
-    username: (val) => /^[A-Za-z]+$/.test(val) || 'Invalid username.',
+    name: (val) => /^[A-Za-z]+$/.test(val) || 'Invalid username.',
   },
   category: {
     name: (val) => (val.length > 2 && val.length <= 24) || 'Invalid category name',
@@ -213,5 +213,6 @@ export const validatiors = {
     login: (val) => (val.indexOf("@") === -1) || validatiors.user.email(val),
     notes: (val) => (val.length <= 255) || 'Note is too long, remember to keep it short!',
     other: (val) => (val.length <= 255) || 'To many characters!'
-  }
+  },
+  search: (val) => (val.length > 3) || 'Search term is too short, You need at least three characters.'
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="navs-basic">
-    <v-toolbar class="px-8">
+    <v-toolbar class="px-8" elevation="1">
       <img :src="logo" height="48" />
       <v-toolbar-title>
         <router-link :to="{ name: 'about_index' }" class="passport-headline ml-2" style="color: inherit;">

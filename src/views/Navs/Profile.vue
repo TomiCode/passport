@@ -8,16 +8,33 @@
         Vinca <strong class="d-none d-sm-inline-block">Passport</strong>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn text class="mr-1" :icon="$vuetify.breakpoint.xsOnly">
-        <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-magnify</v-icon>
-         <span class="d-none d-sm-inline">Search</span>
-      </v-btn>
-      <v-menu
-        v-model="account"
-        close-on-click
-        close-on-content-click
-        offset-y
-      >
+      <v-dialog v-model="search.dialog" max-width="600">
+        <template v-slot:activator="{ on }">
+          <v-btn text class="mr-1" :icon="$vuetify.breakpoint.xsOnly" v-on="on">
+            <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-magnify</v-icon>
+            <span class="d-none d-sm-inline">Search</span>
+          </v-btn>
+        </template>
+        <v-card>
+          <v-card-title class="mb-0">
+            <v-text-field ref="search_field"
+              clearable
+              prepend-inner-icon="mdi-magnify"
+              class="search-field title font-weight-light"
+              label="Type something to search.."
+              v-model="search.query"
+              :rules="[rules.required, rules.search]"
+            ></v-text-field>
+          </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text @click="search.dialog = false">Cancel</v-btn>
+            <v-btn text color="primary" @click="search_redirect">Search</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-menu offset-y close-on-click close-on-content-click v-model="account">
         <template v-slot:activator="{ on }">
           <v-btn text v-on="on" :icon="$vuetify.breakpoint.xsOnly">
             <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-account-outline</v-icon>
@@ -54,12 +71,7 @@
         </v-list>
       </v-menu>
       <template v-slot:extension>
-        <v-progress-linear
-          v-if="content_loading"
-          color="red lighten-1"
-          class="mt-1"
-          :indeterminate="true"
-        ></v-progress-linear>
+        <v-progress-linear indeterminate v-if="content_loading" color="red lighten-1" class="mt-1"></v-progress-linear>
       </template>
     </v-app-bar>
   </div>
@@ -67,13 +79,18 @@
 
 <script>
 import CategoryNavigation from '@/components/CategoryNavigation'
-import { alert, UI_USER_LOGOUT } from "@/modules/ui";
+import { alert, validatiors, UI_USER_LOGOUT } from "@/modules/ui";
 import { mapState } from "vuex";
 
 export default {
   data: () => ({
     drawer: false,
-    account: false
+    account: false,
+    search: {
+      dialog: false,
+      query: ""
+    },
+    rules: validatiors
   }),
   components: {
     CategoryNavigation
@@ -84,13 +101,29 @@ export default {
     content_loading: state => state.content_loading
   }),
   methods: {
-    logout () {
+    logout() {
       this.account = false
       this.$store.dispatch('logout')
         .then(() => {
           this.$router.push({ name: 'auth_login' })
             .then(() => alert.status(UI_USER_LOGOUT))
         })
+    },
+    search_redirect() {
+      if (this.$refs.search_field.validate() == false) {
+        return
+      }
+      this.$router.push({ name: 'home_search', params: { query: this.search.query }})
+        .then(() => this.search.dialog = false)
+    }
+  },
+  watch: {
+    'search.dialog': function(state) {
+      console.log(this.$refs)
+      if (!state)
+        setTimeout(() => this.search.query = "", 128)
+      else
+        setTimeout(() => this.$refs.search_field.focus(), 128)
     }
   }
 }
@@ -99,5 +132,12 @@ export default {
 <style lang="scss">
 header .v-toolbar__extension {
   padding: 0;
+}
+
+.v-input.search-field {
+  input {
+    max-height: 34px;
+    padding-bottom: 6px;
+  }
 }
 </style>

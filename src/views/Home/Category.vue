@@ -46,7 +46,6 @@
 </template>
 
 <script>
-import Entity from '@/components/Entity'
 import EntryDetails from '@/components/EntryDetails'
 
 import { request, API_STORES } from "@/modules/api"
@@ -58,7 +57,7 @@ export default {
     loaded: false
   }),
   components: {
-    EntryDetails, Entity
+    EntryDetails
   },
   created() {
     this.fetch(this.$route.params.category)

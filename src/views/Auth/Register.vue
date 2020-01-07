@@ -3,6 +3,7 @@
     <v-form ref="registrar" class="pb-4" lazy-validation>
       <div class="form-fields">
         <v-text-field
+          autofocus
           v-model="user.username"
           label="Username"
           :rules="[rules.required, rules.user.name]"

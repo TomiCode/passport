@@ -14,6 +14,7 @@
     <v-col cols="12">
       <v-form lazy-validation ref="form">
         <v-text-field
+          autofocus
           v-model="email"
           label="Email address"
           prepend-inner-icon="mdi-email-edit-outline"

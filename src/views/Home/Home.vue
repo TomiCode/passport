@@ -2,7 +2,7 @@
 <div class="home-view">
   <v-row v-if="loaded">
     <v-col v-if="(history && history.length) || (unassigned && unassigned.length)">
-      <entry-details>
+      <entry-details @update="fetch">
         <template v-slot:activator="{ handler }">
           <v-list>
             <template v-if="history && history.length">
