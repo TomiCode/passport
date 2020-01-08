@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     fetch(query) {
-      if (query.length <= 3) {
+      if (query.length < 3) {
         this.loaded = true
         return
       }

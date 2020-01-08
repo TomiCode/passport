@@ -45,7 +45,7 @@
         <v-btn text color="deep-orange">Container settings</v-btn>
       </v-card-actions>
     </v-card>
-    <v-dialog v-model="save.dialog" max-width="600">
+    <v-dialog v-model="save.dialog" max-width="600" :fullscreen="$vuetify.breakpoint.xsOnly">
       <v-card>
         <v-card-title class="headline">Account confirmation</v-card-title>
         <v-divider class="mb-4"></v-divider>

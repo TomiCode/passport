@@ -1,12 +1,14 @@
 <template>
-  <v-container>
-    <v-breadcrumbs :items="path_items" v-if="has_categories"></v-breadcrumbs>
-    <div class="home-container" v-if="private_decrypted">
-      <router-view name="create" @refresh="reload_content = true"></router-view>
-      <router-view v-model="reload_content"></router-view>
-    </div>
+  <div>
     <first-steps></first-steps>
-  </v-container>
+    <v-container>
+      <v-breadcrumbs :items="path_items" v-if="has_categories"></v-breadcrumbs>
+      <div class="home-container" v-if="private_decrypted">
+        <router-view name="create" @refresh="reload_content = true"></router-view>
+        <router-view v-model="reload_content"></router-view>
+      </div>
+    </v-container>
+  </div>
 </template>
 
 <script>

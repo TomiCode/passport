@@ -95,7 +95,7 @@ export const alert = {
       type: "info"
     },
     [UI_USER_REGISTERED]: {
-      message: "Your account is successfully registered. Please login to Your new account.",
+      message: "Account is successfully created. Please login to Your new account.",
       type: "success"
     },
     [UI_REQUIRE_AUTH]: {
@@ -214,5 +214,5 @@ export const validatiors = {
     notes: (val) => (val.length <= 255) || 'Note is too long, remember to keep it short!',
     other: (val) => (val.length <= 255) || 'To many characters!'
   },
-  search: (val) => (val.length > 3) || 'Search term is too short, You need at least three characters.'
+  search: (val) => (val.length >= 3 && val.length < 32) || 'You need at least three characters and less than 32.'
 }

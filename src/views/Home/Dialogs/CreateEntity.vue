@@ -158,7 +158,7 @@ export default {
       }})
         .then(res => {
           this.dialog = false
-          if (this.$route.params.category == res.content.category) {
+          if (this.$route.params.category == res.content.category || this.$route.name == "home_index") {
             this.$emit('refresh')
           }
           alert.status(UI_CREATED_ENTITY)

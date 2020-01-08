@@ -1,11 +1,11 @@
 <template>
-  <v-dialog persistent max-width="680" :value="visible" :fullscreen="$vuetify.breakpoint.xsOnly">
+  <v-dialog persistent scrollable max-width="680" :value="visible" :fullscreen="$vuetify.breakpoint.xsOnly">
     <v-card>
       <v-card-title>First steps</v-card-title>
       <v-divider></v-divider>
       <v-card-text class="">
-        <div class="text-center">
-          <img src="@/assets/first_steps.svg" height="240"/>
+        <div class="dialog-baner">
+          <img src="@/assets/first_steps.svg"/>
         </div>
         <div class="text-center mb-4">
           Those few steps should provide You a basic understanding of the fundamental interface features If you're just getting started with Passport.
@@ -18,9 +18,7 @@
         </div>
         <div class="mb-4">
           <div class="title font-weight-regular">Generator</div>
-          You can use the included password generator
-          <v-btn small icon elevation="1" style="height: 24px; min-width: 24px;" color="pink"><v-icon small>mdi-cards-variant</v-icon></v-btn>
-          while creating new entries or editing them. This feature allows for creating secure keys without leaving the page.
+          You can use the included password generator <v-icon small>mdi-cards-variant</v-icon> while creating new entries or editing them. This feature allows for creating secure keys without leaving the page.
         </div>
         <div class="mb-4">
           <div class="title font-weight-regular">Categories</div>
@@ -50,7 +48,7 @@
       </v-card-text>
       <v-card-actions class="ma-0">
         <v-spacer></v-spacer>
-        <v-btn text @click="close">Close</v-btn>
+        <v-btn text @click.prevent="close">Close</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -70,3 +68,7 @@ export default {
   })
 }
 </script>
+
+<style lang="scss">
+
+</style>

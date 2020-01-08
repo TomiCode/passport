@@ -328,6 +328,7 @@ export default {
       icon: 0,
       color: 0
     },
+    parent: null,
     handler: { show: () => { } },
     rules: validatiors
   }),
@@ -336,6 +337,7 @@ export default {
   },
   methods: {
     show(store) {
+      this.parent = store
       if (this.loaded.id === store.id) {
         this.cache()
       }
@@ -381,11 +383,11 @@ export default {
       this.$store.dispatch('api_update_store', { store: this.values })
         .then(({ content }) => {
           this.drawer = false
-          if (content.category == this.store.category) {
-            this.store.color = content.color
-            this.store.icon = content.icon
-            this.store.name = content.name
-            this.store.description = content.description
+          if (this.parent != null && this.parent.category == content.category) {
+            this.parent.color = content.color
+            this.parent.icon = content.icon
+            this.parent.name = content.name
+            this.parent.description = content.description
             this.loaded = this.values
           }
           else {

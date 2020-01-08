@@ -12,7 +12,6 @@
       </v-alert>
     </v-fade-transition>
   </div>
-
 </template>
 
 <script>
@@ -45,9 +44,10 @@ export default {
 <style lang="scss" scoped>
 .system-alerts {
   position: fixed;
-  top: 1em;
-  right: 1em;
-  width: 480px;
+  top: 0;
+  right: 0;
+  max-width: 480px;
   z-index: 9999;
+  padding: 1em;
 }
 </style>

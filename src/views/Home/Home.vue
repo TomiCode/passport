@@ -105,13 +105,17 @@ export default {
   data: () => ({
     unassigned: [ ],
     history: [ ],
-    loaded: false
+    loaded: false,
+    forced: false
   }),
   components: {
     EntryDetails
   },
   created() {
     this.fetch()
+  },
+  props: {
+    value: Boolean
   },
   methods: {
     fetch() {
@@ -120,8 +124,9 @@ export default {
           this.unassigned = res.content.unassigned
           this.history = res.content.history
           this.loaded = true
-          if (!this.has_home && (this.categories == null || this.categories.length == 0)) {
-            this.$store.commit('first_steps_force')
+          if (!this.has_home && (this.categories == null || this.categories.length == 0) && !this.forced) {
+            setTimeout(() => this.$store.commit('first_steps_force'), 1200)
+            this.forced = true
           }
         })
         .catch(err => console.log(err))
@@ -146,6 +151,15 @@ export default {
       app_loading: state => state.content_loading,
       categories: state => state.categories
     })
+  },
+  watch: {
+    value(state) {
+      console.log("triggered")
+      if (state) {
+        this.fetch()
+        this.$emit('input', !state)
+      }
+    }
   }
 }
 </script>
@@ -154,6 +168,13 @@ export default {
 .app-baner-main {
   max-width: 480px;
   max-height: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dialog-baner {
+  max-width: 360px;
+  max-height: 240px;
   margin-left: auto;
   margin-right: auto;
 }

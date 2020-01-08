@@ -17,13 +17,14 @@
         </template>
         <v-card>
           <v-card-title class="mb-0">
-            <v-text-field ref="search_field"
-              clearable
+            <v-text-field
+              clearable ref="search_field"
               prepend-inner-icon="mdi-magnify"
               class="search-field title font-weight-light"
               label="Type something to search.."
               v-model="search.query"
               :rules="[rules.required, rules.search]"
+              @keyup.enter="search_redirect"
             ></v-text-field>
           </v-card-title>
           <v-card-actions>
@@ -121,8 +122,13 @@ export default {
       if (this.$refs.search_field.validate() == false) {
         return
       }
+      if (this.$route.name == 'home_search' && this.$route.params.query == this.search.query) {
+        this.search.dialog = false
+        return
+      }
       this.$router.push({ name: 'home_search', params: { query: this.search.query }})
         .then(() => this.search.dialog = false)
+        .catch(err => console.log(err))
     },
     show_first_steps() {
       this.$store.commit('first_steps_visible', true)
@@ -130,7 +136,6 @@ export default {
   },
   watch: {
     'search.dialog': function(state) {
-      console.log(this.$refs)
       if (!state)
         setTimeout(() => this.search.query = "", 128)
       else
