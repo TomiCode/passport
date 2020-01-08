@@ -82,10 +82,11 @@ export default {
         return
       }
       this.loading = true
-      this.$store.dispatch('category_create', {
-        name: this.category.name,
-        description: this.category.description,
-        icon: icons.num(this.category.icon.value)
+      this.$store.dispatch('api_create_category', {
+        category: {
+          ...this.category,
+          icon: icons.num(this.category.icon.value)
+        }
       })
         .then(() => this.dialog = false)
         .finally(() => this.loading = false)

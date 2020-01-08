@@ -5,16 +5,21 @@
       <router-view name="create" @refresh="reload_content = true"></router-view>
       <router-view v-model="reload_content"></router-view>
     </div>
+    <first-steps></first-steps>
   </v-container>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import FirstSteps from "@/components/FirstSteps"
+import { mapGetters } from "vuex"
 
 export default {
   data: () => ({
     reload_content: false
   }),
+  components: {
+    FirstSteps
+  },
   computed: {
     path_items() {
       let segments = this.$route.matched.map(route => ({ text: route.meta.title, disabled: true }))

@@ -60,6 +60,15 @@
             <v-list-item-title>Preferences</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item @click="show_first_steps">
+            <v-list-item-icon class="my-auto mr-3">
+              <v-icon>mdi-help-circle-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+            <v-list-item-title>Help</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-divider></v-divider>
           <v-list-item @click.stop="logout">
             <v-list-item-icon class="my-auto mr-3">
               <v-icon >mdi-logout-variant</v-icon>
@@ -104,10 +113,9 @@ export default {
     logout() {
       this.account = false
       this.$store.dispatch('logout')
-        .then(() => {
-          this.$router.push({ name: 'auth_login' })
-            .then(() => alert.status(UI_USER_LOGOUT))
-        })
+        .then(() => this.$router.push({ name: 'auth_login' }))
+        .then(() => alert.status(UI_USER_LOGOUT))
+        .catch(err => console.log(err))
     },
     search_redirect() {
       if (this.$refs.search_field.validate() == false) {
@@ -115,6 +123,9 @@ export default {
       }
       this.$router.push({ name: 'home_search', params: { query: this.search.query }})
         .then(() => this.search.dialog = false)
+    },
+    show_first_steps() {
+      this.$store.commit('first_steps_visible', true)
     }
   },
   watch: {

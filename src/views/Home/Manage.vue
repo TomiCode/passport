@@ -30,12 +30,14 @@
           Select below, where should the entries from <span class="font-weight-bold">{{ remove.category.name }}</span> be assigned to, after the deletion has proceeded.
           </v-alert>
           <v-autocomplete
+            ref="migrate_input"
             clearable persistent-hint label="Migration category"
             hint="Leave this field empty to migrate them to Your Home section."
             v-model="remove.migrate"
             item-value="id"
             item-text="name"
             :items="categories"
+            :rules="[dest_category]"
           ></v-autocomplete>
         </v-card-text>
         <v-card-actions>
@@ -89,6 +91,9 @@ export default {
       this.remove.dialog = true
     },
     accept_remove() {
+      if (this.$refs.migrate_input.validate() == false) {
+        return
+      }
       this.$store.dispatch('api_delete_category', {
         category: this.remove.category,
         migrate: this.remove.migrate
@@ -99,10 +104,19 @@ export default {
         })
         .catch(err => console.log(err))
     },
+    dest_category(category) {
+      return category != this.remove.category.id || "You can not migrate content to the same category."
+    },
     icon: id => icons.map(id)
   },
   computed: mapState({
     categories: state => state.categories
-  })
+  }),
+  watch: {
+    'remove.dialog': function(value) {
+      if (!value)
+        setTimeout(() => this.remove.migrate = 0, 128);
+    }
+  }
 }
 </script>

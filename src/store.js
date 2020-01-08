@@ -8,17 +8,16 @@ import {
   API_AUTH_LOGIN,
   API_CONTAINER,
   API_CONTAINER_CREATE,
-  API_CATEGORY_CREATE,
   API_AUTH_SESSION,
   API_STORES,
   API_STORE_CREATE,
+  API_STORE_SEARCH,
   API_STORE_DELETE,
   API_STORE,
   API_CATEGORY,
   API_CATEGORY_DELETE,
   API_USER_HOME,
-  API_USER_UPDATE,
-  API_STORE_SEARCH
+  API_USER_UPDATE
 } from "@/modules/api";
 
 Vue.use(Vuex)
@@ -43,6 +42,10 @@ export default new Vuex.Store({
       }
     },
     categories: [ ],
+    first_steps: {
+      forced: false,
+      visible: false
+    },
     content_loading: false
   },
   mutations: {
@@ -57,6 +60,13 @@ export default new Vuex.Store({
       }
     },
     local_container_update: (state, container) => state.auth.container = container,
+    first_steps_force: (state) => {
+      if (!state.first_steps.forced) {
+        state.first_steps.forced = true
+        state.first_steps.visible = true
+      }
+    },
+    first_steps_visible: (state, visible) => state.first_steps.visible = visible,
     api_content_loading: (state, value) => state.content_loading = value,
     api_remove_category: (state, category) => {
       state.categories.splice(state.categories.findIndex(c => c.id === category.id), 1)
@@ -74,30 +84,9 @@ export default new Vuex.Store({
       state.user.preferences.dark_mode = account.dark_mode
       state.user.preferences.last_used = account.last_used
     },
-
-    account_login (state, account) {
-      if (account.uuid !== undefined) {
-        localStorage.setItem('vinca:session', account.uuid)
-        state.auth.token = account.uuid
-      }
-      state.user.name = account.username
-      state.user.email = account.email
-      state.user.avatar = account.avatar
-    },
-    account_forget (state) {
+    api_account_forget: (state) => {
       localStorage.removeItem('vinca:session')
       state.auth.token = null
-    },
-    container_fetch (state, container) {
-      state.crypto.certificate = atob(container.certificate)
-      state.crypto.private = atob(container.encrypted)
-      state.crypto.container = container.id
-    },
-    container_decrypt (state, keyobj) {
-      state.crypto.open_private = keyobj
-    },
-    categories_update (state, categories) {
-      state.categories = categories
     }
   },
   actions: {
@@ -205,8 +194,18 @@ export default new Vuex.Store({
           .finally(() => _.delay(() => commit('api_content_loading', false), 128))
       }, 256)
     }),
-    api_update_category: ({ commit }, { category }) => new Promise((resolve, reject) => {
-      request.do(API_CATEGORY, { data: { ...category }, method: "PATCH" })
+    api_create_category: ({ commit }, { category }) => new Promise((resolve, reject) => {
+      request.do(API_CATEGORY, { data: category, method: "POST" })
+        .then(res =>  {
+          commit('local_categories_update', {
+            categories: res.content.categories
+          })
+          resolve(res)
+        })
+        .catch(reason => reject(reason))
+    }),
+    api_update_category: ({ }, { category }) => new Promise((resolve, reject) => {
+      request.do(API_CATEGORY, { data: category, method: "PATCH" })
         .then(res => resolve(res))
         .catch(reason => reject(reason))
     }),
@@ -297,70 +296,10 @@ export default new Vuex.Store({
         .then(str => resolve({ ...store, content: JSON.parse(str.data) }))
         .catch(reason => reject(reason))
     }),
-
-    logout({ commit }) {
-      return new Promise((resolve, reject) => {
-        commit('account_forget')
-        resolve()
-      })
-    },
-    fetch_container({ commit }) {
-      return new Promise((resolve, reject) => {
-        request.do(API_CONTAINER)
-          .then(resp => {
-            if (resp.valid === true) {
-              commit('container_fetch', resp)
-              commit('categories_update', resp.categories)
-            }
-            resolve(resp.valid)
-          })
-          .catch(reason => reject(reason))
-      })
-    },
-    create_container({ commit, state }, password) {
-      return new Promise((resolve, reject) => {
-        generateKey({
-          userIds: [{ name: state.user.name, email: state.user.email }],
-          rsaBits: 4096,
-          passphrase: password,
-          armor: false
-        })
-          .then(key => {
-            request.do(API_CONTAINER_CREATE, {
-              data: {
-                encrypted: btoa(key.privateKeyArmored),
-                certificate: btoa(key.publicKeyArmored)
-            }})
-              .then(resp => {
-                commit('container_fetch', resp)
-                resolve()
-              })
-          })
-          .catch((reason) => reject(reason))
-      })
-    },
-    container_decrypt({ commit, state }, password) {
-      return new Promise(async (resolve, reject) => {
-        var privkey = (await key.readArmored(state.crypto.private)).keys[0]
-        if (await privkey.decrypt(password) == false) {
-          console.log("invalid password")
-          reject()
-          return
-        }
-        commit('container_decrypt', privkey)
-        resolve()
-      })
-    },
-    category_create({ commit }, category) {
-      return new Promise((resolve, reject) => {
-        request.do(API_CATEGORY_CREATE, { data: category })
-          .then(response => {
-            commit('categories_update', response.content.categories)
-            resolve()
-          })
-          .catch(() => reject())
-      })
-    }
+    logout: ({ commit }) => new Promise((resolve) => {
+      commit('api_account_forget')
+      resolve()
+    }),
   },
   getters: {
     no_container: state => state.auth.container == -1,
@@ -368,7 +307,6 @@ export default new Vuex.Store({
     private_loaded: state => !!state.openpgp.private,
     has_categories: state => state.categories && !!state.categories.length,
     categories: state => state.categories || [ ],
-
     logged_in: state => !!state.auth.token,
     auth_token: state => state.auth.token,
     container_valid: state => !!state.crypto.private && !!state.crypto.certificate,

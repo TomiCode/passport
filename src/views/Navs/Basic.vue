@@ -1,6 +1,6 @@
 <template>
   <div class="navs-basic">
-    <v-toolbar class="px-8" elevation="1">
+    <v-toolbar elevation="1">
       <img :src="logo" height="48" />
       <v-toolbar-title>
         <router-link :to="{ name: 'about_index' }" class="passport-headline ml-2" style="color: inherit;">
@@ -14,7 +14,7 @@
       </v-btn>
       <div v-else>
         <v-btn text tile :to="{ name: 'auth_login' }">Login</v-btn>
-        <v-btn text tile :to="{ name: 'auth_register' }">Register</v-btn>
+        <v-btn text tile :to="{ name: 'auth_register' }" v-if="$vuetify.breakpoint.smAndUp">Register</v-btn>
       </div>
     </v-toolbar>
   </div>

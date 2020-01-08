@@ -2,6 +2,13 @@
   <v-row>
     <v-col cols="12">
       <v-alert
+        colored-border
+        border="left"
+        type="warning"
+      >
+        This feature isn't available, as our main mailing server is currently disabled. Sorry for the inconvenience.
+      </v-alert>
+      <v-alert
         colored-border prominent
         border="left"
         color="accent lighten-2"
@@ -28,7 +35,7 @@
       </v-btn>
     </v-col>
     <v-col cols="6">
-      <v-btn block outlined color="primary" @click="reset">
+      <v-btn block outlined disabled color="primary" @click="reset">
         Reset
       </v-btn>
     </v-col>

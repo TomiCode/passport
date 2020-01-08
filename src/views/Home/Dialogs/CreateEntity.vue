@@ -21,6 +21,7 @@
             <template v-slot:activator="{ handler }">
               <v-text-field
                 label="Name"
+                hint="A name that will identify this entry among others."
                 v-model="store.name"
                 :counter="32"
                 :rules="[rules.required, rules.entity.name]"
@@ -37,10 +38,10 @@
               </v-text-field>
             </template>
           </customize-entity>
-
           <v-text-field
             v-model="store.description"
             label="Description"
+            hint="Some kind of a short story, if you prefer."
             :counter="64"
             :rules="[rules.entity.description]"
           ></v-text-field>
@@ -53,7 +54,6 @@
             :items="categories"
             :disabled="!categories"
           ></v-autocomplete>
-
           <v-text-field
             v-model="encrypted.address"
             label="Website / Address"
@@ -64,7 +64,6 @@
             label="Login"
             :rules="[rules.entity.login]"
           ></v-text-field>
-
           <password-generator @accepted="encrypted.password = $event">
             <template v-slot:activator="{ handler }">
               <v-text-field
@@ -81,7 +80,6 @@
               </v-text-field>
             </template>
           </password-generator>
-
           <v-textarea
             auto-grow no-resize
             label="Notes"

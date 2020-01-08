@@ -1,11 +1,11 @@
 <template>
 <div class="home-view">
   <v-row v-if="loaded">
-    <v-col v-if="(history && history.length) || (unassigned && unassigned.length)">
+    <v-col v-if="has_home">
       <entry-details @update="fetch">
         <template v-slot:activator="{ handler }">
           <v-list>
-            <template v-if="history && history.length">
+            <template v-if="has_history">
               <v-subheader class="body-2 text--disabled">
                 <v-icon class="text--disabled" left>mdi-history</v-icon>
                 Last used entries
@@ -34,7 +34,7 @@
                 </v-list-item-action>
               </v-list-item>
             </template>
-            <template v-if="unassigned && unassigned.length">
+            <template v-if="has_unassigned">
               <v-subheader class="body-2 text--disabled">
                 <v-icon left class="text--disabled">mdi-key-outline</v-icon>
                 Unassigned entries
@@ -120,6 +120,9 @@ export default {
           this.unassigned = res.content.unassigned
           this.history = res.content.history
           this.loaded = true
+          if (!this.has_home && (this.categories == null || this.categories.length == 0)) {
+            this.$store.commit('first_steps_force')
+          }
         })
         .catch(err => console.log(err))
     },
@@ -129,10 +132,21 @@ export default {
     color: id => colors.colors[id].value,
     icon: icons.map,
   },
-  computed: mapState({
-    app_loading: state => state.content_loading,
-    categories: state => state.categories
-  })
+  computed: {
+    has_history() {
+      return this.history && this.history.length
+    },
+    has_unassigned() {
+      return this.unassigned && this.unassigned.length
+    },
+    has_home() {
+      return this.has_history || this.has_unassigned
+    },
+    ...mapState({
+      app_loading: state => state.content_loading,
+      categories: state => state.categories
+    })
+  }
 }
 </script>
 
