@@ -58,7 +58,7 @@
             <div class="title">Still not convinced?</div>
             <div class="body-1 pa-2">
               We are happy to hear from You. Send us an email at:
-              <a>mail@example.com</a>
+              <a>spam@krolewskiruczaj.pl</a>
             </div>
           </v-card-text>
         </v-card>

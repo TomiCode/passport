@@ -36,7 +36,7 @@
             v-model="remove.migrate"
             item-value="id"
             item-text="name"
-            :items="categories"
+            :items="migrate_categories"
             :rules="[dest_category]"
           ></v-autocomplete>
         </v-card-text>
@@ -109,9 +109,14 @@ export default {
     },
     icon: id => icons.map(id)
   },
-  computed: mapState({
-    categories: state => state.categories
-  }),
+  computed: {
+    migrate_categories() {
+      return this.categories.filter(category => category.id != this.remove.category.id)
+    },
+    ...mapState({
+      categories: state => state.categories
+    }),
+  },
   watch: {
     'remove.dialog': function(value) {
       if (!value)

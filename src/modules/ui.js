@@ -65,6 +65,7 @@ export const UI_CREATED_CATEGORY = "ui_created_category"
 export const UI_UPDATED_CATEGORY = "ui_updated_category"
 export const UI_DELETED_CATEGORY = "ui_deleted_category"
 export const UI_UPDATED_USER = "ui_updated_user"
+export const UI_CREATECTN_ERR = "ui_create_container_err"
 export const SYS_EMAIL_EXISTS = "sys_email_exists"
 export const SYS_INVALID_PASS = "usr_invalid_pass"
 
@@ -133,6 +134,10 @@ export const alert = {
     [UI_UPDATED_USER]: {
       message: "Your account was successfully saved.",
       type: "success"
+    },
+    [UI_CREATECTN_ERR]: {
+      message: "An error ocurred while generating your encryption keys. Please try to reopen your browser or contact our support, if it persists.",
+      type: "warning"
     }
   },
   status(status) {
@@ -196,12 +201,12 @@ export const clipboard = {
 export const validatiors = {
   required: (val) => !!val || 'This field is required.',
   password: {
-    basic: (val) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!$%@#£€*?&]{8,}$/.test(val) || 'Minimum eight characters, at least one letter and one number.',
-    private: (val) => /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(val) || 'Minimum eight characters, at least one letter, one number and one special character.'
+    basic: (val) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!$%@#£€*?&]{8,}$/.test(val) || 'Minimum eight characters, at least one upper case letter and one number.',
+    private: (val) => /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(val) || 'Minimum eight characters, at least one upper case letter, one number and one special character.'
   },
   user: {
-    email: (val) => /^\S+@\S+[\.][0-9a-z]+$/.test(val) || 'Invalid email address.',
-    name: (val) => /^[A-Za-z]+$/.test(val) || 'Invalid username.',
+    email: (val) => /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.test(val) || 'Invalid email address.',
+    name: (val) => /^[A-Za-z][A-Za-z0-9]+$/.test(val) || 'Invalid username.',
   },
   category: {
     name: (val) => (val.length > 2 && val.length <= 24) || 'Invalid category name',

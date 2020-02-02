@@ -25,15 +25,10 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text color="red darken-1" :disabled="loading">
+        <v-btn text color="red darken-1" :disabled="loading" @click="logout">
           Logout
         </v-btn>
-        <v-btn
-          text color="primary darken-1"
-          :disabled="loading"
-          :loading="loading"
-          @click.stop="decrypt"
-        >
+        <v-btn text color="primary darken-1" :loading="loading" @click.stop="decrypt">
           Decrypt
           <v-icon right dark>mdi-chevron-right</v-icon>
         </v-btn>
@@ -43,7 +38,7 @@
 </template>
 
 <script>
-import { alert, UI_INVALID_DECRYPT } from "@/modules/ui";
+import { alert, UI_USER_LOGOUT, UI_INVALID_DECRYPT } from "@/modules/ui";
 import { mapGetters } from "vuex";
 
 export default {
@@ -52,7 +47,16 @@ export default {
     password: ""
   }),
   methods: {
+    logout() {
+      this.$store.dispatch('logout')
+        .then(() => this.$router.push({ name: 'about_index' }))
+        .then(() => alert.status(UI_USER_LOGOUT))
+        .catch(err => console.log(err))
+    },
     decrypt() {
+      if (this.loading) {
+        return
+      }
       this.loading = true
       setTimeout(() => {
         this.$store.dispatch('decrypt_private', { password: this.password })

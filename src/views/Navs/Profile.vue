@@ -114,7 +114,7 @@ export default {
     logout() {
       this.account = false
       this.$store.dispatch('logout')
-        .then(() => this.$router.push({ name: 'auth_login' }))
+        .then(() => this.$router.push({ name: 'about_index' }))
         .then(() => alert.status(UI_USER_LOGOUT))
         .catch(err => console.log(err))
     },

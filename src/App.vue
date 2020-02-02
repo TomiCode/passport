@@ -52,7 +52,7 @@ export default {
   created () {
     request.config.authToken = () => this.$store.getters.auth_token
     request.config.errorHandlers[API_INVALID_SESSION] = () => {
-      this.$store.commit('account_forget')
+      this.$store.commit('api_account_forget')
       this.$router.push({ name: 'auth_login' })
         .then(() => alert.status(API_INVALID_SESSION))
     }

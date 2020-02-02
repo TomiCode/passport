@@ -86,6 +86,7 @@ export default new Vuex.Store({
     },
     api_account_forget: (state) => {
       localStorage.removeItem('vinca:session')
+      state.openpgp.private = null
       state.auth.token = null
     }
   },
@@ -158,7 +159,7 @@ export default new Vuex.Store({
         passphrase: password,
         armor: false
       })
-        .then(keystore => request.do(API_CONTAINER_CREATE, {
+        .then(keystore => request.do(API_CONTAINER, {
           data: {
             certificate: btoa(keystore.publicKeyArmored),
             encrypted: btoa(keystore.privateKeyArmored)
@@ -227,7 +228,7 @@ export default new Vuex.Store({
         .then(res => dispatch('decrypt_store', { store: res.content }))
         .then(store => resolve(store))
         .catch(reason => reject(reason))
-        .finally(() => _.delay(() => commit('api_content_loading', false), 256))
+        .finally(() => commit('api_content_loading', false))
     }),
     api_search_store: ({ commit }, { query }) => new Promise((resolve, reject) => {
       commit('api_content_loading', true)
